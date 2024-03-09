@@ -32,5 +32,7 @@ module.exports = {
   rules: {
     'react/jsx-props-no-spreading': 0,
     'react/react-in-jsx-scope': 0,
+    'no-param-reassign': 0,
+    'import/no-cycle': 0,
   },
 };

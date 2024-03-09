@@ -13,6 +13,8 @@ export default defineConfig({
       '@app': path.resolve(__dirname, 'src/app'),
       '@pages': path.resolve(__dirname, 'src/pages'),
       '@utils': path.resolve(__dirname, 'src/utils'),
+      '@models': path.resolve(__dirname, 'src/models'),
+      '@redux': path.resolve(__dirname, 'src/redux'),
     },
   },
 });
