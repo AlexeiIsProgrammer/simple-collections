@@ -13,7 +13,12 @@ function Footer() {
     >
       <Flex>
         Made by
-        <Link paddingLeft={1} href="https://github.com/AlexeiIsProgrammer">
+        <Link
+          paddingLeft={1}
+          href="https://github.com/AlexeiIsProgrammer"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           @AlexeiIsProgrammer
         </Link>
       </Flex>

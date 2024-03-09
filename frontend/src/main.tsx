@@ -15,6 +15,7 @@ import Admin from './pages/Admin';
 import ROLE from './models/enums';
 import Collections from './pages/Collections';
 import Item from './pages/Item';
+import Results from './pages/Results';
 
 const router = createBrowserRouter([
   {
@@ -41,6 +42,10 @@ const router = createBrowserRouter([
       {
         path: 'collections/:id/:itemId',
         element: <Item />,
+      },
+      {
+        path: 'results',
+        element: <Results />,
       },
       {
         path: 'admin',

@@ -10,14 +10,20 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import SearchInput from '@components/SearchInput';
 import ColorModeSwitcher from '@components/ColorModeSwitcher';
 import logo from '@assets/logo.png';
-import { useAppSelector } from '@redux/index';
-import { authSelector } from '@redux/slices/userSlice';
+import { useAppDispatch, useAppSelector } from '@redux/index';
+import { authSelector, logout } from '@redux/slices/userSlice';
 
 function Header() {
   const shadowColor = useColorModeValue('black', 'white');
   const navigate = useNavigate();
   const location = useLocation();
   const { user, isAuth } = useAppSelector(authSelector);
+  const dispatch = useAppDispatch();
+
+  const logoutHandle = () => {
+    dispatch(logout());
+    navigate('/login');
+  };
 
   return (
     <Box p={5} boxShadow={`0px 1px 1px ${shadowColor}`}>
@@ -33,7 +39,12 @@ function Header() {
         />
         <SearchInput />
         {isAuth ? (
-          <Text as="span">Hello, {user?.name}</Text>
+          <>
+            <Text as="span" whiteSpace="nowrap">
+              Hello, {user?.name}
+            </Text>
+            <Button onClick={logoutHandle}>Logout</Button>
+          </>
         ) : location.pathname.includes('login') ? (
           <Button onClick={() => navigate('/register')}>Sign up</Button>
         ) : (
