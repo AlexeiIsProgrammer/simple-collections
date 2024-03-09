@@ -13,6 +13,8 @@ import theme from './theme';
 import PrivateRoute from './routes/PrivateRoute';
 import Admin from './pages/Admin';
 import ROLE from './models/enums';
+import Collections from './pages/Collections';
+import Item from './pages/Item';
 
 const router = createBrowserRouter([
   {
@@ -33,6 +35,14 @@ const router = createBrowserRouter([
         element: <Register />,
       },
       {
+        path: 'collections/:id',
+        element: <Collections />,
+      },
+      {
+        path: 'collections/:id/:itemId',
+        element: <Item />,
+      },
+      {
         path: 'admin',
         element: <PrivateRoute element={Admin} roles={[ROLE.ADMIN]} />,
       },
@@ -44,7 +54,6 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <Provider store={store}>
       <ChakraProvider theme={theme}>
-        <ColorModeScript initialColorMode={theme.config.initialColorMode} />
         <RouterProvider router={router} />
       </ChakraProvider>
     </Provider>
