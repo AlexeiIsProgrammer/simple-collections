@@ -1,7 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import ReactDOM from 'react-dom/client';
-import { ChakraProvider, ColorModeScript } from '@chakra-ui/react';
+import { ChakraProvider } from '@chakra-ui/react';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import App from '@app/App';
 import Login from '@pages/Login';

@@ -14,7 +14,10 @@ type InitialState = {
 
 const initialState: InitialState = {
   isAuth: false,
-  user: null,
+  user: {
+    name: '',
+    role: ROLE.ANON,
+  },
 };
 
 const authSlice = createSlice({

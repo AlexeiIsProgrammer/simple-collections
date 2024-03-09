@@ -34,5 +34,6 @@ module.exports = {
     'react/react-in-jsx-scope': 0,
     'no-param-reassign': 0,
     'import/no-cycle': 0,
+    'no-nested-ternary': 0,
   },
 };
