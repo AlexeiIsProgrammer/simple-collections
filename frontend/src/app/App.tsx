@@ -7,11 +7,13 @@ import Footer from '../components/Footer';
 
 function App() {
   return (
-    <Container>
+    <>
       <Header />
-      <Outlet />
+      <Container>
+        <Outlet />
+      </Container>
       <Footer />
-    </Container>
+    </>
   );
 }
 
