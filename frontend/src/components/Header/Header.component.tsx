@@ -1,7 +1,9 @@
 import {
   Box,
   Button,
+  ButtonGroup,
   Flex,
+  IconButton,
   Image,
   Text,
   useColorModeValue,
@@ -12,16 +14,19 @@ import ColorModeSwitcher from '@components/ColorModeSwitcher';
 import logo from '@assets/logo.png';
 import { useAppDispatch, useAppSelector } from '@redux/index';
 import { authSelector, logout } from '@redux/slices/userSlice';
+import { EditIcon } from '@chakra-ui/icons';
+import { ROLE } from '@models/enums';
 
 function Header() {
+  const { user, isAuth } = useAppSelector(authSelector);
   const shadowColor = useColorModeValue('black', 'white');
   const navigate = useNavigate();
   const location = useLocation();
-  const { user, isAuth } = useAppSelector(authSelector);
   const dispatch = useAppDispatch();
 
   const logoutHandle = () => {
     dispatch(logout());
+    localStorage.removeItem('user');
     navigate('/login');
   };
 
@@ -43,7 +48,17 @@ function Header() {
             <Text as="span" whiteSpace="nowrap">
               Hello, {user?.name}
             </Text>
-            <Button onClick={logoutHandle}>Logout</Button>
+            <ButtonGroup size="sm" isAttached variant="outline">
+              <Button onClick={logoutHandle}>Logout</Button>
+              {user && user.role === ROLE.ADMIN && (
+                <IconButton
+                  onClick={() => navigate('/admin')}
+                  aria-label="To the admin panel"
+                  colorScheme="blue"
+                  icon={<EditIcon />}
+                />
+              )}
+            </ButtonGroup>
           </>
         ) : location.pathname.includes('login') ? (
           <Button onClick={() => navigate('/register')}>Sign up</Button>

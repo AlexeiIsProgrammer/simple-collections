@@ -1,8 +1,8 @@
 import { Navigate } from 'react-router-dom';
 
-import ROLE from '@models/enums';
 import { useAppSelector } from '@redux/index';
 import { authSelector } from '@redux/slices/userSlice';
+import { ROLE } from '@models/enums';
 
 interface PrivateRouteProps {
   element: React.ComponentType;

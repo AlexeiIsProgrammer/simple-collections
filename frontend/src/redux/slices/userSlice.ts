@@ -1,11 +1,6 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import ROLE from '@models/enums';
+import { User } from '@models/interfaces';
 import { RootState } from '..';
-
-type User = {
-  name: string;
-  role: ROLE;
-};
 
 type InitialState = {
   isAuth: boolean;
@@ -14,10 +9,7 @@ type InitialState = {
 
 const initialState: InitialState = {
   isAuth: false,
-  user: {
-    name: '',
-    role: ROLE.ANON,
-  },
+  user: null,
 };
 
 const authSlice = createSlice({
@@ -27,10 +19,14 @@ const authSlice = createSlice({
     logout: (state) => {
       state.isAuth = initialState.isAuth;
       state.user = initialState.user;
+
+      localStorage.removeItem('user');
     },
     setUser: (state, action: PayloadAction<User>) => {
       state.isAuth = true;
       state.user = action.payload;
+
+      localStorage.setItem('user', JSON.stringify(action.payload));
     },
   },
 });

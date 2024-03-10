@@ -10,19 +10,33 @@ import {
   InputRightElement,
   Link,
   VStack,
+  useToast,
 } from '@chakra-ui/react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Navigate, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { authSelector, setUser } from '@redux/slices/userSlice';
+import { useAppDispatch, useAppSelector } from '@redux/index';
+import { useSignInMutation } from '@services/user';
+import { ErrorType } from '@models/types';
 import { LoginFormData } from './types';
 
 import styles from './Login.module.scss';
 
 function Login() {
+  const toast = useToast();
+  const { isAuth } = useAppSelector(authSelector);
+
   const [showPassword, setShowPassword] = useState(false);
+
+  const dispatch = useAppDispatch();
+  const [loginUser, { isLoading }] = useSignInMutation();
+
+  const navigate = useNavigate();
 
   const {
     register,
+    setError,
     handleSubmit,
     formState: { errors },
   } = useForm<LoginFormData>({
@@ -34,11 +48,42 @@ function Login() {
   });
 
   const onSubmit = async ({ email, password }: LoginFormData) => {
-    console.log(email, password);
+    try {
+      const user = await loginUser({
+        email,
+        password,
+      }).unwrap();
+      dispatch(setUser(user));
+
+      toast({
+        title: 'Successfully login!',
+        status: 'success',
+        position: 'top',
+      });
+
+      navigate(`/collections/${user.id}`);
+    } catch (err) {
+      const error = err as ErrorType;
+
+      toast({
+        title: 'Login failed',
+        status: 'error',
+        position: 'top',
+      });
+
+      if (error.status === 404) {
+        setError('email', { type: 'manual', message: error.data.message });
+        setError('password', { type: 'manual', message: error.data.message });
+      }
+    }
   };
 
+  if (isAuth) {
+    return <Navigate to="/" />;
+  }
+
   return (
-    <Center mt={100}>
+    <Center mt={100} maxW="60ch" mx="auto">
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
         <VStack spacing={4}>
           <FormControl isInvalid={Boolean(errors.email)}>
@@ -49,7 +94,7 @@ function Login() {
               {...register('email', { required: true })}
             />
             <FormErrorMessage>
-              {errors.email && 'Email is required'}
+              {errors.email?.message || 'Email is required'}
             </FormErrorMessage>
           </FormControl>
           <FormControl isInvalid={Boolean(errors.password)}>
@@ -78,10 +123,12 @@ function Login() {
               </InputRightElement>
             </InputGroup>
             <FormErrorMessage>
-              {errors.password && 'Password is required'}
+              {errors.password?.message || 'Password is required'}
             </FormErrorMessage>
           </FormControl>
-          <Button type="submit">Login</Button>
+          <Button isLoading={isLoading} type="submit">
+            Login
+          </Button>
           <Link as={NavLink} to="/register">
             Don&apos;t have an account? Click here
           </Link>

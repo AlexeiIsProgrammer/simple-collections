@@ -12,7 +12,7 @@ import Register from '@pages/Register';
 import theme from './theme';
 import PrivateRoute from './routes/PrivateRoute';
 import Admin from './pages/Admin';
-import ROLE from './models/enums';
+import { ROLE } from './models/enums';
 import Collections from './pages/Collections';
 import Item from './pages/Item';
 import Results from './pages/Results';

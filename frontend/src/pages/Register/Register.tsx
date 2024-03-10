@@ -10,21 +10,34 @@ import {
   InputRightElement,
   Link,
   VStack,
+  useToast,
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Navigate, useNavigate } from 'react-router-dom';
+import { useSignUpMutation } from '@services/user';
+import { useAppDispatch, useAppSelector } from '@redux/index';
+import { authSelector, setUser } from '@redux/slices/userSlice';
 import { RegisterFormData } from './types';
 
 import styles from './Register.module.scss';
 
 function Register() {
+  const toast = useToast();
+  const { isAuth } = useAppSelector(authSelector);
+
   const [showPassword, setShowPassword] = useState(false);
   const [showRepeatPassword, setShowRepeatPassword] = useState(false);
+
+  const dispatch = useAppDispatch();
+  const [registerUser, { isLoading }] = useSignUpMutation();
+
+  const navigate = useNavigate();
 
   const {
     register,
     handleSubmit,
+    setError,
     watch,
     formState: { errors },
   } = useForm<RegisterFormData>({
@@ -43,11 +56,48 @@ function Register() {
     password,
     repeatPassword,
   }: RegisterFormData) => {
-    console.log(name, email, password, repeatPassword);
+    try {
+      const user = await registerUser({
+        name,
+        email,
+        password,
+        repeatPassword,
+      }).unwrap();
+      dispatch(setUser(user));
+
+      toast({
+        title: 'Successfully registration!',
+        status: 'success',
+        position: 'top',
+      });
+
+      navigate(`/collections/${user.id}`);
+    } catch (err) {
+      const error = err as { data: { message: string }; status: number };
+
+      toast({
+        title: 'Registration failed',
+        status: 'error',
+        position: 'top',
+      });
+
+      if (error.status === 405)
+        setError('email', { type: 'manual', message: error.data.message });
+
+      if (error.status === 408)
+        setError('repeatPassword', {
+          type: 'manual',
+          message: error.data.message,
+        });
+    }
   };
 
+  if (isAuth) {
+    return <Navigate to="/" />;
+  }
+
   return (
-    <Center mt={100}>
+    <Center mt={100} maxW="60ch" mx="auto">
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
         <VStack spacing={4}>
           <FormControl isInvalid={Boolean(errors.name)}>
@@ -58,7 +108,7 @@ function Register() {
               {...register('name', { required: true })}
             />
             <FormErrorMessage>
-              {errors.name && 'Name is required'}
+              {errors.name?.message || 'Name is required'}
             </FormErrorMessage>
           </FormControl>
           <FormControl isInvalid={Boolean(errors.email)}>
@@ -67,9 +117,9 @@ function Register() {
               type="email"
               placeholder="Demi_Murych@see_spec.com"
               {...register('email', { required: true })}
-            />{' '}
+            />
             <FormErrorMessage>
-              {errors.email && 'Email is required'}
+              {errors.email?.message || 'Email is required'}
             </FormErrorMessage>
           </FormControl>
           <FormControl isInvalid={Boolean(errors.password)}>
@@ -98,7 +148,7 @@ function Register() {
               </InputRightElement>
             </InputGroup>
             <FormErrorMessage>
-              {errors.password && 'Password is required'}
+              {errors.password?.message || 'Password is required'}
             </FormErrorMessage>
           </FormControl>
           <FormControl isInvalid={Boolean(errors.repeatPassword)}>
@@ -131,10 +181,12 @@ function Register() {
               </InputRightElement>
             </InputGroup>
             <FormErrorMessage>
-              {errors.repeatPassword && errors.repeatPassword.message}
+              {errors.repeatPassword?.message}
             </FormErrorMessage>
           </FormControl>
-          <Button type="submit">Register</Button>
+          <Button type="submit" isLoading={isLoading}>
+            Register
+          </Button>
           <Link as={NavLink} to="/login">
             Have an account? Click here
           </Link>

@@ -21,14 +21,15 @@
     "baseUrl": ".",
 
     "paths": {
-      "@/*": ["src/*"],
       "@components/*": ["src/components/*"],
       "@assets/*": ["src/assets/*"],
       "@app/*": ["src/app/*"],
       "@pages/*": ["src/pages/*"],
       "@utils/*": ["src/utils/*"],
       "@models/*": ["src/models/*"],
-      "@redux/*": ["src/redux/*"]
+      "@redux/*": ["src/redux/*"],
+      "@services/*": ["src/services/*"],
+      "@/*": ["src/*"]
     }
   },
   "include": ["src", ".eslintrc.cjs"],
