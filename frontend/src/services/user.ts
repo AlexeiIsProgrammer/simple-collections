@@ -51,6 +51,14 @@ const userApi = api.injectEndpoints({
 
       providesTags: ['Users'],
     }),
+    getUser: build.query<User, number>({
+      query: (id) => ({
+        url: `users/${id}`,
+        method: 'GET',
+      }),
+
+      providesTags: ['Users'],
+    }),
   }),
   overrideExisting: false,
 });
@@ -60,5 +68,6 @@ export const {
   useSignUpMutation,
   useDeleteUsersMutation,
   useGetUsersQuery,
+  useGetUserQuery,
   useChangeUsersStateMutation,
 } = userApi;

@@ -26,7 +26,6 @@ function Header() {
 
   const logoutHandle = () => {
     dispatch(logout());
-    localStorage.removeItem('user');
     navigate('/login');
   };
 

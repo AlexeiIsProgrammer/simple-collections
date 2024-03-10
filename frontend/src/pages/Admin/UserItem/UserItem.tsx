@@ -12,6 +12,7 @@ import {
 import { Checkbox, IconButton, Td, Tr } from '@chakra-ui/react';
 import { STATUS, ROLE } from '@models/enums';
 import UserItemProps from './types';
+import { useNavigate } from 'react-router-dom';
 
 const UserItem = React.memo(function UserItem({
   user,
@@ -21,6 +22,8 @@ const UserItem = React.memo(function UserItem({
   deleteUserHandle,
   changeUserHandle,
 }: UserItemProps) {
+  const navigate = useNavigate();
+
   const { id, name, email, role, status } = user;
 
   return (
@@ -48,6 +51,7 @@ const UserItem = React.memo(function UserItem({
       </Td>
       <Td textAlign="center">
         <IconButton
+          onClick={() => navigate(`/collections/${id}`)}
           aria-label="See collections"
           icon={<ViewIcon />}
           title={`See the ${name}'s collections`}
