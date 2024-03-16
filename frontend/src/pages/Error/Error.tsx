@@ -5,12 +5,7 @@ function Error() {
   const navigate = useNavigate();
 
   return (
-    <Center
-      pos="absolute"
-      left="50%"
-      top="50%"
-      transform="translate(-50%, -50%)"
-    >
+    <Center pos="fixed" left="50%" top="50%" transform="translate(-50%, -50%)">
       <Flex gap={5} direction="column" alignItems="center">
         <Text as="h1" fontSize="100px">
           404

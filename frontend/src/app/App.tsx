@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { Container } from '@chakra-ui/react';
 import { setUser } from '@redux/slices/userSlice';
-import { User } from '@models/interfaces';
 import { useAppDispatch } from '@redux/index';
 import Header from '@components/Header';
 import Footer from '@components/Footer';
 import { useGetUserQuery } from '@services/user';
+import { User } from '@models/interfaces';
 
 function App() {
   const dispatch = useAppDispatch();
@@ -15,9 +15,11 @@ function App() {
   const { data: user } = useGetUserQuery(id || -1, { skip: !id });
 
   useEffect(() => {
-    const storageUser = JSON.parse(localStorage.getItem('user') || '') as User;
+    const storageUser = JSON.parse(
+      localStorage.getItem('user') || '{}'
+    ) as User;
 
-    if (storageUser) {
+    if (storageUser && storageUser.id) {
       setId(storageUser.id);
     }
   }, []);

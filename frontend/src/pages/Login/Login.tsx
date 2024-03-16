@@ -71,7 +71,7 @@ function Login() {
         position: 'top',
       });
 
-      if (error.status === 404) {
+      if (error.status === 500) {
         setError('email', { type: 'manual', message: error.data.message });
         setError('password', { type: 'manual', message: error.data.message });
       }

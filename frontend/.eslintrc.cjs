@@ -35,5 +35,6 @@ module.exports = {
     'no-param-reassign': 0,
     'import/no-cycle': 0,
     'no-nested-ternary': 0,
+    '@typescript-eslint/naming-convention': 0,
   },
 };

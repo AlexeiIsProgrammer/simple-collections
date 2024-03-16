@@ -73,7 +73,7 @@ function Register() {
 
       navigate(`/collections/${user.id}`);
     } catch (err) {
-      const error = err as { data: { message: string }; status: number };
+      const error = err as { data: { message: string; statusCode: number } };
 
       toast({
         title: 'Registration failed',
@@ -81,10 +81,10 @@ function Register() {
         position: 'top',
       });
 
-      if (error.status === 405)
+      if (error.data.statusCode === 500)
         setError('email', { type: 'manual', message: error.data.message });
 
-      if (error.status === 408)
+      if (error.data.statusCode === 409)
         setError('repeatPassword', {
           type: 'manual',
           message: error.data.message,

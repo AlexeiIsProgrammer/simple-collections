@@ -13,21 +13,21 @@ const userApi = api.injectEndpoints({
   endpoints: (build) => ({
     signUp: build.mutation<User, RegisterFormData>({
       query: (body) => ({
-        url: 'users/',
+        url: 'user/',
         method: 'POST',
         body,
       }),
     }),
     signIn: build.mutation<User, LoginFormData>({
       query: (body) => ({
-        url: 'users/login/',
+        url: 'user/login/',
         method: 'POST',
         body,
       }),
     }),
     changeUsersState: build.mutation<void, ActionType[]>({
       query: (actions) => ({
-        url: `users/`,
+        url: `user/`,
         method: 'PATCH',
         body: { actions },
       }),
@@ -36,7 +36,7 @@ const userApi = api.injectEndpoints({
     }),
     deleteUsers: build.mutation<void, number[]>({
       query: (ids) => ({
-        url: `users/`,
+        url: `user/`,
         method: 'DELETE',
         body: { ids },
       }),
@@ -45,7 +45,7 @@ const userApi = api.injectEndpoints({
     }),
     getUsers: build.query<User[], void>({
       query: () => ({
-        url: 'users/',
+        url: 'user/',
         method: 'GET',
       }),
 
@@ -53,7 +53,7 @@ const userApi = api.injectEndpoints({
     }),
     getUser: build.query<User, number>({
       query: (id) => ({
-        url: `users/${id}`,
+        url: `user/${id}`,
         method: 'GET',
       }),
 

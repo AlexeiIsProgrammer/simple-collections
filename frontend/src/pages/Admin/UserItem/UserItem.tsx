@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   ViewIcon,
   UnlockIcon,
@@ -12,7 +13,6 @@ import {
 import { Checkbox, IconButton, Td, Tr } from '@chakra-ui/react';
 import { STATUS, ROLE } from '@models/enums';
 import UserItemProps from './types';
-import { useNavigate } from 'react-router-dom';
 
 const UserItem = React.memo(function UserItem({
   user,
