@@ -43,15 +43,15 @@ CREATE TABLE collection_items(
 );
 
 CREATE TABLE collection_item_tags (
-    collection_item_id INT REFERENCES collection_items(id),
-    tag_id INT REFERENCES tags(id),
+    collection_item_id INT REFERENCES collection_items(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    tag_id INT REFERENCES tags(id) ON DELETE CASCADE ON UPDATE CASCADE,
     PRIMARY KEY (collection_item_id, tag_id)
 );
 
 CREATE TABLE collection_item_custom_fields(
   value TEXT,
-  collection_item_id INT REFERENCES collection_items(id),
-  custom_field_id INT REFERENCES custom_fields(id),
+  collection_item_id INT REFERENCES collection_items(id) ON DELETE CASCADE ON UPDATE CASCADE,
+  custom_field_id INT REFERENCES custom_fields(id) ON DELETE CASCADE ON UPDATE CASCADE,
   PRIMARY KEY (collection_item_id, custom_field_id)
 );
 

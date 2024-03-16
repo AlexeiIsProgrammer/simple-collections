@@ -1,4 +1,4 @@
-import { CustomFieldEntity } from './custom-field.entity';
+import { CustomFieldEntity } from './custom_field.entity';
 
 describe('CustomFieldEntity', () => {
   it('should be defined', () => {

@@ -1,13 +1,9 @@
-import { IsArray, IsNumber, IsString } from 'class-validator';
-import { TagEntity } from 'src/tag/entity/tag.entity/tag.entity';
+import { IsNumber, IsString } from 'class-validator';
 
 export class CollectionItemDto {
   @IsString()
   name: string;
 
   @IsNumber()
-  collection_id: string;
-
-  @IsArray()
-  tags: TagEntity[];
+  collection_id: number;
 }

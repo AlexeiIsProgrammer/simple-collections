@@ -1,5 +1,4 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { CustomFieldEntity } from '../custom-field.entity/custom-field.entity';
 
 @Entity('collections')
 export class CollectionEntity {
@@ -20,7 +19,4 @@ export class CollectionEntity {
 
   @Column()
   category: string;
-
-  @Column()
-  customFields: CustomFieldEntity[];
 }

@@ -1,6 +1,6 @@
-import { TagEntity } from 'src/tag/entity/tag.entity/tag.entity';
-import { Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
+@Entity('collection_items')
 export class CollectionItemEntity {
   @PrimaryGeneratedColumn('increment')
   id: number;
@@ -9,8 +9,5 @@ export class CollectionItemEntity {
   name: string;
 
   @Column()
-  collection_id: string;
-
-  @Column()
-  tags: TagEntity[];
+  collection_id: number;
 }

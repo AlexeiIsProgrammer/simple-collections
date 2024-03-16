@@ -1,17 +1,17 @@
-import { Body, Controller, Get, HttpCode, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Param, Put } from '@nestjs/common';
 import { TagService } from './tag.service';
 import { StatusCodes } from 'http-status-codes';
-import { TagDto } from '../dto/tag.dto/tag.dto';
 import { TagEntity } from '../entity/tag.entity/tag.entity';
+import { UpdateDto } from '../dto/update.dto/update.dto';
 
 @Controller('tag')
 export class TagController {
   constructor(private tagService: TagService) {}
 
-  @Post()
-  @HttpCode(StatusCodes.NO_CONTENT)
-  create(@Body() tag: TagDto): Promise<TagEntity> {
-    return this.tagService.create(tag);
+  @Put()
+  @HttpCode(StatusCodes.OK)
+  update(@Body() body: UpdateDto): Promise<void> {
+    return this.tagService.update(body);
   }
 
   @Get()
@@ -22,7 +22,7 @@ export class TagController {
 
   @Get(':id')
   @HttpCode(StatusCodes.OK)
-  findOne(@Param('id') id: string): Promise<TagEntity> {
-    return this.tagService.findOne(id);
+  findByCollectionItem(@Param('id') id: number): Promise<TagEntity> {
+    return this.tagService.findByCollectionItem(id);
   }
 }

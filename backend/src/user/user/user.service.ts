@@ -1,4 +1,9 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from '../entity/user.entity/user.entity';
 import { Repository } from 'typeorm';
@@ -21,13 +26,11 @@ export class UserService {
       if (user.password !== user.repeatPassword) {
         throw new HttpException('Passwords must match', HttpStatus.CONFLICT);
       }
+      const foundUser = await this.userRepository.findOne({
+        where: { email: user.email },
+      });
 
-      const foundUser = await this.userRepository.query(
-        'SELECT * FROM users WHERE email = $1',
-        [user.email],
-      );
-
-      if (foundUser.length !== 0) {
+      if (!foundUser) {
         throw new HttpException(
           'User with this email already exists',
           HttpStatus.BAD_REQUEST,
@@ -53,9 +56,7 @@ export class UserService {
 
   async findAll(): Promise<SecuredUser[]> {
     try {
-      const allUsers: UserEntity[] = await this.userRepository.query(
-        'SELECT * FROM users ORDER BY id ASC',
-      );
+      const allUsers = await this.userRepository.find();
       const formattedUsers = allUsers.map((user) => {
         const formattedUser = {
           id: user.id,
@@ -76,18 +77,17 @@ export class UserService {
     }
   }
 
-  async findOne(id: string): Promise<SecuredUser> {
+  async findOne(id: number): Promise<SecuredUser> {
     try {
-      const user = await this.userRepository.query(
-        'SELECT * FROM users WHERE id = $1',
-        [id],
-      );
+      const user = await this.userRepository.findOne({
+        where: { id },
+      });
 
-      if (user.length === 0) {
+      if (!user) {
         throw new HttpException("User doesn't exists", HttpStatus.NOT_FOUND);
       }
 
-      return user[0];
+      return user;
     } catch (err) {
       if (err instanceof Error) {
         throw new HttpException(err.message, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -96,25 +96,23 @@ export class UserService {
   }
   async login({ email, password }: LoginDto): Promise<SecuredUser> {
     try {
-      const user = await this.userRepository.query(
-        'SELECT * FROM users WHERE email = $1 and password = $2',
-        [email, password],
-      );
+      const user = await this.userRepository.findOne({
+        where: { email, password },
+      });
 
-      if (user.length === 0) {
+      if (!user) {
         throw new HttpException(
           'Email or password wrong',
           HttpStatus.NOT_FOUND,
         );
       }
 
-      const selectedUser = user[0];
       const formattedUser = {
-        id: selectedUser.id,
-        name: selectedUser.name,
-        email: selectedUser.email,
-        status: selectedUser.status,
-        role: selectedUser.role,
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        status: user.status,
+        role: user.role,
       };
 
       return formattedUser;
@@ -128,14 +126,16 @@ export class UserService {
     try {
       const actionsPromises = actions.map(
         ({ field, id, value }) =>
-          new Promise((resolve, reject) => {
-            this.userRepository
-              .query(`UPDATE users SET ${field} = $1 WHERE id = $2`, [
-                value,
-                id,
-              ])
-              .then(resolve)
-              .catch(reject);
+          new Promise<void>(async (resolve, reject) => {
+            try {
+              await this.userRepository.query(
+                `UPDATE users SET ${field} = $1 WHERE id = $2`,
+                [value, id],
+              );
+              resolve();
+            } catch (err) {
+              reject(err);
+            }
           }),
       );
 
@@ -149,12 +149,23 @@ export class UserService {
   async delete({ ids }: DeleteDto): Promise<void> {
     try {
       const actionsPromises = ids.map(
-        (id) =>
-          new Promise((resolve, reject) => {
-            this.userRepository
-              .query('DELETE FROM users WHERE id = $1', [id])
-              .then(resolve)
-              .catch(reject);
+        ({ id }) =>
+          new Promise<void>(async (resolve, reject) => {
+            const user = await this.userRepository.findOne({
+              where: { id },
+            });
+
+            if (!user) {
+              throw new NotFoundException('User not found');
+            }
+
+            try {
+              await this.userRepository.remove(user);
+
+              resolve();
+            } catch (err) {
+              reject(err);
+            }
           }),
       );
 

@@ -12,7 +12,6 @@ import { CollectionItemService } from './collection_item.service';
 import { CollectionItemDto } from '../dto/collection_item.dto/collection_item.dto';
 import { CollectionItemEntity } from '../entity/collection_item.entity/collection_item.entity';
 import { StatusCodes } from 'http-status-codes';
-import { CollectionEntity } from 'src/collection/entity/collection.entity/collection.entity';
 
 @Controller('collection-item')
 export class CollectionItemController {
@@ -29,15 +28,25 @@ export class CollectionItemController {
   @Patch(':id')
   @HttpCode(StatusCodes.OK)
   update(
-    @Param('id') id: string,
-    @Body() body: CollectionItemEntity,
-  ): Promise<CollectionItemEntity> {
+    @Param('id') id: number,
+    @Body() body: { name: string },
+  ): Promise<void> {
     return this.collectionItemService.update(id, body);
+  }
+
+  @Patch(':id/:fieldId')
+  @HttpCode(StatusCodes.OK)
+  updateCustom(
+    @Param('id') id: number,
+    @Param('fieldId') fieldId: number,
+    @Body() body: { value: string },
+  ): Promise<void> {
+    return this.collectionItemService.updateCustom(id, fieldId, body);
   }
 
   @Delete(':id')
   @HttpCode(StatusCodes.OK)
-  delete(@Param('id') id: string): Promise<void> {
+  delete(@Param('id') id: number): Promise<void> {
     return this.collectionItemService.delete(id);
   }
 
@@ -49,7 +58,7 @@ export class CollectionItemController {
 
   @Get(':id')
   @HttpCode(StatusCodes.OK)
-  findOne(@Param('id') id: string): Promise<CollectionEntity> {
+  findOne(@Param('id') id: number): Promise<CollectionItemEntity> {
     return this.collectionItemService.findOne(id);
   }
 }

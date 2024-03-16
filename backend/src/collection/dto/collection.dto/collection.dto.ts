@@ -1,5 +1,5 @@
 import { IsArray, IsNumber, IsString } from 'class-validator';
-import { CustomFieldEntity } from 'src/collection/entity/custom-field.entity/custom-field.entity';
+import { CustomFieldDto } from '../custom-field.dto/custom-field.dto';
 
 export class CollectionDto {
   @IsString()
@@ -18,5 +18,5 @@ export class CollectionDto {
   category: string;
 
   @IsArray()
-  customFields: CustomFieldEntity[];
+  customFields: Omit<CustomFieldDto, 'collection_id'>[];
 }

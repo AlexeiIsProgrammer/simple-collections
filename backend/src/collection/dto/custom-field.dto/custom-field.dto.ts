@@ -1,15 +1,19 @@
-import { IsNumber, IsString } from 'class-validator';
+import { IsEnum, IsNumber, IsString } from 'class-validator';
+import {
+  StateEnum,
+  TypeEnum,
+} from 'src/collection/entity/custom_field.entity/custom_field.entity';
 
 export class CustomFieldDto {
   @IsNumber()
-  collection_id: string;
+  collection_id: number;
 
-  @IsString()
-  type: string;
+  @IsEnum(TypeEnum)
+  type: TypeEnum;
 
   @IsString()
   name: string;
 
-  @IsString()
-  state: string;
+  @IsEnum(StateEnum)
+  state: StateEnum;
 }
