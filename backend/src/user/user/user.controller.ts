@@ -52,7 +52,7 @@ export class UserController {
   }
 
   @Delete()
-  @HttpCode(StatusCodes.NO_CONTENT)
+  @HttpCode(StatusCodes.OK)
   delete(@Body() ids: DeleteDto) {
     return this.userService.delete(ids);
   }
