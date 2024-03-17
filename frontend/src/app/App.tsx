@@ -1,34 +1,26 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import { Container } from '@chakra-ui/react';
 import { setUser } from '@redux/slices/userSlice';
 import { useAppDispatch } from '@redux/index';
 import Header from '@components/Header';
 import Footer from '@components/Footer';
-import { useGetUserQuery } from '@services/user';
-import { User } from '@models/interfaces';
+import { useLazyGetUserQuery } from '@services/user';
 
 function App() {
   const dispatch = useAppDispatch();
-  const [id, setId] = useState<number | null>(null);
 
-  const { data: user } = useGetUserQuery(id || -1, { skip: !id });
-
-  useEffect(() => {
-    const storageUser = JSON.parse(
-      localStorage.getItem('user') || '{}'
-    ) as User;
-
-    if (storageUser && storageUser.id) {
-      setId(storageUser.id);
-    }
-  }, []);
+  const [getUser] = useLazyGetUserQuery();
 
   useEffect(() => {
-    if (user) {
-      dispatch(setUser(user));
+    const storageUserId = localStorage.getItem('userId');
+
+    if (storageUserId) {
+      getUser(+storageUserId)
+        .unwrap()
+        .then((userResponse) => dispatch(setUser(userResponse)));
     }
-  }, [dispatch, user]);
+  }, [getUser, dispatch]);
 
   return (
     <>

@@ -14,7 +14,7 @@ import ColorModeSwitcher from '@components/ColorModeSwitcher';
 import logo from '@assets/logo.png';
 import { useAppDispatch, useAppSelector } from '@redux/index';
 import { authSelector, logout } from '@redux/slices/userSlice';
-import { EditIcon } from '@chakra-ui/icons';
+import { EditIcon, HamburgerIcon } from '@chakra-ui/icons';
 import { ROLE } from '@models/enums';
 
 function Header() {
@@ -48,10 +48,20 @@ function Header() {
               Hello, {user?.name}
             </Text>
             <ButtonGroup size="sm" isAttached variant="outline">
+              {user && (
+                <IconButton
+                  onClick={() => navigate(`/collections/${user.id}`)}
+                  aria-label="To the collection"
+                  title="To the collection"
+                  colorScheme="green"
+                  icon={<HamburgerIcon />}
+                />
+              )}
               <Button onClick={logoutHandle}>Logout</Button>
               {user && user.role === ROLE.ADMIN && (
                 <IconButton
                   onClick={() => navigate('/admin')}
+                  title="To the admin panel"
                   aria-label="To the admin panel"
                   colorScheme="blue"
                   icon={<EditIcon />}

@@ -12,6 +12,7 @@ import { CollectionItemService } from './collection_item.service';
 import { CollectionItemDto } from '../dto/collection_item.dto/collection_item.dto';
 import { CollectionItemEntity } from '../entity/collection_item.entity/collection_item.entity';
 import { StatusCodes } from 'http-status-codes';
+import { GetDto } from '../dto/get.dto/get.dto';
 
 @Controller('collection-item')
 export class CollectionItemController {
@@ -56,9 +57,20 @@ export class CollectionItemController {
     return this.collectionItemService.findAll();
   }
 
-  @Get(':id')
+  @Get(':collectionId')
   @HttpCode(StatusCodes.OK)
-  findOne(@Param('id') id: number): Promise<CollectionItemEntity> {
-    return this.collectionItemService.findOne(id);
+  findCollectionItems(
+    @Param('collectionId') collectionId: number,
+  ): Promise<CollectionItemEntity[]> {
+    return this.collectionItemService.findCollectionItems(collectionId);
+  }
+
+  @Get(':collectionId/:id')
+  @HttpCode(StatusCodes.OK)
+  findOne(
+    @Param('collectionId') collectionId: number,
+    @Param('id') id: number,
+  ): Promise<GetDto> {
+    return this.collectionItemService.findOne(collectionId, id);
   }
 }

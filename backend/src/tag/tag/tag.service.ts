@@ -153,9 +153,9 @@ export class TagService {
     }
   }
 
-  async findByCollectionItem(id: number): Promise<TagEntity> {
+  async findByCollectionItem(id: number): Promise<TagEntity[]> {
     try {
-      const tags = await this.tagRepository.query(
+      const tags: TagEntity[] = await this.tagRepository.query(
         `SELECT tags.*
       FROM tags
       JOIN collection_item_tags ON tags.id = collection_item_tags.tag_id

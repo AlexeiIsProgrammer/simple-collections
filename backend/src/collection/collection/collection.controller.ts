@@ -13,6 +13,7 @@ import { StatusCodes } from 'http-status-codes';
 import { CollectionEntity } from '../entity/collection.entity/collection.entity';
 import { CollectionDto } from '../dto/collection.dto/collection.dto';
 import { UpdateDto } from '../dto/update.dto/update.dto';
+import { CreateDto } from '../dto/create.dto/create.dto';
 
 @Controller('collection')
 export class CollectionController {
@@ -42,9 +43,18 @@ export class CollectionController {
     return this.collectionService.findAll();
   }
 
-  @Get(':id')
+  @Get('user/:id')
   @HttpCode(StatusCodes.OK)
-  findOne(@Param('id') id: number): Promise<CollectionEntity> {
-    return this.collectionService.findOne(id);
+  findAllByUserId(@Param('id') id: number): Promise<CollectionEntity[]> {
+    return this.collectionService.findAllByUserId(id);
+  }
+
+  @Get(':userId/:collectionId')
+  @HttpCode(StatusCodes.OK)
+  findOne(
+    @Param('userId') userId: number,
+    @Param('collectionId') collectionId: number,
+  ): Promise<CreateDto> {
+    return this.collectionService.findOne(userId, collectionId);
   }
 }

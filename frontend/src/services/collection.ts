@@ -1,4 +1,4 @@
-import { Collection } from '@models/interfaces';
+import { Collection, CollectionWithoutId } from '@models/interfaces';
 import api from '@redux/api';
 
 type ChangeCollectionField = {
@@ -11,12 +11,13 @@ type ChangeCollectionField = {
 
 const collectionApi = api.injectEndpoints({
   endpoints: (build) => ({
-    createCollection: build.mutation<void, Omit<Collection, 'id'>>({
+    createCollection: build.mutation<void, CollectionWithoutId>({
       query: (body) => ({
         url: `collection`,
         method: 'POST',
         body,
       }),
+      invalidatesTags: ['Collections'],
     }),
     updateCollection: build.mutation<void, ChangeCollectionField>({
       query: ({ id, body }) => ({
@@ -36,10 +37,19 @@ const collectionApi = api.injectEndpoints({
         url: `collection`,
       }),
     }),
-    getCollection: build.query<Collection, void>({
-      query: (id) => ({
-        url: `collection/${id}`,
+    getCollection: build.query<
+      Collection,
+      { userId: string; collectionId: string }
+    >({
+      query: ({ userId, collectionId }) => ({
+        url: `collection/${userId}/${collectionId}`,
       }),
+    }),
+    getUserCollections: build.query<Collection[], string>({
+      query: (id) => ({
+        url: `collection/user/${id}`,
+      }),
+      providesTags: ['Collections'],
     }),
   }),
   overrideExisting: false,
@@ -50,5 +60,6 @@ export const {
   useUpdateCollectionMutation,
   useDeleteCollectionMutation,
   useGetCollectionQuery,
+  useGetUserCollectionsQuery,
   useGetCollectionsQuery,
 } = collectionApi;

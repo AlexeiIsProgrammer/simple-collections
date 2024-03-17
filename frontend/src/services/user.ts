@@ -4,7 +4,7 @@ import { RegisterFormData } from '@pages/Register/types';
 import api from '@redux/api';
 
 export type ActionType = {
-  id: number;
+  id: string;
   field: keyof User;
   value: string;
 };
@@ -69,5 +69,6 @@ export const {
   useDeleteUsersMutation,
   useGetUsersQuery,
   useGetUserQuery,
+  useLazyGetUserQuery,
   useChangeUsersStateMutation,
 } = userApi;

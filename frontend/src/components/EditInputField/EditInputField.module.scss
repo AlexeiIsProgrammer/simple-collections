@@ -1,0 +1,31 @@
+.box {
+  position: relative;
+  border-radius: 10px;
+
+  &.read {
+    padding: 10px;
+    border: 1px solid transparent;
+  }
+  &:not(.read) {
+    & .edit {
+      display: block !important;
+    }
+  }
+  &:hover {
+    &.read {
+      border-color: #000;
+    }
+
+    & .edit {
+      display: block !important;
+    }
+  }
+}
+
+.edit {
+  z-index: 1;
+  display: none !important;
+  position: absolute !important;
+  right: 5px;
+  bottom: 5px;
+}

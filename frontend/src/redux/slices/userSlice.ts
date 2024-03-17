@@ -22,11 +22,11 @@ const authSlice = createSlice({
 
       localStorage.removeItem('user');
     },
-    setUser: (state, action: PayloadAction<User>) => {
+    setUser: (state, { payload }: PayloadAction<User>) => {
       state.isAuth = true;
-      state.user = action.payload;
+      state.user = payload;
 
-      localStorage.setItem('user', JSON.stringify(action.payload));
+      localStorage.setItem('userId', payload.id.toString());
     },
   },
 });

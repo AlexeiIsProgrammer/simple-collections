@@ -120,6 +120,22 @@ export class CollectionItemService {
     }
   }
 
+  async findCollectionItems(
+    collectionId: number,
+  ): Promise<CollectionItemEntity[]> {
+    try {
+      const items = await this.collectionItemRepository.find({
+        where: { collection_id: collectionId },
+      });
+
+      return items;
+    } catch (err) {
+      if (err instanceof Error) {
+        throw new HttpException(err.message, HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+    }
+  }
+
   async findAll(): Promise<CollectionItemEntity[]> {
     try {
       const items = await this.collectionItemRepository.find();
@@ -132,10 +148,10 @@ export class CollectionItemService {
     }
   }
 
-  async findOne(id: number): Promise<GetDto> {
+  async findOne(collectionId: number, id: number): Promise<GetDto> {
     try {
       const item = await this.collectionItemRepository.findOne({
-        where: { id },
+        where: { collection_id: collectionId, id },
       });
 
       const customFields = await this.collectionItemRepository.query(

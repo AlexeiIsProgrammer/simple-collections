@@ -51,14 +51,22 @@ const collectionItemApi = api.injectEndpoints({
         method: 'DELETE',
       }),
     }),
-    getCollectionItems: build.query<CollectionItem[], void>({
+    getAllCollectionItems: build.query<CollectionItem[], void>({
       query: () => ({
         url: `collection-item`,
       }),
     }),
-    getCollectionItem: build.query<CollectionItemWithCustomFields, void>({
-      query: (id) => ({
-        url: `collection-item/${id}`,
+    getCollectionItems: build.query<CollectionItem[], string>({
+      query: (collectionId) => ({
+        url: `collection-item/${collectionId}`,
+      }),
+    }),
+    getCollectionItem: build.query<
+      CollectionItemWithCustomFields,
+      { collectionId: string; id: string }
+    >({
+      query: ({ collectionId, id }) => ({
+        url: `collection-item/${collectionId}/${id}`,
       }),
     }),
   }),

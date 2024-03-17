@@ -94,14 +94,11 @@ export class CollectionService {
       }
     }
   }
+
   async findAll(): Promise<CollectionEntity[]> {
     try {
       const collections: CollectionEntity[] =
         await this.collectionRepository.find();
-
-      if (collections.length === 0) {
-        throw new NotFoundException('Collections not found');
-      }
 
       return collections;
     } catch (err) {
@@ -110,17 +107,36 @@ export class CollectionService {
       }
     }
   }
-  async findOne(id: number): Promise<CollectionEntity> {
+
+  async findAllByUserId(id: number): Promise<CollectionEntity[]> {
+    try {
+      const collections: CollectionEntity[] =
+        await this.collectionRepository.find({ where: { user_id: id } });
+
+      return collections;
+    } catch (err) {
+      if (err instanceof Error) {
+        throw new HttpException(err.message, HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+    }
+  }
+
+  async findOne(userId: number, collectionId: number): Promise<CreateDto> {
     try {
       const collection = await this.collectionRepository.findOne({
-        where: { id },
+        where: { user_id: userId, id: collectionId },
       });
+
+      const customFields: CustomFieldEntity[] =
+        await this.customFieldRepository.find({
+          where: { collection_id: collectionId },
+        });
 
       if (!collection) {
         throw new NotFoundException('Collection not found');
       }
 
-      return collection;
+      return { ...collection, customFields };
     } catch (err) {
       if (err instanceof Error) {
         throw new HttpException(err.message, HttpStatus.INTERNAL_SERVER_ERROR);

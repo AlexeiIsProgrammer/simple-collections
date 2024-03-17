@@ -22,7 +22,7 @@ export class TagController {
 
   @Get(':id')
   @HttpCode(StatusCodes.OK)
-  findByCollectionItem(@Param('id') id: number): Promise<TagEntity> {
+  findByCollectionItem(@Param('id') id: number): Promise<TagEntity[]> {
     return this.tagService.findByCollectionItem(id);
   }
 }
