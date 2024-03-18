@@ -16,7 +16,7 @@ function App() {
     const storageUserId = localStorage.getItem('userId');
 
     if (storageUserId) {
-      getUser(+storageUserId)
+      getUser(storageUserId)
         .unwrap()
         .then((userResponse) => dispatch(setUser(userResponse)));
     }

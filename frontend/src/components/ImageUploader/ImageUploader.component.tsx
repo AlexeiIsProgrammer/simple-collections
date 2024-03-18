@@ -1,7 +1,13 @@
 import clsx from 'clsx';
 import { Dropbox } from 'dropbox';
-import { Box, Button, Text } from '@chakra-ui/react';
-import { HTMLAttributes, forwardRef, useState } from 'react';
+import { Box, Button, Text, useToast } from '@chakra-ui/react';
+import {
+  ChangeEvent,
+  DragEvent,
+  HTMLAttributes,
+  forwardRef,
+  useState,
+} from 'react';
 import styles from './ImageUploader.module.scss';
 
 const dbx = new Dropbox({
@@ -35,6 +41,7 @@ const ImageUploader = forwardRef<
   HTMLInputElement,
   HTMLAttributes<HTMLInputElement>
 >(({ ...props }, ref) => {
+  const toast = useToast();
   const [highlight, setHighlight] = useState(false);
   const [preview, setPreview] = useState('');
   const [drop, setDrop] = useState(false);
@@ -73,19 +80,30 @@ const ImageUploader = forwardRef<
     };
 
     reader.onerror = () => {
-      alert('There is a problem while uploading...');
+      toast({
+        title: 'Image uploading went wrong...',
+        status: 'error',
+        position: 'top',
+      });
     };
   }
 
-  const handleUpload = (e: any) => {
+  const handleUpload = (
+    e: ChangeEvent<HTMLInputElement> | DragEvent<HTMLDivElement>
+  ) => {
     e.preventDefault();
     e.stopPropagation();
     setHighlight(false);
     setDrop(true);
 
-    const [file]: File[] = e.target.files || e.dataTransfer.files;
-    ref.current.files = e.target.files || e.dataTransfer.files;
-    uploadFile(file);
+    const files =
+      e.target instanceof HTMLInputElement
+        ? e.target.files
+        : e instanceof DragEvent && e.dataTransfer
+          ? e.dataTransfer.files
+          : null;
+
+    if (files) uploadFile(files[0]);
   };
 
   return (

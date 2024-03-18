@@ -16,10 +16,10 @@ import configuration from './config/configuration';
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      username: 'postgres',
+      username: process.env.DB_USERNAME || 'postgres',
       host: process.env.HOST || 'localhost',
-      database: 'collections_db',
-      password: 'qwerty',
+      database: process.env.DB_NAME || 'collections_db',
+      password: process.env.DB_PASSWORD || 'qwerty',
       port: +process.env.DB_PORT || 5432,
       entities: ['dist/**/*.entity{.ts,.js}'],
     }),

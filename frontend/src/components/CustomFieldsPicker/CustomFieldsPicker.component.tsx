@@ -17,7 +17,7 @@ import CustomFieldsPickerProps from './types';
 
 const TypesSelect = forwardRef<
   HTMLSelectElement,
-  HTMLAttributes<HTMLSelectElement>
+  HTMLAttributes<HTMLSelectElement> & { value: COLLECTION_TYPE }
 >(({ ...props }, ref) => {
   const types = useMemo(() => Object.values(COLLECTION_TYPE), []);
 
@@ -35,7 +35,7 @@ const TypesSelect = forwardRef<
 
 const StatesSelect = forwardRef<
   HTMLSelectElement,
-  HTMLAttributes<HTMLSelectElement>
+  HTMLAttributes<HTMLSelectElement> & { value: COLLECTION_STATE }
 >(({ ...props }, ref) => {
   const states = useMemo(() => Object.values(COLLECTION_STATE), []);
 
