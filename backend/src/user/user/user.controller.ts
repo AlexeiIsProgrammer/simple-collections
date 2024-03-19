@@ -22,7 +22,7 @@ export class UserController {
   constructor(private userService: UserService) {}
 
   @Post()
-  @HttpCode(StatusCodes.NO_CONTENT)
+  @HttpCode(StatusCodes.OK)
   create(@Body() user: UserDto): Promise<UserEntity> {
     return this.userService.create(user);
   }
