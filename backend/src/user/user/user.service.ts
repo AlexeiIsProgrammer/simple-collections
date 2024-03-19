@@ -30,7 +30,7 @@ export class UserService {
         where: { email: user.email },
       });
 
-      if (!foundUser) {
+      if (foundUser) {
         throw new HttpException(
           'User with this email already exists',
           HttpStatus.BAD_REQUEST,
