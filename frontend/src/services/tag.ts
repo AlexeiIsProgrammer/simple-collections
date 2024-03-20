@@ -1,20 +1,16 @@
 import { Tag } from '@models/interfaces';
 import api from '@redux/api';
 
-enum TagActionType {
-  CREATE = 'create',
-  UPDATE = 'update',
-  DELETE = 'delete',
-}
+export type TagActionType = 'create' | 'update' | 'delete';
 
-type ActionType = {
-  type: TagActionType;
-  id?: number;
-  value?: string;
+export type ActionType = {
+  type?: TagActionType;
+  id?: string;
+  name?: string;
 };
 
 export type UpdateTagsType = {
-  id: number;
+  id: string;
   actions: ActionType[];
 };
 
@@ -26,16 +22,19 @@ const tagApi = api.injectEndpoints({
         method: 'PUT',
         body,
       }),
+      invalidatesTags: ['Tags'],
     }),
     getTags: build.query<Tag[], void>({
       query: () => ({
         url: 'tag',
       }),
+      providesTags: ['Tags'],
     }),
-    getTagsByCollectionItem: build.query<Tag[], void>({
+    getTagsByCollectionItem: build.query<Tag[], string>({
       query: (id) => ({
         url: `tag/${id}`,
       }),
+      providesTags: ['Tags'],
     }),
   }),
   overrideExisting: false,

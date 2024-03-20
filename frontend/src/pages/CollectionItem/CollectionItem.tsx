@@ -6,13 +6,13 @@ import {
   Flex,
   Heading,
   Image,
-  Spinner,
   Stack,
   Text,
 } from '@chakra-ui/react';
 import { useParams } from 'react-router-dom';
 import { useGetCollectionQuery } from '@services/collection';
 import EditInputField from '@components/EditInputField';
+import CustomSpinner from '@components/CustomSpinner';
 import ItemsTable from './ItemsTable';
 import styles from './CollectionItem.module.scss';
 
@@ -31,15 +31,7 @@ function CollectionItem() {
   );
 
   if (isFetching) {
-    return (
-      <Spinner
-        thickness="4px"
-        speed="0.65s"
-        emptyColor="gray.200"
-        color="blue.500"
-        size="xl"
-      />
-    );
+    return <CustomSpinner />;
   }
 
   if (isError || !collection) {

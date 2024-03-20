@@ -61,6 +61,11 @@ const collectionItemApi = api.injectEndpoints({
         url: `collection-item/${collectionId}`,
       }),
     }),
+    getCollectionItemsByTagName: build.query<CollectionItem[], string>({
+      query: (collectionId) => ({
+        url: `collection-item/${collectionId}/tag`,
+      }),
+    }),
     getCollectionItem: build.query<
       CollectionItemWithCustomFields,
       { collectionId: string; id: string }
@@ -79,4 +84,5 @@ export const {
   useUpdateCollectionItemMutation,
   useGetCollectionItemQuery,
   useGetCollectionItemsQuery,
+  useGetCollectionItemsByTagNameQuery,
 } = collectionItemApi;

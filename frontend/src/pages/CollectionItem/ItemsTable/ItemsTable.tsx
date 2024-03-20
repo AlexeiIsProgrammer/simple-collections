@@ -2,7 +2,6 @@ import {
   Alert,
   AlertIcon,
   Button,
-  Spinner,
   Table,
   TableContainer,
   Tbody,
@@ -11,6 +10,7 @@ import {
   Tr,
 } from '@chakra-ui/react';
 import { useGetCollectionItemsQuery } from '@services/collection-item';
+import CustomSpinner from '@components/CustomSpinner';
 import { useParams } from 'react-router-dom';
 import CollectionTableItem from './CollectionTableItem';
 
@@ -25,15 +25,7 @@ function ItemsTable() {
   });
 
   if (isFetching) {
-    return (
-      <Spinner
-        thickness="4px"
-        speed="0.65s"
-        emptyColor="gray.200"
-        color="blue.500"
-        size="xl"
-      />
-    );
+    return <CustomSpinner />;
   }
 
   if (isError || !items) {

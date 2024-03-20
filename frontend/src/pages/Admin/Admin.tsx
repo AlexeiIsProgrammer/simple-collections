@@ -3,7 +3,6 @@ import {
   AlertIcon,
   Checkbox,
   IconButton,
-  Spinner,
   Table,
   TableContainer,
   Tbody,
@@ -25,6 +24,7 @@ import {
 import { User } from '@models/interfaces';
 import { ROLE, STATUS } from '@models/enums';
 import { DeleteIcon, UnlockIcon, WarningTwoIcon } from '@chakra-ui/icons';
+import CustomSpinner from '@components/CustomSpinner';
 import UserItem from './UserItem/UserItem';
 
 function Admin() {
@@ -128,13 +128,7 @@ function Admin() {
   }
 
   return usersFetching || usersLoading || !usersData ? (
-    <Spinner
-      thickness="4px"
-      speed="0.65s"
-      emptyColor="gray.200"
-      color="blue.500"
-      size="xl"
-    />
+    <CustomSpinner />
   ) : (
     <TableContainer>
       <Table variant="simple">

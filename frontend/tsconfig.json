@@ -29,6 +29,7 @@
       "@models/*": ["src/models/*"],
       "@redux/*": ["src/redux/*"],
       "@services/*": ["src/services/*"],
+      "@icons/*": ["src/icons/*"],
       "@/*": ["src/*"]
     }
   },

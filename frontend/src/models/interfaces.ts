@@ -47,6 +47,6 @@ export interface CollectionItemCustomField
   value: string;
 }
 
-export interface CollectionItemWithCustomFields {
+export interface CollectionItemWithCustomFields extends CollectionItem {
   customFields: CollectionItemCustomField[];
 }

@@ -1,11 +1,6 @@
-import {
-  Alert,
-  AlertIcon,
-  Spinner,
-  StackDivider,
-  VStack,
-} from '@chakra-ui/react';
+import { Alert, AlertIcon, StackDivider, VStack } from '@chakra-ui/react';
 import { useGetUserCollectionsQuery } from '@services/collection';
+import CustomSpinner from '@components/CustomSpinner';
 import CollectionListItem from '../CollectionListItem/CollectionListItem';
 import CollectionListProps from './types';
 
@@ -19,15 +14,7 @@ function CollectionsList({ userId }: CollectionListProps) {
   });
 
   if (isFetching) {
-    return (
-      <Spinner
-        thickness="4px"
-        speed="0.65s"
-        emptyColor="gray.200"
-        color="blue.500"
-        size="xl"
-      />
-    );
+    return <CustomSpinner />;
   }
 
   if (isError || !collections) {
