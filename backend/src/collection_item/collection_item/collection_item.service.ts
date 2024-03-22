@@ -12,12 +12,15 @@ import { CollectionItemCustomFieldEntity } from '../entity/collection_item_custo
 import { CustomFieldEntity } from 'src/collection/entity/custom_field.entity/custom_field.entity';
 import { CreateDto } from '../dto/create.dto/create.dto';
 import { GetDto } from '../dto/get.dto/get.dto';
+import { LikeEntity } from '../entity/like.entity/like.entity';
 
 @Injectable()
 export class CollectionItemService {
   constructor(
     @InjectRepository(CollectionItemEntity)
     private collectionItemRepository: Repository<CollectionItemEntity>,
+    @InjectRepository(LikeEntity)
+    private likeRepository: Repository<LikeEntity>,
     @InjectRepository(CollectionItemCustomFieldEntity)
     private collectionItemCustomFieldRepository: Repository<CollectionItemCustomFieldEntity>,
     @InjectRepository(CustomFieldEntity)
@@ -65,6 +68,30 @@ export class CollectionItemService {
       const customFields = await Promise.all(customFieldPromises);
 
       return { ...itemEntity, customFields };
+    } catch (err) {
+      if (err instanceof Error) {
+        throw new HttpException(err.message, HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+    }
+  }
+
+  async like(itemId: number, userId: number): Promise<LikeEntity> {
+    try {
+      const like = await this.likeRepository.findOne({
+        where: { user_id: userId },
+      });
+
+      if (like) {
+        return await this.likeRepository.remove(like);
+      } else {
+        let likeEntity = new LikeEntity();
+        likeEntity.item_id = itemId;
+        likeEntity.user_id = userId;
+
+        likeEntity = await this.likeRepository.save(likeEntity);
+
+        return likeEntity;
+      }
     } catch (err) {
       if (err instanceof Error) {
         throw new HttpException(err.message, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -168,11 +195,38 @@ export class CollectionItemService {
         [item.collection_id, item.id],
       );
 
+      const likes = await this.likeRepository.find({
+        where: {
+          item_id: item.id,
+        },
+      });
+
       if (!customFields) {
         throw new HttpException("Fields don't exists", HttpStatus.NOT_FOUND);
       }
 
-      return { ...item, customFields };
+      return { ...item, customFields, likes };
+    } catch (err) {
+      if (err instanceof Error) {
+        throw new HttpException(err.message, HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+    }
+  }
+
+  async findCollectionItemsByTagId(
+    id: number,
+  ): Promise<CollectionItemEntity[]> {
+    try {
+      const items: CollectionItemEntity[] =
+        await this.collectionItemRepository.query(
+          `SELECT collection_items.*
+      FROM collection_items
+      JOIN collection_item_tags ON collection_items.id = collection_item_tags.collection_item_id
+      WHERE collection_item_tags.tag_id = $1;`,
+          [id],
+        );
+
+      return items;
     } catch (err) {
       if (err instanceof Error) {
         throw new HttpException(err.message, HttpStatus.INTERNAL_SERVER_ERROR);

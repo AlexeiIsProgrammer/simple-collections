@@ -4,6 +4,7 @@ import {
   TypeEnum,
 } from 'src/collection/entity/custom_field.entity/custom_field.entity';
 import { CollectionItemEntity } from 'src/collection_item/entity/collection_item.entity/collection_item.entity';
+import { LikeEntity } from 'src/collection_item/entity/like.entity/like.entity';
 
 class CollectionItemCustomField {
   @IsNumber()
@@ -25,4 +26,5 @@ class CollectionItemCustomField {
 export class GetDto extends CollectionItemEntity {
   @IsArray()
   customFields: CollectionItemCustomField[];
+  likes: LikeEntity[];
 }

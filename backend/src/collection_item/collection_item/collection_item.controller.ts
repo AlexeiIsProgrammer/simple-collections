@@ -7,16 +7,35 @@ import {
   Param,
   Patch,
   Post,
+  Put,
 } from '@nestjs/common';
 import { CollectionItemService } from './collection_item.service';
 import { CollectionItemDto } from '../dto/collection_item.dto/collection_item.dto';
 import { CollectionItemEntity } from '../entity/collection_item.entity/collection_item.entity';
 import { StatusCodes } from 'http-status-codes';
 import { GetDto } from '../dto/get.dto/get.dto';
+import { LikeEntity } from '../entity/like.entity/like.entity';
 
 @Controller('collection-item')
 export class CollectionItemController {
   constructor(private collectionItemService: CollectionItemService) {}
+
+  @Put(':itemId/:userId/like')
+  @HttpCode(StatusCodes.OK)
+  like(
+    @Param('itemId') itemId: number,
+    @Param('userId') userId: number,
+  ): Promise<LikeEntity> {
+    return this.collectionItemService.like(itemId, userId);
+  }
+
+  @Get(':id/tag')
+  @HttpCode(StatusCodes.OK)
+  findCollectionItemsByTagName(
+    @Param('id') id: number,
+  ): Promise<CollectionItemEntity[]> {
+    return this.collectionItemService.findCollectionItemsByTagId(id);
+  }
 
   @Post()
   @HttpCode(StatusCodes.NO_CONTENT)

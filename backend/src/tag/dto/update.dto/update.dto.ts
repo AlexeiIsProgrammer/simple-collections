@@ -14,13 +14,13 @@ export enum ActionTypeEnum {
 
 class Action {
   @IsEnum(ActionTypeEnum)
-  type: ActionTypeEnum;
+  type?: ActionTypeEnum;
 
   @IsNumber()
   id?: number;
 
   @IsString()
-  value?: string;
+  name?: string;
 }
 
 export class UpdateDto {

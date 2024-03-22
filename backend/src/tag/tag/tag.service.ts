@@ -107,12 +107,12 @@ export class TagService {
   async update({ id: item_id, actions }: UpdateDto): Promise<void> {
     try {
       const tagsPromises = actions.map(
-        ({ type, id, value }) =>
+        ({ type, id, name }) =>
           new Promise<void>(async (resolve, reject) => {
             try {
               switch (type) {
                 case ActionTypeEnum.create: {
-                  this.create({ item_id, tag: { name: value } });
+                  this.create({ item_id, tag: { name } });
                   break;
                 }
                 case ActionTypeEnum.delete: {
@@ -120,7 +120,7 @@ export class TagService {
                   break;
                 }
                 case ActionTypeEnum.update: {
-                  this.change({ item_id, tag_id: id, name: value });
+                  this.change({ item_id, tag_id: id, name });
                   break;
                 }
                 default:

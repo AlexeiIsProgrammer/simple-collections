@@ -42,6 +42,18 @@ CREATE TABLE collection_items(
   collection_id INT REFERENCES collections(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
+CREATE TABLE likes(
+  id SERIAL PRIMARY KEY,
+  item_id INT REFERENCES collection_items(id) ON DELETE CASCADE ON UPDATE CASCADE,
+  user_id INT REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE comments (
+  id SERIAL PRIMARY KEY,
+  text TEXT,
+  item_id INT REFERENCES collection_items(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
 CREATE TABLE collection_item_tags (
     collection_item_id INT REFERENCES collection_items(id) ON DELETE CASCADE ON UPDATE CASCADE,
     tag_id INT REFERENCES tags(id) ON DELETE CASCADE ON UPDATE CASCADE,

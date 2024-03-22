@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { CollectionItemEntity } from './entity/collection_item.entity/collection_item.entity';
 import { CollectionItemCustomFieldEntity } from './entity/collection_item_custom_field.entity/collection_item_custom_field.entity';
 import { CustomFieldEntity } from 'src/collection/entity/custom_field.entity/custom_field.entity';
+import { LikeEntity } from './entity/like.entity/like.entity';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { CustomFieldEntity } from 'src/collection/entity/custom_field.entity/cus
       CollectionItemEntity,
       CollectionItemCustomFieldEntity,
       CustomFieldEntity,
+      LikeEntity,
     ]),
   ],
   controllers: [CollectionItemController],

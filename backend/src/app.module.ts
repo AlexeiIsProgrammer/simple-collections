@@ -7,6 +7,7 @@ import { ConfigModule } from '@nestjs/config';
 import { CollectionModule } from './collection/collection.module';
 import { CollectionItemModule } from './collection_item/collection_item.module';
 import { TagModule } from './tag/tag.module';
+import { CommentModule } from './comment/comment.module';
 import configuration from './config/configuration';
 
 @Module({
@@ -27,6 +28,7 @@ import configuration from './config/configuration';
     CollectionModule,
     CollectionItemModule,
     TagModule,
+    CommentModule,
   ],
   controllers: [AppController],
   providers: [AppService],
