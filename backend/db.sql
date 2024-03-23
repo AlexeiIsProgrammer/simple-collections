@@ -50,6 +50,7 @@ CREATE TABLE likes(
 
 CREATE TABLE comments (
   id SERIAL PRIMARY KEY,
+  name VARCHAR(255),
   text TEXT,
   item_id INT REFERENCES collection_items(id) ON DELETE CASCADE ON UPDATE CASCADE
 );

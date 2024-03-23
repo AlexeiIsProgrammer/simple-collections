@@ -22,3 +22,9 @@ export enum COLLECTION_STATE {
   BLOCKED = 'blocked',
   HIDDEN = 'hidden',
 }
+
+export enum SORT_ENUM {
+  'asc' = 'asc',
+  'desc' = 'desc',
+  'default' = '',
+}

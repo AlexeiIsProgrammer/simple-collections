@@ -25,12 +25,14 @@ const collectionApi = api.injectEndpoints({
         method: 'PATCH',
         body,
       }),
+      invalidatesTags: ['Collections'],
     }),
     deleteCollection: build.mutation<void, string>({
       query: (id) => ({
         url: `collection/${id}`,
         method: 'DELETE',
       }),
+      invalidatesTags: ['Collections'],
     }),
     getCollections: build.query<Collection[], void>({
       query: () => ({

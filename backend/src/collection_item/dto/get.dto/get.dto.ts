@@ -6,7 +6,7 @@ import {
 import { CollectionItemEntity } from 'src/collection_item/entity/collection_item.entity/collection_item.entity';
 import { LikeEntity } from 'src/collection_item/entity/like.entity/like.entity';
 
-class CollectionItemCustomField {
+export class CollectionItemCustomField {
   @IsNumber()
   custom_field_id: number;
 

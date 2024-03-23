@@ -3,7 +3,15 @@
   border-radius: 10px;
 
   &.read {
+    text-align: center;
+    margin: 0 10px 0 10px;
     padding: 10px;
+    border: 1px solid transparent;
+  }
+  &.input {
+    text-align: center;
+    margin: 0;
+    padding: 0;
     border: 1px solid transparent;
   }
   &:not(.read) {
@@ -25,7 +33,5 @@
 .edit {
   z-index: 1;
   display: none !important;
-  position: absolute !important;
-  right: 5px;
-  bottom: 5px;
+  margin-left: 15px;
 }

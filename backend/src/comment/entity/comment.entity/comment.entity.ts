@@ -6,6 +6,9 @@ export class CommentEntity {
   id: number;
 
   @Column()
+  name: string;
+
+  @Column()
   text: string;
 
   @Column()

@@ -104,8 +104,8 @@ function CustomFieldsPicker({
             </Td>
             <Td>
               <Input
+                isRequired={false}
                 type="text"
-                isRequired
                 variant="filled"
                 placeholder="Name"
                 value={name}

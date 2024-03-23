@@ -17,6 +17,7 @@ import Item from './pages/Item';
 import Results from './pages/Results';
 import PrivateRoute from './routes/PrivateRoute';
 import theme from './theme';
+import './main.css';
 
 const router = createBrowserRouter([
   {
@@ -49,7 +50,7 @@ const router = createBrowserRouter([
         element: <Item />,
       },
       {
-        path: 'results',
+        path: 'results/:tagId',
         element: <Results />,
       },
       {

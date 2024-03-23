@@ -1,6 +1,12 @@
 import clsx from 'clsx';
-import { CheckIcon, EditIcon } from '@chakra-ui/icons';
-import { Box, IconButton, Input, Text } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Input,
+  InputGroup,
+  InputRightElement,
+  Text,
+} from '@chakra-ui/react';
 import MarkdownTextarea from '@components/MarkdownTextarea/MarkdownTextarea.component';
 import React, { useRef, useState } from 'react';
 import Markdown from 'react-markdown';
@@ -19,7 +25,7 @@ function EditInputField({
 
   const onChangeViewMode = () => {
     if (viewMode === 'edit') {
-      if (value !== savedValue.current) saveHandler();
+      if (value !== savedValue.current) saveHandler(value);
       setViewMode('read');
     } else {
       savedValue.current = value;
@@ -33,10 +39,22 @@ function EditInputField({
     setValue(e.target.value);
   };
 
+  const saveButton = () => (
+    <Button
+      variant="outline"
+      className={styles.edit}
+      onClick={onChangeViewMode}
+      aria-label="Edit field"
+    >
+      Save
+    </Button>
+  );
+
   return (
     <Box
       className={clsx(styles.box, {
         [styles.read]: viewMode === 'read',
+        [styles.input]: type !== 'textarea',
       })}
     >
       {viewMode === 'edit' ? (
@@ -48,20 +66,34 @@ function EditInputField({
             value={value}
           />
         ) : (
-          <Input onChange={onChangeValue} value={value} />
+          <InputGroup size="md">
+            <Input
+              onChange={onChangeValue}
+              value={value}
+              w={`calc(${value.length || 1}ch + 10ch)`}
+            />
+            <InputRightElement width="5rem">{saveButton()}</InputRightElement>
+          </InputGroup>
         )
-      ) : type === 'textarea' ? (
-        <Markdown remarkPlugins={[remarkGfm]}>{value}</Markdown>
       ) : (
-        <Text py="2">{value}</Text>
+        <Box onClick={() => setViewMode('edit')}>
+          {type === 'textarea' ? (
+            <Markdown remarkPlugins={[remarkGfm]}>{value}</Markdown>
+          ) : (
+            <Text py="2">{value}</Text>
+          )}
+        </Box>
       )}
-      <IconButton
-        className={styles.edit}
-        onClick={onChangeViewMode}
-        aria-label="Edit field"
-        icon={viewMode === 'edit' ? <CheckIcon /> : <EditIcon />}
-        variant="ghost"
-      />
+      {viewMode === 'edit' && type !== 'input' && (
+        <Button
+          variant="outline"
+          className={styles.edit}
+          onClick={onChangeViewMode}
+          aria-label="Edit field"
+        >
+          Save
+        </Button>
+      )}
     </Box>
   );
 }

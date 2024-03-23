@@ -8,6 +8,7 @@ import {
   Patch,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { CollectionItemService } from './collection_item.service';
 import { CollectionItemDto } from '../dto/collection_item.dto/collection_item.dto';
@@ -15,6 +16,8 @@ import { CollectionItemEntity } from '../entity/collection_item.entity/collectio
 import { StatusCodes } from 'http-status-codes';
 import { GetDto } from '../dto/get.dto/get.dto';
 import { LikeEntity } from '../entity/like.entity/like.entity';
+import { SortDto } from '../dto/sort.dto/sort.dto';
+import { CollectionItemsByTagDto } from '../dto/collection-items-by-tag.dto/collection-items-by-tag.dto';
 
 @Controller('collection-item')
 export class CollectionItemController {
@@ -33,7 +36,7 @@ export class CollectionItemController {
   @HttpCode(StatusCodes.OK)
   findCollectionItemsByTagName(
     @Param('id') id: number,
-  ): Promise<CollectionItemEntity[]> {
+  ): Promise<CollectionItemsByTagDto[]> {
     return this.collectionItemService.findCollectionItemsByTagId(id);
   }
 
@@ -50,18 +53,17 @@ export class CollectionItemController {
   update(
     @Param('id') id: number,
     @Body() body: { name: string },
-  ): Promise<void> {
+  ): Promise<CollectionItemEntity> {
     return this.collectionItemService.update(id, body);
   }
 
-  @Patch(':id/:fieldId')
+  @Patch(':id/custom')
   @HttpCode(StatusCodes.OK)
   updateCustom(
     @Param('id') id: number,
-    @Param('fieldId') fieldId: number,
-    @Body() body: { value: string },
+    @Body() body: { fieldId: number; value: string }[],
   ): Promise<void> {
-    return this.collectionItemService.updateCustom(id, fieldId, body);
+    return this.collectionItemService.updateCustom(id, body);
   }
 
   @Delete(':id')
@@ -80,8 +82,9 @@ export class CollectionItemController {
   @HttpCode(StatusCodes.OK)
   findCollectionItems(
     @Param('collectionId') collectionId: number,
+    @Query() query: SortDto,
   ): Promise<CollectionItemEntity[]> {
-    return this.collectionItemService.findCollectionItems(collectionId);
+    return this.collectionItemService.findCollectionItems(collectionId, query);
   }
 
   @Get(':collectionId/:id')

@@ -7,7 +7,7 @@ type CreateCollectionModalProps = {
 export interface ModalFormData {
   name: string;
   description: string;
-  image_url: FileList;
+  file: FileList;
   category: string;
 }
 

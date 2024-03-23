@@ -20,6 +20,12 @@ export class TagController {
     return this.tagService.findAll();
   }
 
+  @Get(':id/info')
+  @HttpCode(StatusCodes.OK)
+  findOne(@Param('id') id: number): Promise<TagEntity> {
+    return this.tagService.findOne(id);
+  }
+
   @Get(':id')
   @HttpCode(StatusCodes.OK)
   findByCollectionItem(@Param('id') id: number): Promise<TagEntity[]> {

@@ -1,7 +1,7 @@
-import { CollectionItem } from '@models/interfaces';
+import { CollectionItemWithCustomFields } from '@models/interfaces';
 
 type CollectionTableItemProps = {
-  item: CollectionItem;
+  item: CollectionItemWithCustomFields;
 };
 
 export default CollectionTableItemProps;

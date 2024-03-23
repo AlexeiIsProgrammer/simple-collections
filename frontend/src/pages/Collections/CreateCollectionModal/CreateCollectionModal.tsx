@@ -15,7 +15,6 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import ImageUploader from '@components/ImageUploader';
-import { uploadFileToDropbox } from '@components/ImageUploader/ImageUploader.component';
 import { useCreateCollectionMutation } from '@services/collection';
 import { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -24,11 +23,14 @@ import { useParams } from 'react-router-dom';
 import CustomFieldsPicker from '@components/CustomFieldsPicker';
 import { CustomFieldModal } from '@components/CustomFieldsPicker/types';
 import MarkdownTextarea from '@components/MarkdownTextarea';
+import toBase64File from '@utils/toBase64File';
+import { DEFAULT_IMAGE } from '@constants/index';
 import CreateCollectionModalProps, { ModalFormData } from './types';
 
 function CreateCollectionModal({
   disclosure: { isOpen, onClose },
 }: CreateCollectionModalProps) {
+  const [preview, setPreview] = useState('');
   const [customFields, setCustomFields] = useState<CustomFieldModal[]>([]);
   const toast = useToast();
   const categories = useMemo(
@@ -64,20 +66,24 @@ function CreateCollectionModal({
     name,
     description,
     category,
-    image_url,
+    file,
   }: ModalFormData) => {
     try {
-      const [file] = image_url;
-      let url = (await uploadFileToDropbox(file)) || '';
-
-      url = url.replace('www.dropbox.com', 'dl.dropboxusercontent.com');
+      let base64File;
+      if (preview) {
+        base64File = preview;
+      } else if (file && file[0]) {
+        base64File = await toBase64File(file[0]);
+      } else {
+        base64File = DEFAULT_IMAGE;
+      }
 
       await createCollection({
         name,
         user_id: userId || '',
         description,
         category,
-        image_url: url,
+        image_url: base64File,
         customFields,
       }).unwrap();
 
@@ -135,12 +141,16 @@ function CreateCollectionModal({
               </FormErrorMessage>
             </FormControl>
 
-            <FormControl mt={4} isRequired>
+            <FormControl mt={4}>
               <FormLabel>Image</FormLabel>
-              <ImageUploader {...register('image_url', { required: true })} />
+              <ImageUploader
+                preview={preview}
+                setPreview={setPreview}
+                {...register('file')}
+              />
 
               <FormErrorMessage>
-                {errors.image_url?.message || 'Image is required'}
+                {errors.file?.message || 'Image is required'}
               </FormErrorMessage>
             </FormControl>
 

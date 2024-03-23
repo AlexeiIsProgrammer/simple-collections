@@ -41,6 +41,19 @@ export interface CollectionItem {
   name: string;
 }
 
+export interface Comment {
+  id: string;
+  name: string;
+  text: string;
+  item_id: string;
+}
+
+export interface Like {
+  id: string;
+  user_id: string;
+  item_id: string;
+}
+
 export interface CollectionItemCustomField
   extends Omit<CustomField, 'collection_id'> {
   custom_field_id: string;
@@ -49,4 +62,5 @@ export interface CollectionItemCustomField
 
 export interface CollectionItemWithCustomFields extends CollectionItem {
   customFields: CollectionItemCustomField[];
+  likes: Like[];
 }

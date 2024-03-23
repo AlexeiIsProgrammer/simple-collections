@@ -1,5 +1,5 @@
 type EditInputFieldProps = {
-  saveHandler: () => void;
+  saveHandler: (value: string) => void;
   type: 'textarea' | 'input';
   initialValue: string;
 };

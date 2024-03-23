@@ -12,14 +12,25 @@ import { CustomFieldEntity } from '../entity/custom_field.entity/custom_field.en
 import { CreateDto } from '../dto/create.dto/create.dto';
 import { UpdateDto } from '../dto/update.dto/update.dto';
 
+import { v2 as cloudinary } from 'cloudinary';
+import { ConfigService } from '@nestjs/config';
+
 @Injectable()
 export class CollectionService {
   constructor(
+    private readonly configService: ConfigService,
     @InjectRepository(CollectionEntity)
     private collectionRepository: Repository<CollectionEntity>,
     @InjectRepository(CustomFieldEntity)
     private customFieldRepository: Repository<CustomFieldEntity>,
-  ) {}
+  ) {
+    cloudinary.config({
+      secure: true,
+      cloud_name: this.configService.get<string>('CLOUD_NAME'),
+      api_key: this.configService.get<string>('CLOUD_KEY'),
+      api_secret: this.configService.get<string>('CLOUD_SECRET'),
+    });
+  }
 
   async create(collection: CollectionDto): Promise<CreateDto> {
     try {
@@ -28,8 +39,11 @@ export class CollectionService {
       collectionEntity.name = collection.name;
       collectionEntity.category = collection.category;
       collectionEntity.description = collection.description;
-      collectionEntity.image_url = collection.image_url;
       collectionEntity.user_id = collection.user_id;
+
+      const result = await cloudinary.uploader.upload(collection.image_url);
+
+      collectionEntity.image_url = result.secure_url;
 
       collectionEntity = await this.collectionRepository.save(collectionEntity);
 
@@ -61,6 +75,10 @@ export class CollectionService {
       if (err instanceof Error) {
         throw new HttpException(err.message, HttpStatus.INTERNAL_SERVER_ERROR);
       }
+      throw new HttpException(
+        'Unknown error',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 

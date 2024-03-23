@@ -30,6 +30,7 @@
       "@redux/*": ["src/redux/*"],
       "@services/*": ["src/services/*"],
       "@icons/*": ["src/icons/*"],
+      "@constants/*": ["src/constants/*"],
       "@/*": ["src/*"]
     }
   },

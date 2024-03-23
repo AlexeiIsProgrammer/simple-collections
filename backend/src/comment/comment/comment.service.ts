@@ -17,6 +17,7 @@ export class CommentService {
   ): Promise<CommentEntity> {
     try {
       let commentEntity = new CommentEntity();
+      commentEntity.name = commentItem.name;
       commentEntity.text = commentItem.text;
       commentEntity.item_id = itemId;
 

@@ -10,7 +10,10 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { useParams } from 'react-router-dom';
-import { useGetCollectionQuery } from '@services/collection';
+import {
+  useGetCollectionQuery,
+  useUpdateCollectionMutation,
+} from '@services/collection';
 import EditInputField from '@components/EditInputField';
 import CustomSpinner from '@components/CustomSpinner';
 import ItemsTable from './ItemsTable';
@@ -18,6 +21,8 @@ import styles from './CollectionItem.module.scss';
 
 function CollectionItem() {
   const { userId, collectionId } = useParams();
+
+  const [updateCollection] = useUpdateCollectionMutation();
 
   const {
     data: collection,
@@ -29,6 +34,16 @@ function CollectionItem() {
       skip: !userId || !collectionId,
     }
   );
+
+  const updateCollectionHandle = (value: string) => {
+    updateCollection({
+      id: collectionId || '',
+      body: {
+        field: 'description',
+        value,
+      },
+    });
+  };
 
   if (isFetching) {
     return <CustomSpinner />;
@@ -60,6 +75,7 @@ function CollectionItem() {
           <Flex
             justifyContent="center"
             alignItems="center"
+            flexWrap="wrap"
             direction="row"
             gap={5}
           >
@@ -79,10 +95,10 @@ function CollectionItem() {
         <EditInputField
           initialValue={collection.description}
           type="textarea"
-          saveHandler={() => {}}
+          saveHandler={(value) => updateCollectionHandle(value)}
         />
 
-        <ItemsTable />
+        <ItemsTable customFields={collection.customFields} />
       </Stack>
     </Box>
   );

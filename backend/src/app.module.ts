@@ -13,7 +13,9 @@ import configuration from './config/configuration';
 @Module({
   imports: [
     ConfigModule.forRoot({
+      envFilePath: '.env',
       load: [configuration],
+      isGlobal: true,
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',

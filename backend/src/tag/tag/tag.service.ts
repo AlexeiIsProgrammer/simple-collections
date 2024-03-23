@@ -153,6 +153,20 @@ export class TagService {
     }
   }
 
+  async findOne(id: number): Promise<TagEntity> {
+    try {
+      const tag: TagEntity = await this.tagRepository.findOne({
+        where: { id },
+      });
+
+      return tag;
+    } catch (err) {
+      if (err instanceof Error) {
+        throw new HttpException(err.message, HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+    }
+  }
+
   async findByCollectionItem(id: number): Promise<TagEntity[]> {
     try {
       const tags: TagEntity[] = await this.tagRepository.query(

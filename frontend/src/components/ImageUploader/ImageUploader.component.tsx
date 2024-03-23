@@ -1,49 +1,17 @@
 import clsx from 'clsx';
-import { Dropbox } from 'dropbox';
 import { Box, Button, Text, useToast } from '@chakra-ui/react';
-import {
-  ChangeEvent,
-  DragEvent,
-  HTMLAttributes,
-  forwardRef,
-  useState,
-} from 'react';
+import { ChangeEvent, HTMLAttributes, forwardRef, useState } from 'react';
 import styles from './ImageUploader.module.scss';
-
-const dbx = new Dropbox({
-  accessToken: import.meta.env.VITE_DROPBOX_ACCESS_TOKEN,
-});
-
-export const uploadFileToDropbox = async (
-  file: File
-): Promise<string | undefined> => {
-  try {
-    const response = await dbx.filesUpload({
-      path: `/${Date.now()}`,
-      contents: file,
-    });
-    const { path_lower } = response.result;
-
-    const shareResponse = await dbx.sharingCreateSharedLinkWithSettings({
-      path: path_lower || '',
-    });
-    const { url } = shareResponse.result;
-
-    return url;
-  } catch (error) {
-    if (error instanceof Error) throw new Error(error.message);
-  }
-
-  return undefined;
-};
 
 const ImageUploader = forwardRef<
   HTMLInputElement,
-  HTMLAttributes<HTMLInputElement>
->(({ ...props }, ref) => {
+  HTMLAttributes<HTMLInputElement> & {
+    preview: string;
+    setPreview: React.Dispatch<React.SetStateAction<string>>;
+  }
+>(({ preview, setPreview, ...props }, ref) => {
   const toast = useToast();
   const [highlight, setHighlight] = useState(false);
-  const [preview, setPreview] = useState('');
   const [drop, setDrop] = useState(false);
 
   const handleEnter = (e: React.DragEvent<HTMLDivElement>) => {
@@ -89,19 +57,21 @@ const ImageUploader = forwardRef<
   }
 
   const handleUpload = (
-    e: ChangeEvent<HTMLInputElement> | DragEvent<HTMLDivElement>
+    e: ChangeEvent<HTMLInputElement> & { dataTransfer?: DataTransfer }
   ) => {
     e.preventDefault();
     e.stopPropagation();
     setHighlight(false);
     setDrop(true);
 
-    const files =
-      e.target instanceof HTMLInputElement
-        ? e.target.files
-        : e instanceof DragEvent && e.dataTransfer
-          ? e.dataTransfer.files
-          : null;
+    let files;
+
+    if (e.target instanceof HTMLInputElement) {
+      files = e.target.files;
+      setPreview('');
+    } else if (e.dataTransfer) {
+      files = e.dataTransfer.files;
+    }
 
     if (files) uploadFile(files[0]);
   };
@@ -123,7 +93,6 @@ const ImageUploader = forwardRef<
         <input
           ref={ref}
           {...props}
-          required
           type="file"
           className={styles['upload-file']}
           accept="image/*"

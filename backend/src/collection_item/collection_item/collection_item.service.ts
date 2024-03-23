@@ -13,6 +13,8 @@ import { CustomFieldEntity } from 'src/collection/entity/custom_field.entity/cus
 import { CreateDto } from '../dto/create.dto/create.dto';
 import { GetDto } from '../dto/get.dto/get.dto';
 import { LikeEntity } from '../entity/like.entity/like.entity';
+import { SortDto } from '../dto/sort.dto/sort.dto';
+import { CollectionItemsByTagDto } from '../dto/collection-items-by-tag.dto/collection-items-by-tag.dto';
 
 @Injectable()
 export class CollectionItemService {
@@ -99,9 +101,12 @@ export class CollectionItemService {
     }
   }
 
-  async update(id: number, body: { name: string }): Promise<void> {
+  async update(
+    id: number,
+    body: { name: string },
+  ): Promise<CollectionItemEntity> {
     try {
-      await this.collectionItemRepository.query(
+      return await this.collectionItemRepository.query(
         `UPDATE collection_items SET name = $1 WHERE id = $2`,
         [body.name, id],
       );
@@ -114,14 +119,27 @@ export class CollectionItemService {
 
   async updateCustom(
     id: number,
-    fieldId: number,
-    { value }: { value: string },
+    actions: { fieldId: number; value: string }[],
   ): Promise<void> {
     try {
-      await this.collectionItemRepository.query(
-        `UPDATE collection_item_custom_fields SET value = $1 WHERE custom_field_id = $2 and collection_item_id = $3`,
-        [value, fieldId, id],
+      const customFieldPromises = actions.map(
+        ({ fieldId, value }) =>
+          new Promise<CollectionItemCustomFieldEntity>(
+            async (resolve, reject) => {
+              try {
+                const updatedItem = await this.collectionItemRepository.query(
+                  `UPDATE collection_item_custom_fields SET value = $1 WHERE custom_field_id = $2 and collection_item_id = $3`,
+                  [value, fieldId, id],
+                );
+                resolve(updatedItem);
+              } catch (err) {
+                reject(err);
+              }
+            },
+          ),
       );
+
+      await Promise.all(customFieldPromises);
     } catch (err) {
       if (err instanceof Error) {
         throw new HttpException(err.message, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -149,13 +167,64 @@ export class CollectionItemService {
 
   async findCollectionItems(
     collectionId: number,
-  ): Promise<CollectionItemEntity[]> {
+    { name }: SortDto,
+  ): Promise<GetDto[]> {
     try {
       const items = await this.collectionItemRepository.find({
         where: { collection_id: collectionId },
+        order: {
+          name: name || undefined,
+        },
       });
 
-      return items;
+      const customFieldPromises = items.map(
+        (item) =>
+          new Promise<GetDto>(async (resolve, reject) => {
+            try {
+              const customFields = await this.collectionItemRepository
+                .createQueryBuilder('ci')
+                .select([
+                  'cf.id AS id',
+                  'cf.type AS type',
+                  'cf.name AS name',
+                  'cf.state AS state',
+                  'cif.value AS value',
+                ])
+                .innerJoin(
+                  CollectionItemCustomFieldEntity,
+                  'cif',
+                  'cif.collection_item_id = ci.id',
+                )
+                .innerJoin(
+                  CustomFieldEntity,
+                  'cf',
+                  'cf.id = cif.custom_field_id',
+                )
+                .where('ci.collection_id = :collectionId', { collectionId })
+                .andWhere('ci.id = :itemId', { itemId: item.id })
+                .andWhere('cf.type IN (:...types)', {
+                  types: ['date', 'string'],
+                })
+                .getRawMany();
+
+              const likes = await this.likeRepository.find({
+                where: {
+                  item_id: item.id,
+                },
+              });
+
+              resolve({
+                ...item,
+                customFields,
+                likes,
+              });
+            } catch (err) {
+              reject(err);
+            }
+          }),
+      );
+
+      return await Promise.all(customFieldPromises);
     } catch (err) {
       if (err instanceof Error) {
         throw new HttpException(err.message, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -215,16 +284,16 @@ export class CollectionItemService {
 
   async findCollectionItemsByTagId(
     id: number,
-  ): Promise<CollectionItemEntity[]> {
+  ): Promise<CollectionItemsByTagDto[]> {
     try {
-      const items: CollectionItemEntity[] =
-        await this.collectionItemRepository.query(
-          `SELECT collection_items.*
+      const items = await this.collectionItemRepository.query(
+        `SELECT collection_items.*, collections.user_id, collections.name as collection_name
       FROM collection_items
       JOIN collection_item_tags ON collection_items.id = collection_item_tags.collection_item_id
+      JOIN collections ON collections.id = collection_items.collection_id
       WHERE collection_item_tags.tag_id = $1;`,
-          [id],
-        );
+        [id],
+      );
 
       return items;
     } catch (err) {
