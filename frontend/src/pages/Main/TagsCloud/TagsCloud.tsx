@@ -1,6 +1,7 @@
+import { NavLink } from 'react-router-dom';
 import { Alert, AlertIcon, Box, Link, List, ListItem } from '@chakra-ui/react';
 import { useGetTagsQuery } from '@services/tag';
-import { NavLink } from 'react-router-dom';
+import CustomSpinner from '@components/CustomSpinner';
 import styles from './TagsCloud.module.scss';
 
 function TagsCloud() {
@@ -16,20 +17,24 @@ function TagsCloud() {
   }
 
   return (
-    <Box maxW="md">
+    <Box maxW="lg">
       <List className={styles.list}>
-        {tags?.map(({ id, name }) => (
-          <ListItem className={styles.item} key={id}>
-            <Link
-              data-weight={Math.floor(Math.random() * 9)}
-              className={styles.link}
-              as={NavLink}
-              to={`results/${id}`}
-            >
-              #{name}
-            </Link>
-          </ListItem>
-        ))}
+        {isLoading ? (
+          <CustomSpinner />
+        ) : (
+          tags?.map(({ id, name }) => (
+            <ListItem title={name} className={styles.item} key={id}>
+              <Link
+                data-weight={Math.floor(Math.random() * 9)}
+                className={styles.link}
+                as={NavLink}
+                to={`results/${id}`}
+              >
+                #{name}
+              </Link>
+            </ListItem>
+          ))
+        )}
       </List>
     </Box>
   );

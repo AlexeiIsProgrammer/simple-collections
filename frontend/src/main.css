@@ -10,3 +10,20 @@
 .ck.ck-editor__main > .ck-editor__editable h3 {
   font-size: 20px;
 }
+
+.swiper {
+  padding: 0 20px;
+}
+@media (max-width: 576px) {
+  .swiper {
+    padding: 0;
+  }
+}
+
+.swiper-wrapper {
+  align-items: stretch;
+}
+
+.swiper-slide {
+  height: auto;
+}

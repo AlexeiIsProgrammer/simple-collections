@@ -14,6 +14,8 @@ import { UpdateDto } from '../dto/update.dto/update.dto';
 
 import { v2 as cloudinary } from 'cloudinary';
 import { ConfigService } from '@nestjs/config';
+import { CollectionItemEntity } from 'src/collection_item/entity/collection_item.entity/collection_item.entity';
+import { BiggestCollectionDto } from '../dto/biggest_collection.dto/biggest_collection.dto';
 
 @Injectable()
 export class CollectionService {
@@ -117,6 +119,32 @@ export class CollectionService {
     try {
       const collections: CollectionEntity[] =
         await this.collectionRepository.find();
+
+      return collections;
+    } catch (err) {
+      if (err instanceof Error) {
+        throw new HttpException(err.message, HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+    }
+  }
+
+  async findBiggestCollections(): Promise<BiggestCollectionDto[]> {
+    try {
+      const collections = await this.collectionRepository
+        .createQueryBuilder('c')
+        .select([
+          'c.id AS id',
+          'c.name AS name',
+          'c.user_id AS user_id',
+          'c.image_url AS image_url',
+          'COUNT(ci.id) as items_count',
+        ])
+        .innerJoin(CollectionItemEntity, 'ci', 'c.id = ci.collection_id')
+        .groupBy('c.id')
+        .addGroupBy('c.name')
+        .orderBy({ items_count: 'DESC' })
+        .limit(5)
+        .getRawMany();
 
       return collections;
     } catch (err) {

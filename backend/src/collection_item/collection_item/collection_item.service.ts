@@ -15,6 +15,9 @@ import { GetDto } from '../dto/get.dto/get.dto';
 import { LikeEntity } from '../entity/like.entity/like.entity';
 import { SortDto } from '../dto/sort.dto/sort.dto';
 import { CollectionItemsByTagDto } from '../dto/collection-items-by-tag.dto/collection-items-by-tag.dto';
+import { LastAddedDto } from '../dto/last_added.dto/last_added.dto';
+import { UserEntity } from 'src/user/entity/user.entity/user.entity';
+import { CollectionEntity } from 'src/collection/entity/collection.entity/collection.entity';
 
 @Injectable()
 export class CollectionItemService {
@@ -235,6 +238,34 @@ export class CollectionItemService {
   async findAll(): Promise<CollectionItemEntity[]> {
     try {
       const items = await this.collectionItemRepository.find();
+
+      return items;
+    } catch (err) {
+      if (err instanceof Error) {
+        throw new HttpException(err.message, HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+    }
+  }
+
+  async findLastAddedItems(): Promise<LastAddedDto[]> {
+    try {
+      const items = await this.collectionItemRepository
+        .createQueryBuilder('ci')
+        .select([
+          'ci.id AS id',
+          'ci.name AS name',
+          'ci.created_at AS created_at',
+          'c.name AS collection_name',
+          'c.image_url AS image_url',
+          'c.id AS collection_id',
+          'u.name AS username',
+          'u.id AS user_id',
+        ])
+        .innerJoin(CollectionEntity, 'c', 'c.id = ci.collection_id')
+        .innerJoin(UserEntity, 'u', 'c.user_id = u.id')
+        .limit(10)
+        .orderBy({ 'ci.created_at': 'DESC' })
+        .getRawMany();
 
       return items;
     } catch (err) {

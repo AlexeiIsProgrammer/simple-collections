@@ -39,6 +39,7 @@ CREATE TABLE tags (
 CREATE TABLE collection_items(
   id SERIAL PRIMARY KEY,
   name VARCHAR(255),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   collection_id INT REFERENCES collections(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 

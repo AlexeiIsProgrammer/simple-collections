@@ -56,7 +56,11 @@ export class UserService {
 
   async findAll(): Promise<SecuredUser[]> {
     try {
-      const allUsers = await this.userRepository.find();
+      const allUsers = await this.userRepository.find({
+        order: {
+          name: 'ASC',
+        },
+      });
       const formattedUsers = allUsers.map((user) => {
         const formattedUser = {
           id: user.id,

@@ -18,6 +18,7 @@ import { GetDto } from '../dto/get.dto/get.dto';
 import { LikeEntity } from '../entity/like.entity/like.entity';
 import { SortDto } from '../dto/sort.dto/sort.dto';
 import { CollectionItemsByTagDto } from '../dto/collection-items-by-tag.dto/collection-items-by-tag.dto';
+import { LastAddedDto } from '../dto/last_added.dto/last_added.dto';
 
 @Controller('collection-item')
 export class CollectionItemController {
@@ -76,6 +77,12 @@ export class CollectionItemController {
   @HttpCode(StatusCodes.OK)
   findAll(): Promise<CollectionItemEntity[]> {
     return this.collectionItemService.findAll();
+  }
+
+  @Get('last')
+  @HttpCode(StatusCodes.OK)
+  findLastAddedItems(): Promise<LastAddedDto[]> {
+    return this.collectionItemService.findLastAddedItems();
   }
 
   @Get(':collectionId')

@@ -1,4 +1,9 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity('collection_items')
 export class CollectionItemEntity {
@@ -10,4 +15,7 @@ export class CollectionItemEntity {
 
   @Column()
   collection_id: number;
+
+  @CreateDateColumn({ name: 'created_at' })
+  created_at: Date;
 }

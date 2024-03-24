@@ -69,11 +69,11 @@ const CustomFieldItem = React.memo(function CustomFieldItem({
         );
 
       default:
-        return "Type is shouldn't be here";
+        return null;
     }
   };
 
-  return (
+  return chooseInputType() ? (
     <Card
       className={clsx(styles.card, {
         [styles.blocked]: item.state === COLLECTION_STATE.BLOCKED,
@@ -108,7 +108,7 @@ const CustomFieldItem = React.memo(function CustomFieldItem({
         </Flex>
       </CardBody>
     </Card>
-  );
+  ) : null;
 });
 
 export default CustomFieldItem;

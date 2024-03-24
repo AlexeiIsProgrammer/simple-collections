@@ -1,7 +1,6 @@
 import {
   Alert,
   AlertIcon,
-  Badge,
   Box,
   Button,
   Flex,
@@ -13,10 +12,13 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { useGetCollectionItemsByTagNameQuery } from '@services/collection-item';
+import { useGetTagQuery } from '@services/tag';
 import { Link, NavLink, useParams } from 'react-router-dom';
 
 function Results() {
   const { tagId } = useParams();
+
+  const { data: tag } = useGetTagQuery(tagId || '', { skip: !tagId });
 
   const {
     data: items,
@@ -52,19 +54,27 @@ function Results() {
           Results
         </Text>
         <Tag size="lg" colorScheme="green">
-          Tag
+          {tag?.name}
         </Tag>
       </Flex>
       <VStack mt={10}>
-        {items?.map(({ id, name, collection_id, user_id }) => (
+        {items?.map(({ id, name, collection_id, user_id, collection_name }) => (
           <Stat
             key={id}
             cursor="pointer"
             as={Link}
+            p={2}
+            border="1px solid transparent"
+            borderRadius={5}
+            _hover={{
+              borderColor: 'inherit',
+            }}
             to={`/collections/${user_id}/${collection_id}/${id}`}
           >
-            <StatLabel>{name}</StatLabel>
-            <StatHelpText>Feb 12 - Feb 28</StatHelpText>
+            <StatLabel fontSize={26}>{name}</StatLabel>
+            <StatHelpText fontSize={16}>
+              Collection: {collection_name}
+            </StatHelpText>
           </Stat>
         ))}
       </VStack>

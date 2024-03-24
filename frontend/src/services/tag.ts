@@ -30,6 +30,11 @@ const tagApi = api.injectEndpoints({
       }),
       providesTags: ['Tags'],
     }),
+    getTag: build.query<Tag, string>({
+      query: (id) => ({
+        url: `tag/${id}/info`,
+      }),
+    }),
     getTagsByCollectionItem: build.query<Tag[], string>({
       query: (id) => ({
         url: `tag/${id}`,
@@ -43,5 +48,6 @@ const tagApi = api.injectEndpoints({
 export const {
   useGetTagsByCollectionItemQuery,
   useGetTagsQuery,
+  useGetTagQuery,
   useUpdateTagsMutation,
 } = tagApi;

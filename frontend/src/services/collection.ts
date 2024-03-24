@@ -9,6 +9,14 @@ type ChangeCollectionField = {
   };
 };
 
+export type BiggestCollection = {
+  id: string;
+  name: string;
+  image_url: string;
+  user_id: string;
+  items_count: number;
+};
+
 const collectionApi = api.injectEndpoints({
   endpoints: (build) => ({
     createCollection: build.mutation<void, CollectionWithoutId>({
@@ -39,6 +47,12 @@ const collectionApi = api.injectEndpoints({
         url: `collection`,
       }),
     }),
+    getBiggestCollections: build.query<BiggestCollection[], void>({
+      query: () => ({
+        url: `collection/biggest`,
+      }),
+      providesTags: ['Collections'],
+    }),
     getCollection: build.query<
       Collection,
       { userId: string; collectionId: string }
@@ -64,4 +78,5 @@ export const {
   useGetCollectionQuery,
   useGetUserCollectionsQuery,
   useGetCollectionsQuery,
+  useGetBiggestCollectionsQuery,
 } = collectionApi;

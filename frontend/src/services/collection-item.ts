@@ -21,9 +21,25 @@ type ChangeCollectionItemCustomField = {
   }[];
 };
 
+type CollectionItemByTag = CollectionItem & {
+  user_id: string;
+  collection_name: string;
+};
+
 type Sort = {
   collectionId: string;
   name: SORT_ENUM;
+};
+
+export type LastAddedItem = {
+  id: string;
+  name: string;
+  collection_name: string;
+  username: string;
+  image_url: string;
+  created_at: string;
+  user_id: string;
+  collection_id: string;
 };
 
 const collectionItemApi = api.injectEndpoints({
@@ -73,10 +89,7 @@ const collectionItemApi = api.injectEndpoints({
       }),
       providesTags: ['CollectionItems'],
     }),
-    getCollectionItemsByTagName: build.query<
-      (CollectionItem & { user_id: string })[],
-      string
-    >({
+    getCollectionItemsByTagName: build.query<CollectionItemByTag[], string>({
       query: (tagId) => ({
         url: `collection-item/${tagId}/tag`,
       }),
@@ -89,6 +102,11 @@ const collectionItemApi = api.injectEndpoints({
         url: `collection-item/${collectionId}/${id}`,
       }),
       providesTags: ['Items', 'CustomFields'],
+    }),
+    getLastItems: build.query<LastAddedItem[], void>({
+      query: () => ({
+        url: `collection-item/last`,
+      }),
     }),
     addComment: build.mutation<
       void,
@@ -130,4 +148,5 @@ export const {
   useGetCollectionItemQuery,
   useGetCollectionItemsQuery,
   useGetCollectionItemsByTagNameQuery,
+  useGetLastItemsQuery,
 } = collectionItemApi;

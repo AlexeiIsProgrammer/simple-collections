@@ -14,6 +14,7 @@ import { CollectionEntity } from '../entity/collection.entity/collection.entity'
 import { CollectionDto } from '../dto/collection.dto/collection.dto';
 import { UpdateDto } from '../dto/update.dto/update.dto';
 import { CreateDto } from '../dto/create.dto/create.dto';
+import { BiggestCollectionDto } from '../dto/biggest_collection.dto/biggest_collection.dto';
 
 @Controller('collection')
 export class CollectionController {
@@ -41,6 +42,12 @@ export class CollectionController {
   @HttpCode(StatusCodes.OK)
   findAll(): Promise<CollectionEntity[]> {
     return this.collectionService.findAll();
+  }
+
+  @Get('biggest')
+  @HttpCode(StatusCodes.OK)
+  findBiggestCollections(): Promise<BiggestCollectionDto[]> {
+    return this.collectionService.findBiggestCollections();
   }
 
   @Get('user/:id')
