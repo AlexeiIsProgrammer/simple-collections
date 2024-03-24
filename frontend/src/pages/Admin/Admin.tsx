@@ -1,3 +1,4 @@
+import { DeleteIcon, UnlockIcon, WarningTwoIcon } from '@chakra-ui/icons';
 import {
   Alert,
   AlertIcon,
@@ -12,23 +13,28 @@ import {
   Tr,
   useToast,
 } from '@chakra-ui/react';
-import { useCallback, useMemo, useState } from 'react';
+import CustomSpinner from '@components/CustomSpinner';
+import { ROLE, STATUS } from '@models/enums';
+import { User } from '@models/interfaces';
 import { useAppSelector } from '@redux/index';
-import { authSelector } from '@redux/slices/userSlice';
+import { authSelector, logout } from '@redux/slices/userSlice';
 import {
   ActionType,
   useChangeUsersStateMutation,
   useDeleteUsersMutation,
   useGetUsersQuery,
 } from '@services/user';
-import { User } from '@models/interfaces';
-import { ROLE, STATUS } from '@models/enums';
-import { DeleteIcon, UnlockIcon, WarningTwoIcon } from '@chakra-ui/icons';
-import CustomSpinner from '@components/CustomSpinner';
+import { useNavigate } from 'react-router-dom';
+import { useCallback, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
 import UserItem from './UserItem/UserItem';
 
 function Admin() {
+  const { t } = useTranslation();
   const toast = useToast();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { user: currentUser } = useAppSelector(authSelector);
   const {
     data: usersData,
@@ -56,20 +62,26 @@ function Admin() {
       setCheckedUsers([]);
       try {
         await deleteUser(actions).unwrap();
+
+        if (currentUser && actions.includes(currentUser.id)) {
+          dispatch(logout());
+          navigate('/logout');
+        }
+
         toast({
-          title: 'Successfully deleting!',
+          title: `${t('admin.Successfully deleting')}!`,
           status: 'success',
           position: 'top',
         });
       } catch {
         toast({
-          title: 'Deleting went wrong...',
+          title: `${t('admin.Deleting went wrong')}...`,
           status: 'error',
           position: 'top',
         });
       }
     },
-    [deleteUser, toast]
+    [deleteUser, toast, t, dispatch, currentUser, navigate]
   );
 
   const changeUserHandle = useCallback(
@@ -78,19 +90,19 @@ function Admin() {
       try {
         await changeUser(actions).unwrap();
         toast({
-          title: 'Successfully changing!',
+          title: `${t('admin.Successfully changing')}!`,
           status: 'success',
           position: 'top',
         });
       } catch {
         toast({
-          title: 'Changing went wrong...',
+          title: `${t('admin.Changing went wrong')}...`,
           status: 'success',
           position: 'top',
         });
       }
     },
-    [changeUser, toast]
+    [changeUser, toast, t]
   );
 
   const checkCheckbox = useCallback(
@@ -122,7 +134,7 @@ function Admin() {
     return (
       <Alert status="error">
         <AlertIcon />
-        There was an error processing your request
+        {t('admin.There was an error processing your request')}
       </Alert>
     );
   }
@@ -155,11 +167,11 @@ function Admin() {
                   )
                 }
                 isDisabled={checkedUsers.length === 0}
-                title="Block/Unblock chosen"
-                aria-label="Block/Unblock chosen"
+                title={t('admin.Block/Unblock chosen')}
+                aria-label={t('admin.Block/Unblock chosen')}
                 icon={<UnlockIcon />}
               >
-                Block/Unblock chosen
+                {t('admin.Block/Unblock chosen')}
               </IconButton>
             </Th>
             <Th textAlign="center">
@@ -170,8 +182,8 @@ function Admin() {
                   )
                 }
                 isDisabled={checkedUsers.length === 0}
-                title="Delete chosen"
-                aria-label="Delete chosen"
+                title={t('admin.Delete chosen')}
+                aria-label={t('admin.Delete chosen')}
                 icon={<DeleteIcon />}
               />
             </Th>
@@ -190,8 +202,8 @@ function Admin() {
                   )
                 }
                 isDisabled={checkedUsers.length === 0}
-                title="Make/Remove admin chosen"
-                aria-label="Make/Remove admin chosen"
+                title={t('admin.Make/Remove admin chosen')}
+                aria-label={t('admin.Make/Remove admin chosen')}
                 icon={<WarningTwoIcon />}
               />
             </Th>
@@ -204,14 +216,14 @@ function Admin() {
                 onChange={checkAll}
               />
             </Th>
-            <Th textAlign="center">Name</Th>
-            <Th textAlign="center">Email</Th>
-            <Th textAlign="center">Role</Th>
-            <Th textAlign="center">Status</Th>
-            <Th textAlign="center">See Collections</Th>
-            <Th textAlign="center">Block/Unblock user</Th>
-            <Th textAlign="center">Delete user</Th>
-            <Th textAlign="center">Make/Remove admin</Th>
+            <Th textAlign="center">{t('admin.Name')}</Th>
+            <Th textAlign="center">{t('admin.Email')}</Th>
+            <Th textAlign="center">{t('admin.Role')}</Th>
+            <Th textAlign="center">{t('admin.Status')}</Th>
+            <Th textAlign="center">{t('admin.See Collections')}</Th>
+            <Th textAlign="center">{t('admin.Block/Unblock user')}</Th>
+            <Th textAlign="center">{t('admin.Delete user')}</Th>
+            <Th textAlign="center">{t('admin.Make/Remove admin')}</Th>
           </Tr>
         </Thead>
         <Tbody pos="relative">
@@ -232,14 +244,14 @@ function Admin() {
         <Tfoot>
           <Tr>
             <Th />
-            <Th textAlign="center">Name</Th>
-            <Th textAlign="center">Email</Th>
-            <Th textAlign="center">Role</Th>
-            <Th textAlign="center">Status</Th>
-            <Th textAlign="center">See Collections</Th>
-            <Th textAlign="center">Block/Unblock user</Th>
-            <Th textAlign="center">Delete user</Th>
-            <Th textAlign="center">Make/Remove admin</Th>
+            <Th textAlign="center">{t('admin.Name')}</Th>
+            <Th textAlign="center">{t('admin.Email')}</Th>
+            <Th textAlign="center">{t('admin.Role')}</Th>
+            <Th textAlign="center">{t('admin.Status')}</Th>
+            <Th textAlign="center">{t('admin.See Collections')}</Th>
+            <Th textAlign="center">{t('admin.Block/Unblock user')}</Th>
+            <Th textAlign="center">{t('admin.Delete user')}</Th>
+            <Th textAlign="center">{t('admin.Make/Remove admin')}</Th>
           </Tr>
         </Tfoot>
       </Table>

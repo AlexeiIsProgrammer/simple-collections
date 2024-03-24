@@ -14,6 +14,7 @@ import {
 import { COLLECTION_STATE, COLLECTION_TYPE } from '@models/enums';
 import { HTMLAttributes, forwardRef, useMemo, useState } from 'react';
 import CustomFieldsPickerProps from './types';
+import { useTranslation } from 'react-i18next';
 
 const TypesSelect = forwardRef<
   HTMLSelectElement,
@@ -55,6 +56,7 @@ function CustomFieldsPicker({
   customFields,
   setCustomFields,
 }: CustomFieldsPickerProps) {
+  const { t } = useTranslation();
   const [state, setState] = useState<COLLECTION_STATE>(COLLECTION_STATE.ACTIVE);
   const [type, setType] = useState<COLLECTION_TYPE>(COLLECTION_TYPE.STRING);
   const [name, setName] = useState<string>('');
@@ -64,9 +66,9 @@ function CustomFieldsPicker({
       <Table size="sm" variant="simple">
         <Thead>
           <Tr>
-            <Th>Type</Th>
-            <Th>Name</Th>
-            <Th>State</Th>
+            <Th>{t('customFieldPicker.Type')}</Th>
+            <Th>{t('customFieldPicker.Name')}</Th>
+            <Th>{t('customFieldPicker.State')}</Th>
             <Th />
           </Tr>
         </Thead>
@@ -107,7 +109,7 @@ function CustomFieldsPicker({
                 isRequired={false}
                 type="text"
                 variant="filled"
-                placeholder="Name"
+                placeholder={t('customFieldPicker.Name')}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               />

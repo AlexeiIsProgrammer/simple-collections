@@ -1,18 +1,20 @@
 import { Alert, AlertIcon, Box, Flex, Text } from '@chakra-ui/react';
+import FilledHeartIcon from '@icons/FilledHeartIcon';
 import HeartIcon from '@icons/HeartIcon';
+import { useAppSelector } from '@redux/index';
+import { authSelector } from '@redux/slices/userSlice';
 import {
   useGetCollectionItemQuery,
   useSetLikeMutation,
 } from '@services/collection-item';
+import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
-import { useAppSelector } from '@redux/index';
-import { authSelector } from '@redux/slices/userSlice';
-import FilledHeartIcon from '@icons/FilledHeartIcon';
 import Comments from './Comments';
-import Tags from './Tags';
 import CustomFields from './CustomFields';
+import Tags from './Tags';
 
 function Item() {
+  const { t } = useTranslation();
   const { itemId: id, collectionId } = useParams();
 
   const { user } = useAppSelector(authSelector);
@@ -40,7 +42,7 @@ function Item() {
     return (
       <Alert status="error">
         <AlertIcon />
-        There was an error on getting item info
+        {t('item.error')}
       </Alert>
     );
   }
@@ -50,7 +52,7 @@ function Item() {
       <Tags />
       <Flex alignItems="center" justifyContent="center" gap={5}>
         <Text my={10} textAlign="center" as="h1" fontSize={50}>
-          {isLoading || !item ? '[Your item name is loading...]' : item.name}
+          {isLoading || !item ? t('item.nameLoading') : item.name}
         </Text>
 
         <Flex

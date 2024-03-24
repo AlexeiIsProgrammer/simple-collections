@@ -10,8 +10,9 @@ import {
 } from '@chakra-ui/react';
 import CustomSpinner from '@components/CustomSpinner';
 import { useGetLastItemsQuery } from '@services/collection-item';
-import { Navigation, A11y } from 'swiper/modules';
+import { A11y, Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { useTranslation } from 'react-i18next';
 
 import LastAddedCard from './LastAddedCard/LastAddedCard';
 
@@ -19,6 +20,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 
 function LastAddedSection() {
+  const { t } = useTranslation();
   const { colorMode } = useColorMode();
   const { data: items, isLoading, isError } = useGetLastItemsQuery();
 
@@ -29,7 +31,7 @@ function LastAddedSection() {
     return (
       <Alert status="error">
         <AlertIcon />
-        There is an error on getting tags
+        {t('last.error')}
       </Alert>
     );
   }
@@ -48,7 +50,9 @@ function LastAddedSection() {
       top={5}
     >
       <Text fontSize={35} textAlign="center" mb={2}>
-        Adding history
+        {items && items.length > 0
+          ? t('last.Adding history')
+          : t('last.No items')}
       </Text>
       <Box overflow="auto" maxH={isLessThan576 ? '100%' : '70vh'} py={2}>
         {isLoading ? (

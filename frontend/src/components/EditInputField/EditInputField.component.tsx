@@ -13,12 +13,14 @@ import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import styles from './EditInputField.module.scss';
 import EditInputFieldProps from './types';
+import { useTranslation } from 'react-i18next';
 
 function EditInputField({
   saveHandler,
   type,
   initialValue,
 }: EditInputFieldProps) {
+  const { t } = useTranslation();
   const [viewMode, setViewMode] = useState<'edit' | 'read'>('read');
   const [value, setValue] = useState<string>(initialValue);
   const savedValue = useRef<string>(initialValue);
@@ -46,7 +48,7 @@ function EditInputField({
       onClick={onChangeViewMode}
       aria-label="Edit field"
     >
-      Save
+      {t('editInputField.Save')}
     </Button>
   );
 
@@ -91,7 +93,7 @@ function EditInputField({
           onClick={onChangeViewMode}
           aria-label="Edit field"
         >
-          Save
+          {t('editInputField.Save')}
         </Button>
       )}
     </Box>

@@ -15,10 +15,12 @@ import {
   useUpdateCollectionItemMutation,
 } from '@services/collection-item';
 import { useMemo, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import CollectionTableItemProps from './types';
 
 function CollectionTableItem({ item }: CollectionTableItemProps) {
+  const { t } = useTranslation();
   const toast = useToast();
   const { userId } = useParams();
   const { id, name, collection_id, customFields } = item;
@@ -49,13 +51,13 @@ function CollectionTableItem({ item }: CollectionTableItemProps) {
       await deleteCollectionItem(id).unwrap();
 
       toast({
-        title: `${name} has been successfully deleted!`,
+        title: t('collectionTableItem.delete', { name }),
         status: 'success',
         position: 'top',
       });
     } catch {
       toast({
-        title: 'Deleting went wrong...',
+        title: t('collectionTableItem.errorDelete'),
         status: 'error',
         position: 'top',
       });
@@ -79,7 +81,7 @@ function CollectionTableItem({ item }: CollectionTableItemProps) {
         }).unwrap();
 
         toast({
-          title: `${name} has been successfully changed!`,
+          title: t('collectionTableItem.change', { name }),
           status: 'success',
           position: 'top',
         });
@@ -117,7 +119,7 @@ function CollectionTableItem({ item }: CollectionTableItemProps) {
       onToggle();
     } catch {
       toast({
-        title: 'Changing went wrong...',
+        title: t('collectionTableItem.errorChange'),
         status: 'error',
         position: 'top',
       });
@@ -162,7 +164,7 @@ function CollectionTableItem({ item }: CollectionTableItemProps) {
           }
           aria-label="See item"
           icon={<ViewIcon />}
-          title={`See the ${name}'s item`}
+          title={t('collectionTableItem.name', { name })}
           colorScheme="green"
         />
       </Td>
@@ -171,7 +173,7 @@ function CollectionTableItem({ item }: CollectionTableItemProps) {
           onClick={updateItemHandle}
           aria-label="Edit item"
           icon={isOpen ? <CheckIcon /> : <EditIcon />}
-          title={`Edit the ${name}'s item`}
+          title={t('collectionTableItem.edit', { name })}
           colorScheme={isOpen ? 'green' : 'blue'}
         />
       </Td>
@@ -180,7 +182,7 @@ function CollectionTableItem({ item }: CollectionTableItemProps) {
           onClick={deleteCollectionItemHandle}
           aria-label="Delete item"
           icon={<DeleteIcon />}
-          title={`Delete the ${name}'s item`}
+          title={t('collectionTableItem.remove', { name })}
           colorScheme="red"
         />
       </Td>

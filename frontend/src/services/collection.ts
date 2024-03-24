@@ -61,9 +61,12 @@ const collectionApi = api.injectEndpoints({
         url: `collection/${userId}/${collectionId}`,
       }),
     }),
-    getUserCollections: build.query<Collection[], string>({
-      query: (id) => ({
-        url: `collection/user/${id}`,
+    getUserCollections: build.query<
+      Collection[],
+      { userId: string; category: string }
+    >({
+      query: ({ userId, category }) => ({
+        url: `collection/user/${userId}?category=${category}`,
       }),
       providesTags: ['Collections'],
     }),

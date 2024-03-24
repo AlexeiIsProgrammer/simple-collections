@@ -16,36 +16,25 @@ import {
 } from '@chakra-ui/react';
 import ImageUploader from '@components/ImageUploader';
 import { useCreateCollectionMutation } from '@services/collection';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 
 import CustomFieldsPicker from '@components/CustomFieldsPicker';
 import { CustomFieldModal } from '@components/CustomFieldsPicker/types';
 import MarkdownTextarea from '@components/MarkdownTextarea';
+import { CATEGORIES, DEFAULT_IMAGE } from '@constants/index';
 import toBase64File from '@utils/toBase64File';
-import { DEFAULT_IMAGE } from '@constants/index';
+import { useTranslation } from 'react-i18next';
 import CreateCollectionModalProps, { ModalFormData } from './types';
 
 function CreateCollectionModal({
   disclosure: { isOpen, onClose },
 }: CreateCollectionModalProps) {
+  const { t } = useTranslation();
   const [preview, setPreview] = useState('');
   const [customFields, setCustomFields] = useState<CustomFieldModal[]>([]);
   const toast = useToast();
-  const categories = useMemo(
-    () => [
-      'Books',
-      'Magazines',
-      'Games',
-      'Money',
-      'Cars',
-      'Animals',
-      'Signs',
-      'Silverware',
-    ],
-    []
-  );
 
   const [createCollection] = useCreateCollectionMutation();
   const { userId } = useParams();
@@ -88,7 +77,7 @@ function CreateCollectionModal({
       }).unwrap();
 
       toast({
-        title: 'Successfully created!',
+        title: t('create.created'),
         status: 'success',
         position: 'top',
       });
@@ -96,7 +85,7 @@ function CreateCollectionModal({
       onClose();
     } catch {
       toast({
-        title: 'Collection creating failed',
+        title: t('create.createdFailed'),
         status: 'error',
         position: 'top',
       });
@@ -114,35 +103,36 @@ function CreateCollectionModal({
       <ModalOverlay />
       <ModalContent>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <ModalHeader>Create new collection</ModalHeader>
+          <ModalHeader>{t('create.creating')}</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
             <FormControl isRequired>
-              <FormLabel>Name</FormLabel>
+              <FormLabel>{t('create.Name')}</FormLabel>
               <Input
-                placeholder="Collection name"
+                placeholder={t('create.Collection name')}
                 {...register('name', { required: true })}
               />
               <FormErrorMessage>
-                {errors.name?.message || 'Name is required'}
+                {errors.name?.message || t('create.Name is required')}
               </FormErrorMessage>
             </FormControl>
 
             <FormControl mt={4} isRequired>
-              <FormLabel>Description</FormLabel>
+              <FormLabel>{t('create.Description')}</FormLabel>
               <MarkdownTextarea
                 isEdit
-                placeholder="Description"
+                placeholder={t('create.Description')}
                 {...register('description', { required: true })}
               />
 
               <FormErrorMessage>
-                {errors.description?.message || 'Description is required'}
+                {errors.description?.message ||
+                  t('create.Description is required')}
               </FormErrorMessage>
             </FormControl>
 
             <FormControl mt={4}>
-              <FormLabel>Image</FormLabel>
+              <FormLabel>{t('create.Image')}</FormLabel>
               <ImageUploader
                 preview={preview}
                 setPreview={setPreview}
@@ -150,29 +140,29 @@ function CreateCollectionModal({
               />
 
               <FormErrorMessage>
-                {errors.file?.message || 'Image is required'}
+                {errors.file?.message || t('create.Image is required')}
               </FormErrorMessage>
             </FormControl>
 
             <FormControl mt={4} isRequired>
-              <FormLabel>Category</FormLabel>
+              <FormLabel>{t('create.Category')}</FormLabel>
               <Select
-                placeholder="Category"
+                placeholder={t('create.Category')}
                 {...register('category', { required: true })}
               >
-                {categories.map((category) => (
+                {CATEGORIES.map((category) => (
                   <option value={category} key={category}>
-                    {category}
+                    {t(`category.${category}`)}
                   </option>
                 ))}
               </Select>
               <FormErrorMessage>
-                {errors.category?.message || 'Category is required'}
+                {errors.category?.message || t('create.Category is required')}
               </FormErrorMessage>
             </FormControl>
 
             <FormControl mt={4} isRequired>
-              <FormLabel>Custom fields</FormLabel>
+              <FormLabel>{t('create.Custom fields')}</FormLabel>
               <CustomFieldsPicker
                 customFields={customFields}
                 setCustomFields={setCustomFields}
@@ -182,9 +172,9 @@ function CreateCollectionModal({
 
           <ModalFooter>
             <Button colorScheme="blue" type="submit" mr={3}>
-              Save
+              {t('create.Save')}
             </Button>
-            <Button onClick={onClose}>Cancel</Button>
+            <Button onClick={onClose}>{t('create.Cancel')}</Button>
           </ModalFooter>
         </form>
       </ModalContent>

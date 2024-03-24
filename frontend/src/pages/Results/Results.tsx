@@ -10,13 +10,14 @@ import {
   StatLabel,
   Tag,
   Text,
-  VStack,
 } from '@chakra-ui/react';
 import { useGetCollectionItemsByTagNameQuery } from '@services/collection-item';
 import { useGetTagQuery } from '@services/tag';
+import { useTranslation } from 'react-i18next';
 import { Link, NavLink, useParams } from 'react-router-dom';
 
 function Results() {
+  const { t } = useTranslation();
   const { tagId } = useParams();
 
   const { data: tag } = useGetTagQuery(tagId || '', { skip: !tagId });
@@ -31,7 +32,7 @@ function Results() {
     return (
       <Alert status="error">
         <AlertIcon />
-        There was an error processing results
+        {t('results.error')}
       </Alert>
     );
   }
@@ -40,9 +41,9 @@ function Results() {
     return (
       <Alert status="info">
         <AlertIcon />
-        There aren&apos;t any items here
+        {t('results.empty')}
         <Button ml={2} as={NavLink} to="/">
-          Back?
+          {t('results.back')}
         </Button>
       </Alert>
     );
@@ -52,7 +53,7 @@ function Results() {
     <Box>
       <Flex gap={5} alignItems="center" justifyContent="center">
         <Text as="h1" fontSize={50} textAlign="center">
-          Results
+          {t('results.results')}
         </Text>
         <Tag size="lg" colorScheme="green">
           {tag?.name}
@@ -74,7 +75,7 @@ function Results() {
           >
             <StatLabel fontSize={26}>{name}</StatLabel>
             <StatHelpText fontSize={16}>
-              Collection: {collection_name}
+              {t('results.collection')}: {collection_name}
             </StatHelpText>
           </Stat>
         ))}

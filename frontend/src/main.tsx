@@ -19,6 +19,8 @@ import PrivateRoute from './routes/PrivateRoute';
 import theme from './theme';
 import './main.css';
 
+import './i18n';
+
 const router = createBrowserRouter([
   {
     path: '/',

@@ -18,13 +18,15 @@ import SearchInput from '@components/SearchInput';
 import useDebounce from '@hooks/useDebounce';
 import { ChangeEvent, useRef, useState } from 'react';
 
-import { useGetResultsQuery } from '@services/search';
 import CustomSpinner from '@components/CustomSpinner';
-import FullTextSearchProps from './types';
+import { useGetResultsQuery } from '@services/search';
+import { useTranslation } from 'react-i18next';
 import CollectionResult from './CollectionResult';
 import CollectionResultItem from './CollectionResultItem';
+import FullTextSearchProps from './types';
 
 function FullTextSearch({ disclosure }: FullTextSearchProps) {
+  const { t } = useTranslation();
   const { onClose, isOpen } = disclosure;
   const [value, setValue] = useState('');
   const debouncedValue = useDebounce(value, 500);
@@ -41,7 +43,7 @@ function FullTextSearch({ disclosure }: FullTextSearchProps) {
   const typeSomething = debouncedValue === '' && (
     <Center>
       <Text as="p" fontSize={24}>
-        Try to type something...
+        {t('fullTextSearch.Try to type something')}...
       </Text>
     </Center>
   );
@@ -63,10 +65,10 @@ function FullTextSearch({ disclosure }: FullTextSearchProps) {
       >
         <AlertIcon boxSize="40px" mr={0} />
         <AlertTitle mt={4} mb={1} fontSize="lg">
-          No data
+          {t('fullTextSearch.No data')}
         </AlertTitle>
         <AlertDescription maxWidth="sm">
-          Type something another
+          {t('fullTextSearch.Type something another')}
         </AlertDescription>
       </Alert>
     ) : null;
@@ -84,9 +86,11 @@ function FullTextSearch({ disclosure }: FullTextSearchProps) {
     >
       <AlertIcon boxSize="40px" mr={0} />
       <AlertTitle mt={4} mb={1} fontSize="lg">
-        Failed to get results.
+        {t('fullTextSearch.Failed to get results')}.
       </AlertTitle>
-      <AlertDescription maxWidth="sm">Try to find later</AlertDescription>
+      <AlertDescription maxWidth="sm">
+        {t('fullTextSearch.Try to find later')}
+      </AlertDescription>
     </Alert>
   ) : null;
 
@@ -102,7 +106,7 @@ function FullTextSearch({ disclosure }: FullTextSearchProps) {
     >
       <ModalOverlay backdropFilter="blur(5px)" />
       <ModalContent>
-        <ModalHeader>Full text search</ModalHeader>
+        <ModalHeader>{t('fullTextSearch.Full text search')}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <SearchInput

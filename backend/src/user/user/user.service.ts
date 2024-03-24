@@ -81,7 +81,7 @@ export class UserService {
     }
   }
 
-  async findOne(id: number): Promise<SecuredUser> {
+  async findOne(id: string): Promise<SecuredUser> {
     try {
       const user = await this.userRepository.findOne({
         where: { id },

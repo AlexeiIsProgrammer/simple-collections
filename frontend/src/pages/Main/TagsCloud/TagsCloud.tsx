@@ -1,17 +1,19 @@
-import { NavLink } from 'react-router-dom';
 import { Alert, AlertIcon, Box, Link, List, ListItem } from '@chakra-ui/react';
-import { useGetTagsQuery } from '@services/tag';
 import CustomSpinner from '@components/CustomSpinner';
+import { useGetTagsQuery } from '@services/tag';
+import { useTranslation } from 'react-i18next';
+import { NavLink } from 'react-router-dom';
 import styles from './TagsCloud.module.scss';
 
 function TagsCloud() {
+  const { t } = useTranslation();
   const { data: tags, isLoading, isError } = useGetTagsQuery();
 
   if (isError) {
     return (
       <Alert status="error">
         <AlertIcon />
-        There is an error on getting tags
+        {t('tags.error')}
       </Alert>
     );
   }

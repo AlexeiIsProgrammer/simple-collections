@@ -154,10 +154,15 @@ export class CollectionService {
     }
   }
 
-  async findAllByUserId(id: number): Promise<CollectionEntity[]> {
+  async findAllByUserId(
+    id: number,
+    category: string,
+  ): Promise<CollectionEntity[]> {
     try {
       const collections: CollectionEntity[] =
-        await this.collectionRepository.find({ where: { user_id: id } });
+        await this.collectionRepository.find({
+          where: { user_id: id, category: category || undefined },
+        });
 
       return collections;
     } catch (err) {

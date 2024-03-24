@@ -1,5 +1,3 @@
-import { ChangeEvent, useEffect, useMemo, useState } from 'react';
-import { useParams } from 'react-router-dom';
 import { AddIcon, CheckIcon, EditIcon, RepeatIcon } from '@chakra-ui/icons';
 import {
   Alert,
@@ -27,11 +25,15 @@ import {
   useGetTagsQuery,
   useUpdateTagsMutation,
 } from '@services/tag';
+import { ChangeEvent, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useParams } from 'react-router-dom';
 import styles from './Tags.module.scss';
 
 type ActionTypeWithPrev = ActionType & { prevType?: TagActionType };
 
 function Tags() {
+  const { t } = useTranslation();
   const [tagNewValue, setTagNewValue] = useState('');
   const [isEditTags, setIsEditTags] = useState<boolean>(false);
 
@@ -140,7 +142,10 @@ function Tags() {
 
   return (
     <HStack flexWrap="wrap" mt={2} spacing={4} alignItems="center">
-      <Text>Some tags {`${isFetching ? 'are fetching now' : 'here'} →`}</Text>
+      <Text>
+        {t('tag.some')}{' '}
+        {`${isFetching ? t('tag.someFetching') : t('tag.someHere')} →`}
+      </Text>
       {!tags || isFetching ? (
         <CustomSpinner />
       ) : (
@@ -195,7 +200,7 @@ function Tags() {
             {isEditTags && (
               <TagCloseButton
                 cursor="pointer"
-                title={`${tag.type === 'delete' ? 'Return' : 'Delete'} ${tag.name} tag`}
+                title={`${tag.type === 'delete' ? t('tag.return') : t('item.delete')} ${tag.name} tag`}
                 as={tag.type === 'delete' ? RepeatIcon : undefined}
                 onClick={() => closeTagHandler(tag)}
               />
@@ -214,7 +219,7 @@ function Tags() {
             }
             pr={tagNewValue.length > 0 ? '6rem' : '3rem'}
             list="tags"
-            placeholder="Add a new tag"
+            placeholder={t('tag.add')}
           />
 
           <datalist id="tags">
@@ -231,19 +236,19 @@ function Tags() {
                 <IconButton
                   isDisabled={isValueExists}
                   onClick={addTagHandler}
-                  title="Add tag"
+                  title={t('tag.addTag')}
                   variant="outline"
                   colorScheme="green"
-                  aria-label="Add tag"
+                  aria-label={t('tag.addTag')}
                   icon={<AddIcon />}
                 />
               )}
               <IconButton
-                title="Save changes"
+                title={t('tag.save')}
                 onClick={saveChangesHandler}
                 variant="outline"
                 colorScheme="teal"
-                aria-label="Save changes"
+                aria-label={t('tag.save')}
                 icon={<CheckIcon />}
               />
             </HStack>
@@ -251,11 +256,11 @@ function Tags() {
         </InputGroup>
       ) : (
         <IconButton
-          title="Edit tags"
+          title={t('tag.edit')}
           onClick={() => setIsEditTags(true)}
           variant="outline"
           colorScheme="teal"
-          aria-label="Edit tags"
+          aria-label={t('tag.edit')}
           icon={<EditIcon />}
         />
       )}

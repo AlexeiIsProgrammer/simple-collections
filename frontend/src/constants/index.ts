@@ -6,3 +6,14 @@ export const DEFAULT_IMAGE =
 
 export const DEFAULT_COMMENT_IMAGE =
   'https://bazametrov.ru/uploads/new-agency/default_logo_user.jpg';
+
+export const CATEGORIES = [
+  'Books',
+  'Magazines',
+  'Games',
+  'Money',
+  'Cars',
+  'Animals',
+  'Signs',
+  'Silverware',
+];

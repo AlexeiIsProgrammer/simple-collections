@@ -19,8 +19,11 @@ import { EditIcon, HamburgerIcon } from '@chakra-ui/icons';
 import { ROLE } from '@models/enums';
 import FullTextSearch from '@components/FullTextSearch';
 import { useRef } from 'react';
+import LanguageSwitcher from '@components/LanguageSwitcher';
+import { useTranslation } from 'react-i18next';
 
 function Header() {
+  const { t } = useTranslation();
   const { user, isAuth } = useAppSelector(authSelector);
   const shadowColor = useColorModeValue('black', 'white');
   const navigate = useNavigate();
@@ -39,7 +42,7 @@ function Header() {
     <Box p={5} boxShadow={`0px 1px 1px ${shadowColor}`}>
       <Flex gap={5} alignItems="center" direction="row">
         <Image
-          title="To the main"
+          title={t('header.To the main')}
           onClick={() => navigate('/')}
           cursor="pointer"
           boxSize="50px"
@@ -55,27 +58,29 @@ function Header() {
           }}
         />
         <FullTextSearch disclosure={disclosure} />
+
+        <LanguageSwitcher />
         {isAuth ? (
           <>
             <Text as="span" whiteSpace="nowrap">
-              Hello, {user?.name}
+              {t('header.Hello')}, {user?.name}
             </Text>
             <ButtonGroup size="sm" isAttached variant="outline">
               {user && (
                 <IconButton
                   onClick={() => navigate(`/collections/${user.id}`)}
-                  aria-label="To the collection"
-                  title="To the collection"
+                  aria-label={t('header.To the collection')}
+                  title={t('header.To the collection')}
                   colorScheme="green"
                   icon={<HamburgerIcon />}
                 />
               )}
-              <Button onClick={logoutHandle}>Logout</Button>
+              <Button onClick={logoutHandle}>{t('header.Logout')}</Button>
               {user && user.role === ROLE.ADMIN && (
                 <IconButton
                   onClick={() => navigate('/admin')}
-                  title="To the admin panel"
-                  aria-label="To the admin panel"
+                  title={t('header.To the admin panel')}
+                  aria-label={t('header.To the admin panel')}
                   colorScheme="blue"
                   icon={<EditIcon />}
                 />
@@ -83,9 +88,13 @@ function Header() {
             </ButtonGroup>
           </>
         ) : location.pathname.includes('login') ? (
-          <Button onClick={() => navigate('/register')}>Sign up</Button>
+          <Button onClick={() => navigate('/register')}>
+            {t('header.Sign up')}
+          </Button>
         ) : (
-          <Button onClick={() => navigate('/login')}>Sign in</Button>
+          <Button onClick={() => navigate('/login')}>
+            {t('header.Sign in')}
+          </Button>
         )}
         <ColorModeSwitcher />
       </Flex>

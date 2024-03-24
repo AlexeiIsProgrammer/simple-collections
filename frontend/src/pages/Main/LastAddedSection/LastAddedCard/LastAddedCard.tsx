@@ -1,17 +1,18 @@
 import {
+  Badge,
+  Box,
   Card,
-  Stack,
   CardBody,
+  CardFooter,
   Flex,
   Heading,
-  CardFooter,
-  Badge,
-  useColorMode,
-  Box,
+  Stack,
   Text,
+  useColorMode,
   useMediaQuery,
 } from '@chakra-ui/react';
 import toDateFormat from '@utils/toDateFormat';
+import { Trans, useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import LastAddedCardProps from './types';
 
@@ -28,9 +29,11 @@ function LastAddedCard({ item }: LastAddedCardProps) {
 
   const [isLessThan576] = useMediaQuery('(max-width: 576px)');
   const { colorMode } = useColorMode();
+  const { t } = useTranslation();
+
   return (
     <Card
-      title={`To the ${name} item`}
+      title={t('lastItem.go', { name })}
       direction={{ base: 'column', sm: 'row' }}
       overflow="hidden"
       variant="outline"
@@ -52,14 +55,18 @@ function LastAddedCard({ item }: LastAddedCardProps) {
           >
             <Box>
               <Heading size="md">{name}</Heading>
-              <Text fontSize={12}>Collection: {collection_name}</Text>
+              <Text fontSize={12}>
+                {t('lastItem.collection')}: {collection_name}
+              </Text>
             </Box>
           </Flex>
         </CardBody>
 
         <CardFooter pt={0}>
           <Text fontSize={14}>
-            Created at <b>{toDateFormat(created_at)}</b> by{' '}
+            <Trans i18nKey="lastItem.created">
+              Created at <b>{{ date: toDateFormat(created_at) }}</b> by
+            </Trans>
             <Badge colorScheme="purple">{username}</Badge>
           </Text>
         </CardFooter>

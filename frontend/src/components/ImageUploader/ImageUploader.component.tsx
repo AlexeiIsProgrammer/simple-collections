@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import { Box, Button, Text, useToast } from '@chakra-ui/react';
 import { ChangeEvent, HTMLAttributes, forwardRef, useState } from 'react';
 import styles from './ImageUploader.module.scss';
+import { useTranslation } from 'react-i18next';
 
 const ImageUploader = forwardRef<
   HTMLInputElement,
@@ -10,6 +11,7 @@ const ImageUploader = forwardRef<
     setPreview: React.Dispatch<React.SetStateAction<string>>;
   }
 >(({ preview, setPreview, ...props }, ref) => {
+  const { t } = useTranslation();
   const toast = useToast();
   const [highlight, setHighlight] = useState(false);
   const [drop, setDrop] = useState(false);

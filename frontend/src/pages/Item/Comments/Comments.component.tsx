@@ -13,11 +13,13 @@ import {
 } from '@chakra-ui/react';
 import { POOLING_INTERVAL } from '@constants/index';
 import { useGetCommentsQuery } from '@services/collection-item';
+import { useTranslation } from 'react-i18next';
 import CommentItem from './CommentItem/CommentItem.component';
 import Editor from './Editor';
 import CommentsProps from './types';
 
 function Comments({ itemId: id }: CommentsProps) {
+  const { t } = useTranslation();
   const { onToggle, isOpen } = useDisclosure();
   const {
     data: comments,
@@ -32,7 +34,7 @@ function Comments({ itemId: id }: CommentsProps) {
     return (
       <Alert status="error">
         <AlertIcon />
-        There was an error on getting comments section
+        {t('comments.error')}
       </Alert>
     );
   }
@@ -40,9 +42,9 @@ function Comments({ itemId: id }: CommentsProps) {
   return (
     <Flex mt={5} direction="column" gap={5}>
       <Heading textAlign="center" as="h2" fontSize={30}>
-        Comments
+        {t('comments.comments')}
         <Button ml={2} onClick={onToggle}>
-          {isOpen ? 'Close editor' : 'Add new ?'}
+          {isOpen ? t('comments.close') : t('comments.addNew')}
         </Button>
       </Heading>
 
@@ -55,7 +57,7 @@ function Comments({ itemId: id }: CommentsProps) {
       {comments?.length === 0 ? (
         <Alert status="info">
           <InfoIcon mr={2} />
-          There are no any comments
+          {t('comments.noComments')}
         </Alert>
       ) : (
         <VStack>

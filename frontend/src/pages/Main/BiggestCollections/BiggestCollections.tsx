@@ -6,12 +6,14 @@ import {
   Text,
   useMediaQuery,
 } from '@chakra-ui/react';
-import { useGetBiggestCollectionsQuery } from '@services/collection';
 import CustomSpinner from '@components/CustomSpinner';
+import { useGetBiggestCollectionsQuery } from '@services/collection';
+import { useTranslation } from 'react-i18next';
 
 import BiggestItem from './BiggestItem';
 
 function BiggestCollections() {
+  const { t } = useTranslation();
   const [isLessThan1130] = useMediaQuery('(max-width: 1130px)');
   const [isLessThan576] = useMediaQuery('(max-width: 576px)');
 
@@ -25,7 +27,7 @@ function BiggestCollections() {
     return (
       <Alert status="error">
         <AlertIcon />
-        There is an error on getting tags
+        {t('biggest.error')}
       </Alert>
     );
   }
@@ -33,7 +35,9 @@ function BiggestCollections() {
   return (
     <Box>
       <Text textAlign="center" fontSize={35}>
-        Top-5 biggest collections
+        {collections && collections.length > 0
+          ? t('biggest.top')
+          : t('biggest.empty')}
       </Text>
       <Grid
         h="100%"

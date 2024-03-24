@@ -8,12 +8,14 @@ import {
   Textarea,
 } from '@chakra-ui/react';
 import { forwardRef, useState } from 'react';
-import remarkGfm from 'remark-gfm';
+import { useTranslation } from 'react-i18next';
 import Markdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import MarkdownTextareaProps from './types';
 
 const MarkdownTextarea = forwardRef<HTMLTextAreaElement, MarkdownTextareaProps>(
   ({ isEdit, value, onChange, ...props }, ref) => {
+    const { t } = useTranslation();
     const [textValue, setTextValue] = useState<string>(
       (value || '').toString()
     );
@@ -21,8 +23,8 @@ const MarkdownTextarea = forwardRef<HTMLTextAreaElement, MarkdownTextareaProps>(
     return (
       <Tabs>
         <TabList>
-          <Tab>Text</Tab>
-          <Tab>Preview</Tab>
+          <Tab>{t('markdown.Text')}</Tab>
+          <Tab>{t('markdown.Preview')}</Tab>
         </TabList>
 
         <TabPanels>

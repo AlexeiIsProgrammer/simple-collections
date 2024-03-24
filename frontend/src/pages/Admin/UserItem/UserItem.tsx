@@ -1,17 +1,18 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import {
-  ViewIcon,
-  UnlockIcon,
-  LockIcon,
-  DeleteIcon,
-  WarningTwoIcon,
-  WarningIcon,
   CheckIcon,
   CloseIcon,
+  DeleteIcon,
+  LockIcon,
+  UnlockIcon,
+  ViewIcon,
+  WarningIcon,
+  WarningTwoIcon,
 } from '@chakra-ui/icons';
 import { Checkbox, IconButton, Td, Tr } from '@chakra-ui/react';
-import { STATUS, ROLE } from '@models/enums';
+import { ROLE, STATUS } from '@models/enums';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import UserItemProps from './types';
 
 const UserItem = React.memo(function UserItem({
@@ -22,6 +23,7 @@ const UserItem = React.memo(function UserItem({
   deleteUserHandle,
   changeUserHandle,
 }: UserItemProps) {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const { id, name, email, role, status } = user;
@@ -54,7 +56,7 @@ const UserItem = React.memo(function UserItem({
           onClick={() => navigate(`/collections/${id}`)}
           aria-label="See collections"
           icon={<ViewIcon />}
-          title={`See the ${name}'s collections`}
+          title={t('userItem.name', { name })}
           colorScheme="green"
         />
       </Td>
@@ -66,7 +68,7 @@ const UserItem = React.memo(function UserItem({
             onClick={() =>
               changeUserHandle([{ id, field: 'status', value: STATUS.ACTIVE }])
             }
-            title={`Unblock ${name}`}
+            title={t('userItem.unblock', { name })}
             colorScheme="blue"
           />
         ) : (
@@ -76,7 +78,7 @@ const UserItem = React.memo(function UserItem({
             onClick={() =>
               changeUserHandle([{ id, field: 'status', value: STATUS.BLOCKED }])
             }
-            title={`Block ${name}`}
+            title={t('userItem.block', { name })}
             colorScheme="red"
           />
         )}
@@ -86,7 +88,7 @@ const UserItem = React.memo(function UserItem({
           aria-label="Delete user"
           icon={<DeleteIcon />}
           onClick={() => deleteUserHandle([id])}
-          title={`Delete ${name}`}
+          title={t('userItem.delete', { name })}
           colorScheme="red"
         />
       </Td>
@@ -98,7 +100,7 @@ const UserItem = React.memo(function UserItem({
             onClick={() =>
               changeUserHandle([{ id, field: 'role', value: ROLE.USER }])
             }
-            title={`Remove ${name}'s admin role`}
+            title={t('userItem.remove', { name })}
             colorScheme="blue"
           />
         ) : (
@@ -108,7 +110,7 @@ const UserItem = React.memo(function UserItem({
             onClick={() =>
               changeUserHandle([{ id, field: 'role', value: ROLE.ADMIN }])
             }
-            title={`Make ${name} admin`}
+            title={t('userItem.make', { name })}
             colorScheme="yellow"
           />
         )}

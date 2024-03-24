@@ -12,17 +12,19 @@ import {
   VStack,
   useToast,
 } from '@chakra-ui/react';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { NavLink, Navigate, useNavigate } from 'react-router-dom';
-import { useSignUpMutation } from '@services/user';
 import { useAppDispatch, useAppSelector } from '@redux/index';
 import { authSelector, setUser } from '@redux/slices/userSlice';
+import { useSignUpMutation } from '@services/user';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { NavLink, Navigate, useNavigate } from 'react-router-dom';
 import { RegisterFormData } from './types';
 
 import styles from './Register.module.scss';
 
 function Register() {
+  const { t } = useTranslation();
   const toast = useToast();
   const { isAuth } = useAppSelector(authSelector);
 
@@ -66,7 +68,7 @@ function Register() {
       dispatch(setUser(user));
 
       toast({
-        title: 'Successfully registration!',
+        title: t('register.register'),
         status: 'success',
         position: 'top',
       });
@@ -76,7 +78,7 @@ function Register() {
       const error = err as { data: { message: string; statusCode: number } };
 
       toast({
-        title: 'Registration failed',
+        title: t('register.registerFailed'),
         status: 'error',
         position: 'top',
       });
@@ -101,7 +103,7 @@ function Register() {
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
         <VStack spacing={4}>
           <FormControl isInvalid={Boolean(errors.name)}>
-            <FormLabel>Name</FormLabel>
+            <FormLabel>{t('register.Name')}</FormLabel>
             <Input
               type="text"
               placeholder="Demi Murych"
@@ -112,18 +114,18 @@ function Register() {
             </FormErrorMessage>
           </FormControl>
           <FormControl isInvalid={Boolean(errors.email)}>
-            <FormLabel>Email</FormLabel>
+            <FormLabel>{t('register.Email')}</FormLabel>
             <Input
               type="email"
               placeholder="Demi_Murych@see_spec.com"
               {...register('email', { required: true })}
             />
             <FormErrorMessage>
-              {errors.email?.message || 'Email is required'}
+              {errors.email?.message || t('register.Email is required')}
             </FormErrorMessage>
           </FormControl>
           <FormControl isInvalid={Boolean(errors.password)}>
-            <FormLabel>Password</FormLabel>
+            <FormLabel>{t('register.Password')}</FormLabel>
 
             <InputGroup size="md">
               <Input
@@ -152,7 +154,7 @@ function Register() {
             </FormErrorMessage>
           </FormControl>
           <FormControl isInvalid={Boolean(errors.repeatPassword)}>
-            <FormLabel>Repeat password</FormLabel>
+            <FormLabel>{t('register.Repeat password')}</FormLabel>
 
             <InputGroup size="md">
               <Input
@@ -161,7 +163,8 @@ function Register() {
                 {...register('repeatPassword', {
                   required: true,
                   validate: (value) =>
-                    value === watch('password') || 'Passwords do not match',
+                    value === watch('password') ||
+                    t('register.Passwords do not match'),
                 })}
               />
               <InputRightElement width="4.5rem">
@@ -185,10 +188,10 @@ function Register() {
             </FormErrorMessage>
           </FormControl>
           <Button type="submit" isLoading={isLoading}>
-            Register
+            {t('register.RegisterButton')}
           </Button>
           <Link as={NavLink} to="/login">
-            Have an account? Click here
+            {t('register.noAccount')}
           </Link>
         </VStack>
       </form>

@@ -4,10 +4,12 @@ import { useAppSelector } from '@redux/index';
 import { authSelector } from '@redux/slices/userSlice';
 import { Box, Button, Heading, useDisclosure } from '@chakra-ui/react';
 import { Navigate, useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import CollectionsList from './CollectionsList';
 import CreateCollectionModal from './CreateCollectionModal';
 
 function Collections() {
+  const { t, i18n } = useTranslation();
   const { user } = useAppSelector(authSelector);
   const { userId } = useParams();
 
@@ -24,9 +26,11 @@ function Collections() {
         document.body
       )}
       <Heading my={5} textAlign="center" as="h1">
-        {user?.name} collections
+        {i18n.language === 'en'
+          ? `${user?.name} ${t('collections.collections')}`
+          : `${t('collections.collections')} ${user?.name}`}
         <Button ml={5} onClick={() => disclosure.onOpen()} colorScheme="green">
-          Create a new one?
+          {t('collections.create')}
         </Button>
       </Heading>
       <CollectionsList userId={user?.id || ''} />

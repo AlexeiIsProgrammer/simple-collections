@@ -11,8 +11,10 @@ import {
 import { useCreateCollectionItemMutation } from '@services/collection-item';
 import { useRef } from 'react';
 import AddCollectionItemProps from './types';
+import { useTranslation } from 'react-i18next';
 
 function AddCollectionItem({ collectionId, alert }: AddCollectionItemProps) {
+  const { t } = useTranslation();
   const toast = useToast();
   const { isOpen, onToggle } = useDisclosure();
 
@@ -36,13 +38,13 @@ function AddCollectionItem({ collectionId, alert }: AddCollectionItemProps) {
         onToggle();
 
         toast({
-          title: `${inputRef.current.value} has been successfully added!`,
+          title: `${inputRef.current.value} ${t('addCollectionItem.has been successfully added')}!`,
           status: 'success',
           position: 'top',
         });
       } catch {
         toast({
-          title: 'Adding went wrong...',
+          title: `${t('addCollectionItem.Adding went wrong')}...`,
           status: 'error',
           position: 'top',
         });
@@ -52,16 +54,19 @@ function AddCollectionItem({ collectionId, alert }: AddCollectionItemProps) {
 
   return isOpen ? (
     <InputGroup ml={2} w={300} size="md">
-      <Input ref={inputRef} placeholder="Write item name here" />
+      <Input
+        ref={inputRef}
+        placeholder={t('addCollectionItem.Write item name here')}
+      />
 
       <InputRightElement w="auto">
         <IconButton
           isLoading={isLoading}
-          title="Save changes"
+          title={t('addCollectionItem.Save changes')}
           onClick={createItemHandle}
           variant="outline"
           colorScheme="blue"
-          aria-label="Save changes"
+          aria-label={t('addCollectionItem.Save changes')}
           icon={<CheckIcon />}
         />
       </InputRightElement>
@@ -70,7 +75,9 @@ function AddCollectionItem({ collectionId, alert }: AddCollectionItemProps) {
     <>
       {alert}
       <Button onClick={onToggle} ml={2} colorScheme="blue">
-        {alert ? 'Wanna add ?' : 'Add new one'}
+        {alert
+          ? `${t('addCollectionItem.Wanna add')}?`
+          : t('addCollectionItem.Add new one')}
       </Button>
     </>
   );

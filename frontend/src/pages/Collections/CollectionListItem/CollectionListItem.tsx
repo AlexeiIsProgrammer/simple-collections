@@ -11,6 +11,7 @@ import {
   Stack,
 } from '@chakra-ui/react';
 import EditInputField from '@components/EditInputField';
+import { useTranslation } from 'react-i18next';
 import Markdown from 'react-markdown';
 import { useNavigate, useParams } from 'react-router-dom';
 import remarkGfm from 'remark-gfm';
@@ -22,6 +23,7 @@ function CollectionListItem({
   deleteCollectionHandle,
   updateCollectionHandle,
 }: CollectionItemProps) {
+  const { t } = useTranslation();
   const { name, description, image_url, category, id } = item;
   const { userId } = useParams();
   const navigate = useNavigate();
@@ -29,7 +31,7 @@ function CollectionListItem({
   return (
     <Card
       onClick={() => navigate(`/collections/${userId}/${id}`)}
-      title="See the collection"
+      title={t('collection.see')}
       direction={{ base: 'column', sm: 'row' }}
       variant="outline"
       className={styles.item}
@@ -39,14 +41,14 @@ function CollectionListItem({
           className={styles.image}
           objectFit="cover"
           src={image_url}
-          alt="Caffe Latte"
+          alt="Collection Item"
         />
       </Box>
 
       <Stack>
         <CardBody>
           <Heading
-            title="Edit heading"
+            title={t('collection.edit')}
             size="md"
             onClick={(e: React.MouseEvent<HTMLHeadingElement, MouseEvent>) =>
               e.stopPropagation()
@@ -60,7 +62,7 @@ function CollectionListItem({
                   updateCollectionHandle(id, 'name', value)
                 }
               />
-              <Badge>{category}</Badge>
+              <Badge>{t(`category.${category}`)}</Badge>
             </Flex>
           </Heading>
 
@@ -76,7 +78,7 @@ function CollectionListItem({
             }}
             aria-label="Delete item"
             icon={<DeleteIcon />}
-            title={`Delete the ${name}'s collection`}
+            title={t('collection.delete', { name })}
             colorScheme="red"
           />
         </CardBody>

@@ -1,6 +1,8 @@
 import { Box, Flex, Link, useColorModeValue } from '@chakra-ui/react';
+import { useTranslation } from 'react-i18next';
 
 function Footer() {
+  const { t } = useTranslation();
   const shadowColor = useColorModeValue('black', 'white');
 
   return (
@@ -12,7 +14,7 @@ function Footer() {
       boxShadow={`0px -1px 1px ${shadowColor}`}
     >
       <Flex>
-        Made by
+        {t('footer.Made by')}
         <Link
           paddingLeft={1}
           href="https://github.com/AlexeiIsProgrammer"

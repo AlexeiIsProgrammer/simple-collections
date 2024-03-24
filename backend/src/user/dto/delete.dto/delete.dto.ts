@@ -3,7 +3,7 @@ import { IsArray, IsNumber, ValidateNested } from 'class-validator';
 
 class Action {
   @IsNumber()
-  id: number;
+  id: string;
 }
 
 export class DeleteDto {

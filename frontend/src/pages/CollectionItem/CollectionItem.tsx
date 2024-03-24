@@ -9,17 +9,19 @@ import {
   Stack,
   Text,
 } from '@chakra-ui/react';
-import { useParams } from 'react-router-dom';
+import CustomSpinner from '@components/CustomSpinner';
+import EditInputField from '@components/EditInputField';
 import {
   useGetCollectionQuery,
   useUpdateCollectionMutation,
 } from '@services/collection';
-import EditInputField from '@components/EditInputField';
-import CustomSpinner from '@components/CustomSpinner';
-import ItemsTable from './ItemsTable';
+import { useTranslation } from 'react-i18next';
+import { useParams } from 'react-router-dom';
 import styles from './CollectionItem.module.scss';
+import ItemsTable from './ItemsTable';
 
 function CollectionItem() {
+  const { t } = useTranslation();
   const { userId, collectionId } = useParams();
 
   const [updateCollection] = useUpdateCollectionMutation();
@@ -65,7 +67,7 @@ function CollectionItem() {
         <Heading textAlign="center" as="h1">
           {collection.name}
           <Badge ml={2} title="Category">
-            {collection.category}
+            {t(`category.${collection.category}`)}
           </Badge>
         </Heading>
       </Box>

@@ -14,6 +14,7 @@ import {
 import { COLLECTION_STATE, COLLECTION_TYPE } from '@models/enums';
 import clsx from 'clsx';
 import React, { ChangeEvent, useState } from 'react';
+import { Trans, useTranslation } from 'react-i18next';
 import styles from './CustomFieldItem.module.scss';
 import CustomFieldItemProps from './types';
 
@@ -21,6 +22,7 @@ const CustomFieldItem = React.memo(function CustomFieldItem({
   item,
   updateCustomFieldHandle,
 }: CustomFieldItemProps) {
+  const { t } = useTranslation();
   const [fieldValue, setFieldValue] = useState<string>(item.value);
 
   const onSaveHandle = () => {
@@ -84,7 +86,7 @@ const CustomFieldItem = React.memo(function CustomFieldItem({
         <Heading size="md">
           {item.state === COLLECTION_STATE.BLOCKED && (
             <Badge colorScheme="red" mr={2}>
-              Blocked
+              {t('customFieldItem.blocked')}
             </Badge>
           )}
           {chooseInputType()}
@@ -98,11 +100,13 @@ const CustomFieldItem = React.memo(function CustomFieldItem({
           flexWrap="wrap"
         >
           <Text>
-            This is a <Badge>{item.type}</Badge> type
+            <Trans i18nKey="customFieldItem.type">
+              This is a <Badge>{{ type: item.type.toString() }}</Badge> type
+            </Trans>
           </Text>
           {fieldValue !== item.value && (
             <Button flex="1 0 auto" onClick={onSaveHandle}>
-              Save
+              {t('customFieldItem.save')}
             </Button>
           )}
         </Flex>

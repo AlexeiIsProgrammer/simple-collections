@@ -1,28 +1,39 @@
 import {
   Alert,
   AlertIcon,
+  Select,
   StackDivider,
   VStack,
   useToast,
 } from '@chakra-ui/react';
+import CustomSpinner from '@components/CustomSpinner';
+import { CATEGORIES } from '@constants/index';
 import {
   useDeleteCollectionMutation,
   useGetUserCollectionsQuery,
   useUpdateCollectionMutation,
 } from '@services/collection';
-import CustomSpinner from '@components/CustomSpinner';
+import { ChangeEvent, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import CollectionListItem from '../CollectionListItem/CollectionListItem';
 import CollectionListProps from './types';
 
 function CollectionsList({ userId }: CollectionListProps) {
+  const { t } = useTranslation();
   const toast = useToast();
+
+  const [currentCategory, setCurrentCategory] = useState('');
+
   const {
     data: collections,
     isError,
     isFetching,
-  } = useGetUserCollectionsQuery(userId, {
-    skip: !userId,
-  });
+  } = useGetUserCollectionsQuery(
+    { userId, category: currentCategory },
+    {
+      skip: !userId,
+    }
+  );
 
   const [deleteCollection] = useDeleteCollectionMutation();
   const [updateCollection] = useUpdateCollectionMutation();
@@ -32,14 +43,14 @@ function CollectionsList({ userId }: CollectionListProps) {
       .unwrap()
       .then(() => {
         toast({
-          title: 'Collection has been successfully deleted!',
+          title: t('collection.deleted'),
           status: 'success',
           position: 'top',
         });
       })
       .catch(() => {
         toast({
-          title: 'Deleting went wrong...',
+          title: t('collection.deletedFailed'),
           status: 'error',
           position: 'top',
         });
@@ -51,14 +62,14 @@ function CollectionsList({ userId }: CollectionListProps) {
       .unwrap()
       .then(() => {
         toast({
-          title: 'Collection name has been successfully changed!',
+          title: t('collection.changed'),
           status: 'success',
           position: 'top',
         });
       })
       .catch(() => {
         toast({
-          title: 'Changing went wrong...',
+          title: t('collection.changedFailed'),
           status: 'error',
           position: 'top',
         });
@@ -73,33 +84,50 @@ function CollectionsList({ userId }: CollectionListProps) {
     return (
       <Alert status="error">
         <AlertIcon />
-        There was an error processing collections
+        {t('collection.error')}
       </Alert>
     );
   }
 
-  if (collections.length === 0) {
-    <Alert status="info">
-      <AlertIcon />
-      You dont&quos;t have any collections here
-    </Alert>;
-  }
-
   return (
-    <VStack
-      divider={<StackDivider borderColor="gray.200" />}
-      spacing={4}
-      align="stretch"
-    >
-      {collections.map((collection) => (
-        <CollectionListItem
-          key={collection.id}
-          item={collection}
-          deleteCollectionHandle={deleteCollectionHandle}
-          updateCollectionHandle={updateCollectionHandle}
-        />
-      ))}
-    </VStack>
+    <>
+      <Select
+        mr="auto"
+        mb={2}
+        value={currentCategory}
+        onChange={(e: ChangeEvent<HTMLSelectElement>) =>
+          setCurrentCategory(e.target.value)
+        }
+      >
+        <option value="" />
+        {CATEGORIES.map((category) => (
+          <option value={category} key={category}>
+            {category}
+          </option>
+        ))}
+      </Select>
+      {collections.length === 0 ? (
+        <Alert status="info">
+          <AlertIcon />
+          {t('collection.empty')}
+        </Alert>
+      ) : (
+        <VStack
+          divider={<StackDivider borderColor="gray.200" />}
+          spacing={4}
+          align="stretch"
+        >
+          {collections.map((collection) => (
+            <CollectionListItem
+              key={collection.id}
+              item={collection}
+              deleteCollectionHandle={deleteCollectionHandle}
+              updateCollectionHandle={updateCollectionHandle}
+            />
+          ))}
+        </VStack>
+      )}
+    </>
   );
 }
 

@@ -17,11 +17,13 @@ import CustomSpinner from '@components/CustomSpinner';
 import { COLLECTION_TYPE, SORT_ENUM } from '@models/enums';
 import { useGetCollectionItemsQuery } from '@services/collection-item';
 import { useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import CollectionTableItem from './CollectionTableItem';
 import ItemsTableProps from './types';
 
 function ItemsTable({ customFields }: ItemsTableProps) {
+  const { t } = useTranslation();
   const { collectionId } = useParams();
 
   const [sortName, setSortName] = useState<SORT_ENUM>(SORT_ENUM.default);
@@ -92,7 +94,7 @@ function ItemsTable({ customFields }: ItemsTableProps) {
     return (
       <Alert status="error">
         <AlertIcon />
-        There was an error processing collection items
+        {t('itemsTable.error')}
       </Alert>
     );
   }
@@ -105,7 +107,7 @@ function ItemsTable({ customFields }: ItemsTableProps) {
           alert={
             <>
               <AlertIcon />
-              You don&apos;t have any items here
+              {t('itemsTable.empty')}
             </>
           }
         />
@@ -125,7 +127,7 @@ function ItemsTable({ customFields }: ItemsTableProps) {
                 onClick={() => setSortHandle(sortName, setSortName)}
                 textAlign="center"
               >
-                Name
+                {t('itemsTable.name')}
                 {getCurrentShevron(sortName)}
               </Th>
               {dateItem && (
@@ -144,10 +146,10 @@ function ItemsTable({ customFields }: ItemsTableProps) {
                   </Center>
                 </Th>
               )}
-              <Th textAlign="center">Likes</Th>
-              <Th textAlign="center">See</Th>
-              <Th textAlign="center">Edit</Th>
-              <Th textAlign="center">Delete</Th>
+              <Th textAlign="center">{t('itemsTable.Likes')}</Th>
+              <Th textAlign="center">{t('itemsTable.See')}</Th>
+              <Th textAlign="center">{t('itemsTable.Edit')}</Th>
+              <Th textAlign="center">{t('itemsTable.Delete')}</Th>
             </Tr>
           </Thead>
           <Tbody pos="relative">

@@ -1,17 +1,19 @@
 import { Button, Flex, useToast } from '@chakra-ui/react';
 import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
+import { useAppSelector } from '@redux/index';
 import { authSelector } from '@redux/slices/userSlice';
 import { useAddCommentMutation } from '@services/collection-item';
-import { useAppSelector } from '@redux/index';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { config } from './config';
 import EditorProps from './types';
 
 function Editor({ itemId, onToggle }: EditorProps) {
+  const { t } = useTranslation();
   const toast = useToast();
   const [editorValue, setEditorValue] = useState(
-    '<p>This is a good item, really!</p>'
+    `<p>${t('editor.default')}</p>`
   );
   const { user } = useAppSelector(authSelector);
   const [saveComment, { isLoading }] = useAddCommentMutation();
@@ -30,13 +32,13 @@ function Editor({ itemId, onToggle }: EditorProps) {
       onToggle();
 
       toast({
-        title: 'Comment successfully added!',
+        title: t('editor.added'),
         status: 'success',
         position: 'top',
       });
     } catch {
       toast({
-        title: 'Adding comment went wrong..',
+        title: t('editor.addedFailed'),
         status: 'error',
         position: 'top',
       });
@@ -54,7 +56,7 @@ function Editor({ itemId, onToggle }: EditorProps) {
         config={config}
       />
       <Button isLoading={isLoading} onClick={onSaveHandle} mr="auto">
-        Add comment
+        {t('editor.add')}
       </Button>
     </Flex>
   );

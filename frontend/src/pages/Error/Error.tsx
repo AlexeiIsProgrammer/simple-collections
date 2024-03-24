@@ -1,7 +1,9 @@
 import { Button, Center, Flex, Text } from '@chakra-ui/react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
 function Error() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   return (
@@ -11,10 +13,10 @@ function Error() {
           404
         </Text>
         <Text as="p" fontSize="2xl">
-          Sorry, the page you are looking for does not exist.
+          {t('error.name')}
         </Text>
         <Button type="button" onClick={() => navigate('/')}>
-          Go to the main?
+          {t('error.button')}
         </Button>
       </Flex>
     </Center>

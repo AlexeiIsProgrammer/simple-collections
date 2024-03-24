@@ -7,6 +7,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { CollectionService } from './collection.service';
 import { StatusCodes } from 'http-status-codes';
@@ -52,8 +53,11 @@ export class CollectionController {
 
   @Get('user/:id')
   @HttpCode(StatusCodes.OK)
-  findAllByUserId(@Param('id') id: number): Promise<CollectionEntity[]> {
-    return this.collectionService.findAllByUserId(id);
+  findAllByUserId(
+    @Param('id') id: number,
+    @Query() { category }: { category: string },
+  ): Promise<CollectionEntity[]> {
+    return this.collectionService.findAllByUserId(id, category);
   }
 
   @Get(':userId/:collectionId')

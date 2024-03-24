@@ -1,4 +1,3 @@
-import Markdown from 'react-markdown';
 import {
   Badge,
   Card,
@@ -8,13 +7,15 @@ import {
   LinkBox,
   useColorMode,
 } from '@chakra-ui/react';
+import { useTranslation } from 'react-i18next';
+import Markdown from 'react-markdown';
 import { Link } from 'react-router-dom';
 import styles from './CollectionResult.module.scss';
 import CollectionResultProps from './types';
 
 function CollectionResult({ collection, onClose }: CollectionResultProps) {
   const { id, name, category, description, image_url, user_id } = collection;
-
+  const { t } = useTranslation();
   const { colorMode } = useColorMode();
 
   return (
@@ -36,8 +37,8 @@ function CollectionResult({ collection, onClose }: CollectionResultProps) {
       >
         <CardHeader color="white" fontSize={20}>
           {name}
-          <Badge ml={2} title="category">
-            {category}
+          <Badge ml={2} title={t('fullTextSearch.category')}>
+            {t(`category.${category}`)}
           </Badge>
         </CardHeader>
         <CardBody

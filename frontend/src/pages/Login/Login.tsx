@@ -12,18 +12,20 @@ import {
   VStack,
   useToast,
 } from '@chakra-ui/react';
-import { NavLink, Navigate, useNavigate } from 'react-router-dom';
+import { ErrorType } from '@models/types';
+import { useAppDispatch, useAppSelector } from '@redux/index';
+import { authSelector, setUser } from '@redux/slices/userSlice';
+import { useSignInMutation } from '@services/user';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { authSelector, setUser } from '@redux/slices/userSlice';
-import { useAppDispatch, useAppSelector } from '@redux/index';
-import { useSignInMutation } from '@services/user';
-import { ErrorType } from '@models/types';
+import { NavLink, Navigate, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { LoginFormData } from './types';
 
 import styles from './Login.module.scss';
 
 function Login() {
+  const { t } = useTranslation();
   const toast = useToast();
   const { isAuth } = useAppSelector(authSelector);
 
@@ -56,7 +58,7 @@ function Login() {
       dispatch(setUser(user));
 
       toast({
-        title: 'Successfully login!',
+        title: t('login.login'),
         status: 'success',
         position: 'top',
       });
@@ -66,7 +68,7 @@ function Login() {
       const error = err as ErrorType;
 
       toast({
-        title: 'Login failed',
+        title: t('login.loginFailed'),
         status: 'error',
         position: 'top',
       });
@@ -87,18 +89,18 @@ function Login() {
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
         <VStack spacing={4}>
           <FormControl isInvalid={Boolean(errors.email)}>
-            <FormLabel>Email</FormLabel>
+            <FormLabel>{t('login.Email')}</FormLabel>
             <Input
               type="email"
               placeholder="Demi_Murych@see_spec.com"
               {...register('email', { required: true })}
             />
             <FormErrorMessage>
-              {errors.email?.message || 'Email is required'}
+              {errors.email?.message || t('login.Email is required')}
             </FormErrorMessage>
           </FormControl>
           <FormControl isInvalid={Boolean(errors.password)}>
-            <FormLabel>Password</FormLabel>
+            <FormLabel>{t('login.Password')}</FormLabel>
 
             <InputGroup size="md">
               <Input
@@ -123,14 +125,14 @@ function Login() {
               </InputRightElement>
             </InputGroup>
             <FormErrorMessage>
-              {errors.password?.message || 'Password is required'}
+              {errors.password?.message || t('login.Password is required')}
             </FormErrorMessage>
           </FormControl>
           <Button isLoading={isLoading} type="submit">
-            Login
+            {t('login.Login')}
           </Button>
           <Link as={NavLink} to="/register">
-            Don&apos;t have an account? Click here
+            {t('login.dontHave')}
           </Link>
         </VStack>
       </form>
