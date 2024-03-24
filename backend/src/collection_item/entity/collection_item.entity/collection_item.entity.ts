@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  Index,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -10,6 +11,7 @@ export class CollectionItemEntity {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
+  @Index({ fulltext: true })
   @Column()
   name: string;
 

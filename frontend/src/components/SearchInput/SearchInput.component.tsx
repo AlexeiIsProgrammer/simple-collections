@@ -3,20 +3,22 @@ import {
   FormControl,
   Input,
   InputGroup,
+  InputProps,
   InputRightElement,
+  forwardRef,
 } from '@chakra-ui/react';
 
-function SearchInput() {
+const SearchInput = forwardRef<InputProps, 'input'>(({ ...props }, ref) => {
   return (
     <FormControl>
       <InputGroup size="md">
-        <Input type="text" placeholder="Find..." />
+        <Input {...props} ref={ref} type="text" placeholder="Find..." />
         <InputRightElement width="4.5rem">
           <SearchIcon cursor="pointer" />
         </InputRightElement>
       </InputGroup>
     </FormControl>
   );
-}
+});
 
 export default SearchInput;

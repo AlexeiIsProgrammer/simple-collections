@@ -83,7 +83,7 @@ export class CollectionItemService {
   async like(itemId: number, userId: number): Promise<LikeEntity> {
     try {
       const like = await this.likeRepository.findOne({
-        where: { user_id: userId },
+        where: { user_id: userId, item_id: itemId },
       });
 
       if (like) {
@@ -256,7 +256,6 @@ export class CollectionItemService {
           'ci.name AS name',
           'ci.created_at AS created_at',
           'c.name AS collection_name',
-          'c.image_url AS image_url',
           'c.id AS collection_id',
           'u.name AS username',
           'u.id AS user_id',

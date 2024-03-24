@@ -31,6 +31,7 @@
       "@services/*": ["src/services/*"],
       "@icons/*": ["src/icons/*"],
       "@constants/*": ["src/constants/*"],
+      "@hooks/*": ["src/hooks/*"],
       "@/*": ["src/*"]
     }
   },

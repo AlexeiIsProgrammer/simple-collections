@@ -1,4 +1,6 @@
 import {
+  Avatar,
+  Badge,
   Box,
   Card,
   CardBody,
@@ -7,18 +9,23 @@ import {
   Heading,
   Text,
 } from '@chakra-ui/react';
+import { DEFAULT_COMMENT_IMAGE } from '@constants/index';
+import { ROLE } from '@models/enums';
 import CommentProps from './types';
 
 function CommentItem({ comment }: CommentProps) {
-  const { name, text } = comment;
+  const { name, text, role } = comment;
 
   return (
     <Card w="65vw">
       <CardHeader>
-        <Flex flex="1" gap="4" alignItems="center" flexWrap="wrap">
+        <Flex flex="1" gap="4" alignItems="flex-start" flexWrap="wrap">
+          <Avatar size="xs" name={name} src={DEFAULT_COMMENT_IMAGE} />
           <Box>
             <Heading size="sm">{name}</Heading>
-            <Text>Common user</Text>
+            <Badge colorScheme={role === ROLE.ADMIN ? 'red' : 'green'}>
+              {role}
+            </Badge>
           </Box>
         </Flex>
       </CardHeader>

@@ -8,6 +8,7 @@ import { CollectionModule } from './collection/collection.module';
 import { CollectionItemModule } from './collection_item/collection_item.module';
 import { TagModule } from './tag/tag.module';
 import { CommentModule } from './comment/comment.module';
+import { SearchModule } from './search/search.module';
 import configuration from './config/configuration';
 
 @Module({
@@ -31,6 +32,7 @@ import configuration from './config/configuration';
     CollectionItemModule,
     TagModule,
     CommentModule,
+    SearchModule,
   ],
   controllers: [AppController],
   providers: [AppService],

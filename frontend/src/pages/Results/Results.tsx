@@ -4,6 +4,7 @@ import {
   Box,
   Button,
   Flex,
+  HStack,
   Stat,
   StatHelpText,
   StatLabel,
@@ -57,7 +58,7 @@ function Results() {
           {tag?.name}
         </Tag>
       </Flex>
-      <VStack mt={10}>
+      <HStack mt={10} flexWrap="wrap">
         {items?.map(({ id, name, collection_id, user_id, collection_name }) => (
           <Stat
             key={id}
@@ -77,7 +78,7 @@ function Results() {
             </StatHelpText>
           </Stat>
         ))}
-      </VStack>
+      </HStack>
     </Box>
   );
 }

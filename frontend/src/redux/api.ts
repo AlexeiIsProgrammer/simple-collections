@@ -14,6 +14,7 @@ const api = createApi({
     'Items',
     'CustomFields',
     'CollectionItems',
+    'Comments',
   ],
   endpoints: () => ({}),
 });

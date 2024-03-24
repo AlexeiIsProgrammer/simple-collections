@@ -36,7 +36,6 @@ export type LastAddedItem = {
   name: string;
   collection_name: string;
   username: string;
-  image_url: string;
   created_at: string;
   user_id: string;
   collection_id: string;
@@ -110,21 +109,24 @@ const collectionItemApi = api.injectEndpoints({
     }),
     addComment: build.mutation<
       void,
-      { name: string; text: string; itemId: string }
+      { name: string; text: string; itemId: string; role: string }
     >({
-      query: ({ text, name, itemId }) => ({
+      query: ({ text, name, itemId, role }) => ({
         url: `comment/${itemId}`,
         method: 'POST',
         body: {
           name,
           text,
+          role,
         },
       }),
+      invalidatesTags: ['Comments'],
     }),
     getComments: build.query<Comment[], string>({
       query: (itemId) => ({
         url: `comment/${itemId}/all`,
       }),
+      providesTags: ['Comments'],
     }),
     setLike: build.mutation<void, { itemId: string; userId: string }>({
       query: ({ itemId, userId }) => ({

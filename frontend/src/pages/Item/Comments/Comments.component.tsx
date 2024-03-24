@@ -48,7 +48,7 @@ function Comments({ itemId: id }: CommentsProps) {
 
       {isOpen && (
         <Box position="sticky" top={0} zIndex={1}>
-          <Editor itemId={id} />
+          <Editor itemId={id} onToggle={onToggle} />
         </Box>
       )}
 

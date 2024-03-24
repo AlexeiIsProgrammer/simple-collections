@@ -21,7 +21,7 @@ function Item() {
   const {
     data: item,
     isError,
-    isFetching,
+    isLoading,
   } = useGetCollectionItemQuery(
     { id: id || '', collectionId: collectionId || '' },
     { skip: !id || !collectionId }
@@ -50,7 +50,7 @@ function Item() {
       <Tags />
       <Flex alignItems="center" justifyContent="center" gap={5}>
         <Text my={10} textAlign="center" as="h1" fontSize={50}>
-          {isFetching || !item ? '[Your item name is loading...]' : item.name}
+          {isLoading || !item ? '[Your item name is loading...]' : item.name}
         </Text>
 
         <Flex

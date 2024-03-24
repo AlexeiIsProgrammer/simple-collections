@@ -6,4 +6,7 @@ export class CommentDto {
 
   @IsString()
   text: string;
+
+  @IsString()
+  role: string;
 }

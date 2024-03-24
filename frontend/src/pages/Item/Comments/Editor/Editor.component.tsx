@@ -1,4 +1,4 @@
-import { Button, Flex } from '@chakra-ui/react';
+import { Button, Flex, useToast } from '@chakra-ui/react';
 import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import { authSelector } from '@redux/slices/userSlice';
@@ -8,21 +8,39 @@ import { useState } from 'react';
 import { config } from './config';
 import EditorProps from './types';
 
-function Editor({ itemId }: EditorProps) {
+function Editor({ itemId, onToggle }: EditorProps) {
+  const toast = useToast();
   const [editorValue, setEditorValue] = useState(
     '<p>This is a good item, really!</p>'
   );
   const { user } = useAppSelector(authSelector);
   const [saveComment, { isLoading }] = useAddCommentMutation();
 
-  const onSaveHandle = () => {
+  const onSaveHandle = async () => {
     if (!editorValue || !user) return;
 
-    saveComment({
-      name: user.name,
-      text: editorValue,
-      itemId,
-    });
+    try {
+      await saveComment({
+        role: user.role || 'anonymous',
+        name: user.name,
+        text: editorValue,
+        itemId,
+      });
+
+      onToggle();
+
+      toast({
+        title: 'Comment successfully added!',
+        status: 'success',
+        position: 'top',
+      });
+    } catch {
+      toast({
+        title: 'Adding comment went wrong..',
+        status: 'error',
+        position: 'top',
+      });
+    }
   };
 
   return (

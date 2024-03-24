@@ -18,6 +18,7 @@ export class CommentService {
     try {
       let commentEntity = new CommentEntity();
       commentEntity.name = commentItem.name;
+      commentEntity.role = commentItem.role;
       commentEntity.text = commentItem.text;
       commentEntity.item_id = itemId;
 

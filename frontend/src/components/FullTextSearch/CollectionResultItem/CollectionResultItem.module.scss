@@ -1,0 +1,87 @@
+$ease-in-out-quad: cubic-bezier(0.455, 0.03, 0.515, 0.955);
+$color-grey: #a6afc0;
+$color-off-white: #34495e;
+
+.link {
+  width: 100%;
+  cursor: pointer;
+  transition: all 0.2s $ease-in-out-quad;
+
+  &:hover {
+    .lines {
+      background-size: 100% 100%;
+    }
+
+    .angles {
+      background-size: 14px 14px;
+    }
+  }
+  &:active {
+    box-shadow: 0px 0px 4px #34495e;
+  }
+}
+
+.card {
+  padding: 13px;
+  display: flex;
+  width: 100%;
+  position: relative;
+  cursor: pointer;
+
+  &:before {
+    content: '';
+    background-color: rgba(#ffffff, 0.08);
+    opacity: 0.46;
+    position: absolute;
+    top: 13px;
+    right: 13px;
+    bottom: 13px;
+    left: 13px;
+    transition: all 0.2s $ease-in-out-quad;
+  }
+
+  &:hover:before {
+    top: 21px;
+    right: 21px;
+    bottom: 21px;
+    left: 21px;
+  }
+}
+
+.lines {
+  background:
+    linear-gradient(to bottom, $color-off-white 2px, transparent 2px) 0 0,
+    linear-gradient(to right, $color-off-white 2px, transparent 2px) 0 100%,
+    linear-gradient(to left, $color-off-white 2px, transparent 2px) 100% 0,
+    linear-gradient(to top, $color-off-white 2px, transparent 2px) 100% 100%;
+  background-repeat: no-repeat;
+  background-size: 0px 0px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  transition: background-size 0.2s $ease-in-out-quad;
+}
+
+.angles {
+  background:
+    linear-gradient(to right, $color-grey 2px, transparent 2px) 0 0,
+    linear-gradient(to bottom, $color-grey 2px, transparent 2px) 0 0,
+    linear-gradient(to left, $color-grey 2px, transparent 2px) 100% 0,
+    linear-gradient(to bottom, $color-grey 2px, transparent 2px) 100% 0,
+    linear-gradient(to left, $color-grey 2px, transparent 2px) 100% 100%,
+    linear-gradient(to top, $color-grey 2px, transparent 2px) 100% 100%,
+    linear-gradient(to right, $color-grey 2px, transparent 2px) 0 100%,
+    linear-gradient(to top, $color-grey 2px, transparent 2px) 0 100%;
+
+  background-repeat: no-repeat;
+  background-size: 7px 7px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  opacity: 0.48;
+  transition: background-size 0.2s $ease-in-out-quad;
+}

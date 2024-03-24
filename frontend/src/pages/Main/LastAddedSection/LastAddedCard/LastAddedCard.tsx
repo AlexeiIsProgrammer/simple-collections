@@ -8,7 +8,6 @@ import {
   Badge,
   useColorMode,
   Box,
-  Image,
   Text,
   useMediaQuery,
 } from '@chakra-ui/react';
@@ -23,7 +22,6 @@ function LastAddedCard({ item }: LastAddedCardProps) {
     id,
     collection_id,
     collection_name,
-    image_url,
     created_at,
     username,
   } = item;
@@ -46,7 +44,7 @@ function LastAddedCard({ item }: LastAddedCardProps) {
       to={`/collections/${user_id}/${collection_id}/${id}`}
     >
       <Stack>
-        <CardBody>
+        <CardBody pb={3}>
           <Flex
             justifyContent="space-between"
             flexDirection={isLessThan576 ? 'column-reverse' : 'row'}
@@ -56,17 +54,11 @@ function LastAddedCard({ item }: LastAddedCardProps) {
               <Heading size="md">{name}</Heading>
               <Text fontSize={12}>Collection: {collection_name}</Text>
             </Box>
-            <Image
-              objectFit="cover"
-              maxW={isLessThan576 ? 'auto' : '100px'}
-              src={image_url}
-              alt={collection_name}
-            />
           </Flex>
         </CardBody>
 
-        <CardFooter>
-          <Text>
+        <CardFooter pt={0}>
+          <Text fontSize={14}>
             Created at <b>{toDateFormat(created_at)}</b> by{' '}
             <Badge colorScheme="purple">{username}</Badge>
           </Text>

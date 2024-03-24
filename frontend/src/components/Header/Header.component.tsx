@@ -7,6 +7,7 @@ import {
   Image,
   Text,
   useColorModeValue,
+  useDisclosure,
 } from '@chakra-ui/react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import SearchInput from '@components/SearchInput';
@@ -16,6 +17,8 @@ import { useAppDispatch, useAppSelector } from '@redux/index';
 import { authSelector, logout } from '@redux/slices/userSlice';
 import { EditIcon, HamburgerIcon } from '@chakra-ui/icons';
 import { ROLE } from '@models/enums';
+import FullTextSearch from '@components/FullTextSearch';
+import { useRef } from 'react';
 
 function Header() {
   const { user, isAuth } = useAppSelector(authSelector);
@@ -23,6 +26,9 @@ function Header() {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useAppDispatch();
+
+  const disclosure = useDisclosure();
+  const searchRef = useRef<HTMLInputElement>(null);
 
   const logoutHandle = () => {
     dispatch(logout());
@@ -41,7 +47,14 @@ function Header() {
           src={logo}
           alt="Logo"
         />
-        <SearchInput />
+        <SearchInput
+          ref={searchRef}
+          onFocus={() => {
+            disclosure.onOpen();
+            searchRef.current?.blur();
+          }}
+        />
+        <FullTextSearch disclosure={disclosure} />
         {isAuth ? (
           <>
             <Text as="span" whiteSpace="nowrap">

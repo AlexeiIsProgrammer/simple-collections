@@ -1,13 +1,15 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('collections')
 export class CollectionEntity {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
+  @Index({ fulltext: true })
   @Column()
   name: string;
 
+  @Index({ fulltext: true })
   @Column()
   description: string;
 
@@ -17,6 +19,7 @@ export class CollectionEntity {
   @Column()
   user_id: number;
 
+  @Index({ fulltext: true })
   @Column()
   category: string;
 }

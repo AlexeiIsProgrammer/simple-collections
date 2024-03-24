@@ -44,6 +44,7 @@ export interface CollectionItem {
 export interface Comment {
   id: string;
   name: string;
+  role: ROLE;
   text: string;
   item_id: string;
 }

@@ -12,6 +12,8 @@ CREATE TABLE users(
   status statusType
 );
 
+CREATE TYPE fieldType AS ENUM ('boolean', 'string', 'number', 'text', 'date');
+
 CREATE TABLE collections(
   id SERIAL PRIMARY KEY,
   name VARCHAR(255),
@@ -20,8 +22,6 @@ CREATE TABLE collections(
   user_id INT REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
   category VARCHAR(255)
 );
-
-CREATE TYPE fieldType AS ENUM ('boolean', 'string', 'number', 'text', 'date');
 
 CREATE TABLE custom_fields(
   id SERIAL PRIMARY KEY,
@@ -43,17 +43,19 @@ CREATE TABLE collection_items(
   collection_id INT REFERENCES collections(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-CREATE TABLE likes(
-  id SERIAL PRIMARY KEY,
-  item_id INT REFERENCES collection_items(id) ON DELETE CASCADE ON UPDATE CASCADE,
-  user_id INT REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE
-);
-
 CREATE TABLE comments (
   id SERIAL PRIMARY KEY,
   name VARCHAR(255),
+  role roleType,
   text TEXT,
   item_id INT REFERENCES collection_items(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE collection_item_custom_fields(
+  value TEXT,
+  collection_item_id INT REFERENCES collection_items(id) ON DELETE CASCADE ON UPDATE CASCADE,
+  custom_field_id INT REFERENCES custom_fields(id) ON DELETE CASCADE ON UPDATE CASCADE,
+  PRIMARY KEY (collection_item_id, custom_field_id)
 );
 
 CREATE TABLE collection_item_tags (
@@ -62,11 +64,10 @@ CREATE TABLE collection_item_tags (
     PRIMARY KEY (collection_item_id, tag_id)
 );
 
-CREATE TABLE collection_item_custom_fields(
-  value TEXT,
-  collection_item_id INT REFERENCES collection_items(id) ON DELETE CASCADE ON UPDATE CASCADE,
-  custom_field_id INT REFERENCES custom_fields(id) ON DELETE CASCADE ON UPDATE CASCADE,
-  PRIMARY KEY (collection_item_id, custom_field_id)
+CREATE TABLE likes(
+  id SERIAL PRIMARY KEY,
+  item_id INT REFERENCES collection_items(id) ON DELETE CASCADE ON UPDATE CASCADE,
+  user_id INT REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- SELECT collection_items.name, tags.name
