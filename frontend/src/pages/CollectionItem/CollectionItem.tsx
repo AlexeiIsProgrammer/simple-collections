@@ -81,7 +81,7 @@ function CollectionItem() {
             direction="row"
             gap={5}
           >
-            <Text>Custom Fields →</Text>
+            <Text>{t(`create.Custom fields`)} →</Text>
             {collection.customFields.map((customField) => (
               <Badge
                 key={customField.id}

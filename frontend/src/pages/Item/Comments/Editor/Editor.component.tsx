@@ -50,7 +50,7 @@ function Editor({ itemId, onToggle }: EditorProps) {
       <CKEditor
         editor={ClassicEditor}
         data={editorValue}
-        onChange={(e, editor) => {
+        onChange={(_, editor) => {
           setEditorValue(editor.data.get());
         }}
         config={config}

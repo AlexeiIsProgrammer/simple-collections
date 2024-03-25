@@ -13,8 +13,8 @@ import {
 } from '@chakra-ui/react';
 import { COLLECTION_STATE, COLLECTION_TYPE } from '@models/enums';
 import { HTMLAttributes, forwardRef, useMemo, useState } from 'react';
-import CustomFieldsPickerProps from './types';
 import { useTranslation } from 'react-i18next';
+import CustomFieldsPickerProps from './types';
 
 const TypesSelect = forwardRef<
   HTMLSelectElement,

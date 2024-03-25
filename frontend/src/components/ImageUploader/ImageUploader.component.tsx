@@ -1,8 +1,9 @@
-import clsx from 'clsx';
 import { Box, Button, Text, useToast } from '@chakra-ui/react';
-import { ChangeEvent, HTMLAttributes, forwardRef, useState } from 'react';
-import styles from './ImageUploader.module.scss';
+import clsx from 'clsx';
+import { HTMLAttributes, forwardRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { UploadEvent, isDragEvent, isInputFileEvent } from '@models/typeguards';
+import styles from './ImageUploader.module.scss';
 
 const ImageUploader = forwardRef<
   HTMLInputElement,
@@ -51,16 +52,14 @@ const ImageUploader = forwardRef<
 
     reader.onerror = () => {
       toast({
-        title: 'Image uploading went wrong...',
+        title: t('imageUploader.error'),
         status: 'error',
         position: 'top',
       });
     };
   }
 
-  const handleUpload = (
-    e: ChangeEvent<HTMLInputElement> & { dataTransfer?: DataTransfer }
-  ) => {
+  const handleUpload = (e: UploadEvent) => {
     e.preventDefault();
     e.stopPropagation();
     setHighlight(false);
@@ -68,10 +67,10 @@ const ImageUploader = forwardRef<
 
     let files;
 
-    if (e.target instanceof HTMLInputElement) {
+    if (isInputFileEvent(e)) {
       files = e.target.files;
       setPreview('');
-    } else if (e.dataTransfer) {
+    } else if (isDragEvent(e)) {
       files = e.dataTransfer.files;
     }
 
@@ -100,7 +99,7 @@ const ImageUploader = forwardRef<
           accept="image/*"
           onChange={(e) => handleUpload(e)}
         />
-        <Button type="button">Upload Here</Button>
+        <Button type="button">{t('imageUploader.upload')}</Button>
       </Box>
     </div>
   );

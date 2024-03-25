@@ -1,4 +1,3 @@
-import clsx from 'clsx';
 import {
   Box,
   Button,
@@ -8,12 +7,13 @@ import {
   Text,
 } from '@chakra-ui/react';
 import MarkdownTextarea from '@components/MarkdownTextarea/MarkdownTextarea.component';
+import clsx from 'clsx';
 import React, { useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import styles from './EditInputField.module.scss';
 import EditInputFieldProps from './types';
-import { useTranslation } from 'react-i18next';
 
 function EditInputField({
   saveHandler,

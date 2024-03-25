@@ -12,7 +12,7 @@ import {
   useMediaQuery,
 } from '@chakra-ui/react';
 import toDateFormat from '@utils/toDateFormat';
-import { Trans, useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import LastAddedCardProps from './types';
 
@@ -64,10 +64,8 @@ function LastAddedCard({ item }: LastAddedCardProps) {
 
         <CardFooter pt={0}>
           <Text fontSize={14}>
-            <Trans i18nKey="lastItem.created">
-              Created at <b>{{ date: toDateFormat(created_at) }}</b> by
-            </Trans>
-            <Badge colorScheme="purple">{username}</Badge>
+            {t('lastItem.Created at')} <b>{toDateFormat(created_at)}</b>{' '}
+            {t('lastItem.by')} <Badge colorScheme="purple">{username}</Badge>
           </Text>
         </CardFooter>
       </Stack>

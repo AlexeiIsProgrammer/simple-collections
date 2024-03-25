@@ -10,8 +10,8 @@ import {
 } from '@chakra-ui/react';
 import { useCreateCollectionItemMutation } from '@services/collection-item';
 import { useRef } from 'react';
-import AddCollectionItemProps from './types';
 import { useTranslation } from 'react-i18next';
+import AddCollectionItemProps from './types';
 
 function AddCollectionItem({ collectionId, alert }: AddCollectionItemProps) {
   const { t } = useTranslation();

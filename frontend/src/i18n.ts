@@ -139,6 +139,8 @@ i18n.use(initReactI18next).init({
           go: 'To the {{name}} item',
           collection: 'Collection',
           created: 'Created at <1>{{date}}</1> by ',
+          'Created at': 'Created at',
+          by: 'by',
         },
         biggest: {
           error: 'There is an error on getting top collections',
@@ -173,7 +175,8 @@ i18n.use(initReactI18next).init({
         customFieldItem: {
           blocked: 'Blocked',
           save: 'Save',
-          type: 'This is a <1>{{type}}</1> type',
+          'This is a': 'This is a',
+          type: 'type',
         },
         comments: {
           error: 'There was an error on getting comments section',
@@ -219,6 +222,10 @@ i18n.use(initReactI18next).init({
           see: 'See the collection',
           edit: 'Edit heading',
           delete: "Delete the {{name}}'s collection",
+        },
+        imageUploader: {
+          error: 'Image uploading went wrong...',
+          upload: 'Upload Here',
         },
       },
     },
@@ -358,6 +365,8 @@ i18n.use(initReactI18next).init({
           go: 'Да рэчы {{name}}',
           collection: 'Калекцыя',
           created: 'Створана ў <1>{{date}}</1> карыстальнікам ',
+          'Created at': 'Створана',
+          by: '',
         },
         biggest: {
           error: 'Адбылася памылка пры атрыманні найвялікшых калекцый',
@@ -393,7 +402,8 @@ i18n.use(initReactI18next).init({
         customFieldItem: {
           blocked: 'Заблакаваны',
           save: 'Захаваць',
-          type: 'Гэта {{type}} тып',
+          type: 'тып',
+          'This is a': 'Гэта',
         },
         comments: {
           error: 'Адбылася памылка пры атрыманні каментарыяў',
@@ -439,6 +449,10 @@ i18n.use(initReactI18next).init({
           see: 'Праглядзець калекцыю',
           edit: 'Рэдагаваць загаловак',
           delete: 'Выдаліць калекцыю {{name}}',
+        },
+        imageUploader: {
+          error: 'Загрузка малюнка не ўдалася...',
+          upload: 'Загрузіце тут',
         },
       },
     },
