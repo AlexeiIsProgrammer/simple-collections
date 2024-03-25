@@ -15,6 +15,7 @@ function Editor({ itemId, onToggle }: EditorProps) {
   const [editorValue, setEditorValue] = useState(
     `<p>${t('editor.default')}</p>`
   );
+
   const { user } = useAppSelector(authSelector);
   const [saveComment, { isLoading }] = useAddCommentMutation();
 
@@ -46,7 +47,7 @@ function Editor({ itemId, onToggle }: EditorProps) {
   };
 
   return (
-    <Flex direction="column" gap={4}>
+    <Flex background="white" direction="column" gap={4}>
       <CKEditor
         editor={ClassicEditor}
         data={editorValue}

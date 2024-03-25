@@ -88,6 +88,7 @@ function EditInputField({
       )}
       {viewMode === 'edit' && type !== 'input' && (
         <Button
+          colorScheme="white"
           variant="outline"
           className={styles.edit}
           onClick={onChangeViewMode}

@@ -51,6 +51,7 @@ i18n.use(initReactI18next).init({
           'Type something another': 'Type something another',
           'No data': 'No data',
           'Try to find later': 'Try to find later',
+          'Failed to get results': 'Failed to get results',
           'Full text search': 'Full text search',
           category: 'category',
         },
@@ -222,6 +223,7 @@ i18n.use(initReactI18next).init({
           see: 'See the collection',
           edit: 'Edit heading',
           delete: "Delete the {{name}}'s collection",
+          choose: 'Choose category',
         },
         imageUploader: {
           error: 'Image uploading went wrong...',
@@ -276,6 +278,7 @@ i18n.use(initReactI18next).init({
           'Try to type something': 'Паспрабуйце што-небудзь напісаць',
           'Type something another': 'Паспрабуйце напісаць што-небудзь іншае',
           'No data': 'Няма дадзеных',
+          'Failed to get results': 'Не ўдалося атрымаць вынікі',
           'Try to find later': 'Спробуйце знайсці пазней',
           'Full text search': 'Поўны тэкставы пошук',
           category: 'катэгорыя',
@@ -449,6 +452,7 @@ i18n.use(initReactI18next).init({
           see: 'Праглядзець калекцыю',
           edit: 'Рэдагаваць загаловак',
           delete: 'Выдаліць калекцыю {{name}}',
+          choose: 'Выберыце катэгорыю',
         },
         imageUploader: {
           error: 'Загрузка малюнка не ўдалася...',

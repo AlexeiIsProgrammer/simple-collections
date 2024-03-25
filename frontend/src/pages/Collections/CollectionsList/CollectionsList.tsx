@@ -99,7 +99,7 @@ function CollectionsList({ userId }: CollectionListProps) {
           setCurrentCategory(e.target.value)
         }
       >
-        <option value="" />
+        <option value="">{t('collection.choose')}</option>
         {CATEGORIES.map((category) => (
           <option value={category} key={category}>
             {category}

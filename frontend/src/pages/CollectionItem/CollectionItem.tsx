@@ -61,7 +61,7 @@ function CollectionItem() {
   }
 
   return (
-    <Box className={styles.box} mt={50}>
+    <Box color="white" className={styles.box} mt={50}>
       <Image className={styles.image} src={collection.image_url} />
       <Box pt={5}>
         <Heading textAlign="center" as="h1">
