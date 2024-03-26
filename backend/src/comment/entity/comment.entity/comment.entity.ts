@@ -1,4 +1,11 @@
-import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
+import { CollectionItemEntity } from 'src/collection_item/entity/collection_item.entity/collection_item.entity';
+import {
+  Column,
+  Entity,
+  Index,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity('comments')
 export class CommentEntity {
@@ -12,6 +19,7 @@ export class CommentEntity {
   @Column()
   text: string;
 
+  @ManyToOne(() => CollectionItemEntity, (collectionItem) => collectionItem.id)
   @Column()
   item_id: number;
 

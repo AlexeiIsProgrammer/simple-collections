@@ -1,7 +1,7 @@
 import { CollectionItemCustomField } from '@models/interfaces';
 
 type CustomFieldsProps = {
-  itemId: string;
+  itemId: number;
   customFields: CollectionItemCustomField[];
 };
 

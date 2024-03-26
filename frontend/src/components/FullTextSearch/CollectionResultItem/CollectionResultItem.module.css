@@ -1,0 +1,64 @@
+.link {
+  width: 100%;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.455, 0.03, 0.515, 0.955);
+}
+.link:hover .lines {
+  background-size: 100% 100%;
+}
+.link:hover .angles {
+  background-size: 14px 14px;
+}
+.link:active {
+  box-shadow: 0px 0px 4px #34495e;
+}
+
+.card {
+  padding: 13px;
+  display: flex;
+  width: 100%;
+  position: relative;
+  cursor: pointer;
+}
+.card:before {
+  content: "";
+  background-color: rgba(255, 255, 255, 0.08);
+  opacity: 0.46;
+  position: absolute;
+  top: 13px;
+  right: 13px;
+  bottom: 13px;
+  left: 13px;
+  transition: all 0.2s cubic-bezier(0.455, 0.03, 0.515, 0.955);
+}
+.card:hover:before {
+  top: 21px;
+  right: 21px;
+  bottom: 21px;
+  left: 21px;
+}
+
+.lines {
+  background: linear-gradient(to bottom, #34495e 2px, transparent 2px) 0 0, linear-gradient(to right, #34495e 2px, transparent 2px) 0 100%, linear-gradient(to left, #34495e 2px, transparent 2px) 100% 0, linear-gradient(to top, #34495e 2px, transparent 2px) 100% 100%;
+  background-repeat: no-repeat;
+  background-size: 0px 0px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  transition: background-size 0.2s cubic-bezier(0.455, 0.03, 0.515, 0.955);
+}
+
+.angles {
+  background: linear-gradient(to right, #a6afc0 2px, transparent 2px) 0 0, linear-gradient(to bottom, #a6afc0 2px, transparent 2px) 0 0, linear-gradient(to left, #a6afc0 2px, transparent 2px) 100% 0, linear-gradient(to bottom, #a6afc0 2px, transparent 2px) 100% 0, linear-gradient(to left, #a6afc0 2px, transparent 2px) 100% 100%, linear-gradient(to top, #a6afc0 2px, transparent 2px) 100% 100%, linear-gradient(to right, #a6afc0 2px, transparent 2px) 0 100%, linear-gradient(to top, #a6afc0 2px, transparent 2px) 0 100%;
+  background-repeat: no-repeat;
+  background-size: 7px 7px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  opacity: 0.48;
+  transition: background-size 0.2s cubic-bezier(0.455, 0.03, 0.515, 0.955);
+}/*# sourceMappingURL=CollectionResultItem.module.css.map */

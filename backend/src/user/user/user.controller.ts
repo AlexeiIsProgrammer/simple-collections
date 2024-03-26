@@ -35,7 +35,7 @@ export class UserController {
 
   @Get(':id')
   @HttpCode(StatusCodes.OK)
-  findOne(@Param('id') id: string): Promise<SecuredUser> {
+  findOne(@Param('id') id: number): Promise<SecuredUser> {
     return this.userService.findOne(id);
   }
 

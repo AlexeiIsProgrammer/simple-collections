@@ -1,0 +1,53 @@
+.item {
+  overflow: hidden;
+  outline: 1px solid #fff;
+  outline-offset: -1px;
+  transition: all 0.3s linear;
+  cursor: pointer;
+}
+.item:hover .image {
+  transform: scale(1.1);
+}
+.item:hover {
+  outline: 1px solid transparent;
+  background: linear-gradient(90deg, #fff 50%, transparent 0) repeat-x, linear-gradient(90deg, #fff 50%, transparent 0) repeat-x, linear-gradient(0deg, #fff 50%, transparent 0) repeat-y, linear-gradient(0deg, #fff 50%, transparent 0) repeat-y;
+  background-size: 4px 1px, 4px 1px, 1px 4px, 1px 4px;
+  background-position: 0 0, 0 100%, 0 0, 100% 0;
+  animation: linearGradientMove 0.3s infinite linear;
+}
+
+@keyframes linearGradientMove {
+  100% {
+    background-position: 4px 0, -4px 100%, 0 -4px, 100% 4px;
+  }
+}
+.image {
+  transition: 0.3s ease;
+  height: 100%;
+}
+
+.remove {
+  position: absolute !important;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 15px;
+}
+@media (max-width: 476px) {
+  .remove {
+    margin-top: 10px;
+    position: relative !important;
+    top: 0;
+    right: 0;
+    transform: none;
+    width: 100%;
+  }
+}
+
+.description {
+  padding-right: 50px;
+}
+@media (max-width: 476px) {
+  .description {
+    padding: 0;
+  }
+}/*# sourceMappingURL=CollectionListItem.module.css.map */

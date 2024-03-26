@@ -7,14 +7,14 @@ export type SearchCollectionType = {
   description: string;
   category: string;
   image_url: string;
-  user_id: string;
+  user_id: number;
 };
 
 export type SearchItemType = {
   id: number;
   name: string;
   collection_id: string;
-  user_id: string;
+  user_id: number;
   tags: Tag[];
 };
 

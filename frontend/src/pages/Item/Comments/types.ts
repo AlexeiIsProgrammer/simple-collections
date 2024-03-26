@@ -1,5 +1,5 @@
 type CommentsProps = {
-  itemId: string;
+  itemId: number;
 };
 
 export default CommentsProps;

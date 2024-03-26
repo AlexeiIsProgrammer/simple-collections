@@ -7,38 +7,38 @@ import {
 import api from '@redux/api';
 
 type ChangeCollectionItemName = {
-  id: string;
+  id: number;
   body: {
     name: string;
   };
 };
 
 type ChangeCollectionItemCustomField = {
-  id: string;
+  id: number;
   body: {
-    fieldId: string;
+    fieldId: number;
     value: string;
   }[];
 };
 
 type CollectionItemByTag = CollectionItem & {
-  user_id: string;
+  user_id: number;
   collection_name: string;
 };
 
 type Sort = {
-  collectionId: string;
+  collectionId: number;
   name: SORT_ENUM;
 };
 
 export type LastAddedItem = {
-  id: string;
+  id: number;
   name: string;
   collection_name: string;
   username: string;
   created_at: string;
-  user_id: string;
-  collection_id: string;
+  user_id: number;
+  collection_id: number;
 };
 
 const collectionItemApi = api.injectEndpoints({
@@ -70,7 +70,7 @@ const collectionItemApi = api.injectEndpoints({
       }),
       invalidatesTags: ['CustomFields', 'CollectionItems'],
     }),
-    deleteCollectionItem: build.mutation<void, string>({
+    deleteCollectionItem: build.mutation<void, number>({
       query: (id) => ({
         url: `collection-item/${id}`,
         method: 'DELETE',
@@ -109,7 +109,7 @@ const collectionItemApi = api.injectEndpoints({
     }),
     addComment: build.mutation<
       void,
-      { name: string; text: string; itemId: string; role: string }
+      { name: string; text: string; itemId: number; role: string }
     >({
       query: ({ text, name, itemId, role }) => ({
         url: `comment/${itemId}`,
@@ -122,13 +122,13 @@ const collectionItemApi = api.injectEndpoints({
       }),
       invalidatesTags: ['Comments'],
     }),
-    getComments: build.query<Comment[], string>({
+    getComments: build.query<Comment[], number>({
       query: (itemId) => ({
         url: `comment/${itemId}/all`,
       }),
       providesTags: ['Comments'],
     }),
-    setLike: build.mutation<void, { itemId: string; userId: string }>({
+    setLike: build.mutation<void, { itemId: number; userId: number }>({
       query: ({ itemId, userId }) => ({
         url: `collection-item/${itemId}/${userId}/like`,
         method: 'PUT',

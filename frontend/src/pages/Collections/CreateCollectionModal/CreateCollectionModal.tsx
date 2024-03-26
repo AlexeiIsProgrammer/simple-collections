@@ -69,7 +69,7 @@ function CreateCollectionModal({
 
       await createCollection({
         name,
-        user_id: userId || '',
+        user_id: Number(userId || 0),
         description,
         category,
         image_url: base64File,

@@ -1,8 +1,10 @@
+import { CollectionEntity } from 'src/collection/entity/collection.entity/collection.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
   Index,
+  ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -15,6 +17,7 @@ export class CollectionItemEntity {
   @Column()
   name: string;
 
+  @ManyToOne(() => CollectionEntity, (collection) => collection.id)
   @Column()
   collection_id: number;
 

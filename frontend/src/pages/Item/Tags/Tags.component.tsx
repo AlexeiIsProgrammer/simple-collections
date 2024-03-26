@@ -48,6 +48,7 @@ function Tags() {
   } = useGetTagsByCollectionItemQuery(id || '', { skip: !id });
 
   const { data: allTags } = useGetTagsQuery();
+  console.log(allTags);
 
   const [localTags, setLocalTags] = useState<ActionTypeWithPrev[]>([]);
 
@@ -139,6 +140,11 @@ function Tags() {
       </Alert>
     );
   }
+  console.log(
+    allTags?.filter(
+      (allTag) => !localTags.some((localTag) => localTag.id === allTag.id)
+    )
+  );
 
   return (
     <HStack flexWrap="wrap" mt={2} spacing={4} alignItems="center">

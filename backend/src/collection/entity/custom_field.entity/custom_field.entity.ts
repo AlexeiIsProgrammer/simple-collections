@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { CollectionEntity } from '../collection.entity/collection.entity';
 
 export enum TypeEnum {
   'boolean' = 'boolean',
@@ -19,6 +20,7 @@ export class CustomFieldEntity {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
+  @ManyToOne(() => CollectionEntity, (collection) => collection.id)
   @Column()
   collection_id: number;
 

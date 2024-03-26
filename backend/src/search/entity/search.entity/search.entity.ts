@@ -17,7 +17,7 @@ export class SearchCollectionEntity {
   category: string;
 
   @Column()
-  user_id: string;
+  user_id: number;
 }
 
 export class SearchItemEntity {
@@ -37,5 +37,5 @@ export class SearchItemEntity {
   collection_id: string;
 
   @Column()
-  user_id: string;
+  user_id: number;
 }

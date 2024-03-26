@@ -1,5 +1,5 @@
 type EditorProps = {
-  itemId: string;
+  itemId: number;
   onToggle: () => void;
 };
 

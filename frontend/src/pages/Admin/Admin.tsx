@@ -58,7 +58,7 @@ function Admin() {
   };
 
   const deleteUserHandle = useCallback(
-    async (actions: string[]) => {
+    async (actions: number[]) => {
       setCheckedUsers([]);
       try {
         await deleteUser(actions).unwrap();

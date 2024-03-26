@@ -31,7 +31,7 @@ function CollectionItem() {
     isError,
     isFetching,
   } = useGetCollectionQuery(
-    { userId: userId || '', collectionId: collectionId || '' },
+    { userId: Number(userId || 0), collectionId: Number(collectionId || 0) },
     {
       skip: !userId || !collectionId,
     }
@@ -39,7 +39,7 @@ function CollectionItem() {
 
   const updateCollectionHandle = (value: string) => {
     updateCollection({
-      id: collectionId || '',
+      id: Number(collectionId || 0),
       body: {
         field: 'description',
         value,

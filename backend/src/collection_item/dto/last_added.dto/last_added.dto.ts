@@ -1,4 +1,4 @@
-import { IsString } from 'class-validator';
+import { IsNumber, IsString } from 'class-validator';
 
 export class LastAddedDto {
   @IsString()
@@ -19,6 +19,6 @@ export class LastAddedDto {
   @IsString()
   image_url: string;
 
-  @IsString()
-  user_id: string;
+  @IsNumber()
+  user_id: number;
 }

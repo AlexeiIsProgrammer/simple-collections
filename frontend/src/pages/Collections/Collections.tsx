@@ -1,10 +1,11 @@
-import { createPortal } from 'react-dom';
+import { Box, Button, Heading, useDisclosure } from '@chakra-ui/react';
+import CustomSpinner from '@components/CustomSpinner';
 import { ROLE } from '@models/enums';
 import { useAppSelector } from '@redux/index';
 import { authSelector } from '@redux/slices/userSlice';
-import { Box, Button, Heading, useDisclosure } from '@chakra-ui/react';
-import { Navigate, useParams } from 'react-router-dom';
+import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
+import { Navigate, useParams } from 'react-router-dom';
 import CollectionsList from './CollectionsList';
 import CreateCollectionModal from './CreateCollectionModal';
 
@@ -15,7 +16,11 @@ function Collections() {
 
   const disclosure = useDisclosure();
 
-  if (user && user.id !== userId && user.role !== ROLE.ADMIN) {
+  if (!user) {
+    return <CustomSpinner />;
+  }
+
+  if (user && user.id !== Number(userId || 0) && user.role !== ROLE.ADMIN) {
     return <Navigate to="/" />;
   }
 
@@ -33,7 +38,7 @@ function Collections() {
           {t('collections.create')}
         </Button>
       </Heading>
-      <CollectionsList userId={user?.id || ''} />
+      <CollectionsList userId={Number(user?.id || 0)} />
     </Box>
   );
 }

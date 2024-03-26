@@ -12,6 +12,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import { POOLING_INTERVAL } from '@constants/index';
+import { Comment } from '@models/interfaces';
 import { useGetCommentsQuery } from '@services/collection-item';
 import { useTranslation } from 'react-i18next';
 import CommentItem from './CommentItem/CommentItem.component';
@@ -25,7 +26,7 @@ function Comments({ itemId: id }: CommentsProps) {
     data: comments,
     isError,
     isLoading,
-  } = useGetCommentsQuery(id || '', {
+  } = useGetCommentsQuery(Number(id || 0), {
     skip: !id,
     pollingInterval: POOLING_INTERVAL,
   });
@@ -68,7 +69,7 @@ function Comments({ itemId: id }: CommentsProps) {
               <Skeleton height="50px" />
             </Stack>
           ) : (
-            comments.map((comment) => (
+            comments.map((comment: Comment) => (
               <CommentItem key={comment.id} comment={comment} />
             ))
           )}

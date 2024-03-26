@@ -1,7 +1,7 @@
 import { COLLECTION_STATE, COLLECTION_TYPE, ROLE, STATUS } from '@models/enums';
 
 export interface User {
-  id: string;
+  id: number;
   name: string;
   email: string;
   status: STATUS;
@@ -14,19 +14,19 @@ export interface Tag {
 }
 
 export interface CustomField {
-  id: string;
-  collection_id: string;
+  id: number;
+  collection_id: number;
   type: COLLECTION_TYPE;
   name: string;
   state: COLLECTION_STATE;
 }
 
 export interface Collection {
-  id: string;
+  id: number;
   name: string;
   description: string;
   image_url: string;
-  user_id: string;
+  user_id: number;
   category: string;
   customFields: Omit<CustomField, 'collection_id'>[];
 }
@@ -36,28 +36,28 @@ export type CollectionWithoutId = Omit<Collection, 'customFields' | 'id'> & {
 };
 
 export interface CollectionItem {
-  id: string;
-  collection_id: string;
+  id: number;
+  collection_id: number;
   name: string;
 }
 
 export interface Comment {
-  id: string;
+  id: number;
   name: string;
   role: ROLE;
   text: string;
-  item_id: string;
+  item_id: number;
 }
 
 export interface Like {
-  id: string;
-  user_id: string;
-  item_id: string;
+  id: number;
+  user_id: number;
+  item_id: number;
 }
 
 export interface CollectionItemCustomField
   extends Omit<CustomField, 'collection_id'> {
-  custom_field_id: string;
+  custom_field_id: number;
   value: string;
 }
 

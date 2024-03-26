@@ -1,0 +1,15 @@
+.card.hidden {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+  pointer-events: none;
+  opacity: 0.5;
+  border: 1px solid gray;
+}
+.card.blocked {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+  pointer-events: none;
+  border: 1px solid red;
+}/*# sourceMappingURL=CustomFieldItem.module.css.map */

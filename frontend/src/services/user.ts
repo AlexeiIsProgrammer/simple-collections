@@ -4,7 +4,7 @@ import { RegisterFormData } from '@pages/Register/types';
 import api from '@redux/api';
 
 export type ActionType = {
-  id: string;
+  id: number;
   field: keyof User;
   value: string;
 };
@@ -34,7 +34,7 @@ const userApi = api.injectEndpoints({
 
       invalidatesTags: ['Users'],
     }),
-    deleteUsers: build.mutation<void, string[]>({
+    deleteUsers: build.mutation<void, number[]>({
       query: (ids) => ({
         url: `user/`,
         method: 'DELETE',

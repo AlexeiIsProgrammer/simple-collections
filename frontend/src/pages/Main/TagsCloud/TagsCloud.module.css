@@ -1,0 +1,87 @@
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  list-style: none;
+  padding-left: 0;
+  line-height: 2.5rem;
+}
+@media (prefers-reduced-motion) {
+  .list * {
+    transition: none !important;
+  }
+}
+.list .link {
+  opacity: calc((15 - (9 - var(--size))) / 15);
+}
+.list .link:focus {
+  outline: 1px dashed;
+}
+.list .link:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 0;
+  height: 100%;
+  background: var(--color);
+  transform: translate(-50%, 0);
+  opacity: 0.15;
+  transition: width 0.25s;
+}
+.list .link:focus::before, .list .link:hover::before {
+  width: 100%;
+}
+.list .item:nth-child(2n+1) > .link {
+  --color: #181;
+}
+.list .item:nth-child(3n+1) > .link {
+  --color: #33a;
+}
+.list .item:nth-child(4n+1) > .link {
+  --color: #c38;
+}
+
+.item {
+  position: static;
+}
+
+.link {
+  display: block;
+  font-size: 1.5rem;
+  padding: 0.125rem 0.25rem;
+  text-decoration: none;
+  position: relative;
+  --size: 4;
+  --color: #a33;
+  color: var(--color) !important;
+  font-size: calc(var(--size) * 0.25rem + 0.5rem);
+}
+.link[data-weight="1"] {
+  --size: 1;
+}
+.link[data-weight="2"] {
+  --size: 2;
+}
+.link[data-weight="3"] {
+  --size: 3;
+}
+.link[data-weight="4"] {
+  --size: 4;
+}
+.link[data-weight="5"] {
+  --size: 5;
+}
+.link[data-weight="6"] {
+  --size: 6;
+}
+.link[data-weight="7"] {
+  --size: 7;
+}
+.link[data-weight="8"] {
+  --size: 8;
+}
+.link[data-weight="9"] {
+  --size: 9;
+}/*# sourceMappingURL=TagsCloud.module.css.map */

@@ -11,7 +11,7 @@ function CustomFields({ customFields, itemId }: CustomFieldsProps) {
   const [isLessThan576] = useMediaQuery('(max-width: 576px)');
 
   const updateCustomFieldHandle = useCallback(
-    (fieldId: string, value: string) => {
+    (fieldId: number, value: string) => {
       updateCustomField({ id: itemId, body: [{ value, fieldId }] });
     },
     [itemId, updateCustomField]

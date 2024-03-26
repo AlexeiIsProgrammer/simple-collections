@@ -6,7 +6,7 @@ type UserItemProps = {
   currentUser: User | null;
   checkCheckbox: (e: React.ChangeEvent<HTMLInputElement>, id: User) => void;
   isChecked: boolean;
-  deleteUserHandle: (ids: string[]) => void;
+  deleteUserHandle: (ids: number[]) => void;
   changeUserHandle: (actions: ActionType[]) => void;
 };
 

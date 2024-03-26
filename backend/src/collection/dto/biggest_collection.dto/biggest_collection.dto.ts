@@ -10,8 +10,8 @@ export class BiggestCollectionDto {
   @IsString()
   image_url: string;
 
-  @IsString()
-  user_id: string;
+  @IsNumber()
+  user_id: number;
 
   @IsNumber()
   items_count: number;

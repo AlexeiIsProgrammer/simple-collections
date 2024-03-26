@@ -1,7 +1,7 @@
 import { CollectionItemCustomField } from '@models/interfaces';
 
 type CustomFieldItemProps = {
-  updateCustomFieldHandle: (fieldId: string, value: string) => void;
+  updateCustomFieldHandle: (fieldId: number, value: string) => void;
   item: CollectionItemCustomField;
 };
 

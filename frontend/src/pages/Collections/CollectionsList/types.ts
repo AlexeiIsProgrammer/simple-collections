@@ -1,5 +1,5 @@
 type CollectionListProps = {
-  userId: string;
+  userId: number;
 };
 
 export default CollectionListProps;

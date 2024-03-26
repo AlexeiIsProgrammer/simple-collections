@@ -1,4 +1,11 @@
-import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
+import { UserEntity } from 'src/user/entity/user.entity/user.entity';
+import {
+  Column,
+  Entity,
+  Index,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity('collections')
 export class CollectionEntity {
@@ -16,6 +23,7 @@ export class CollectionEntity {
   @Column()
   image_url: string;
 
+  @ManyToOne(() => UserEntity, (user) => user.id)
   @Column()
   user_id: number;
 

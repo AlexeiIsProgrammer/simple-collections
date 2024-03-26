@@ -15,6 +15,7 @@ import {
 import AddCollectionItem from '@components/AddCollectionItem';
 import CustomSpinner from '@components/CustomSpinner';
 import { COLLECTION_TYPE, SORT_ENUM } from '@models/enums';
+import { CollectionItemWithCustomFields } from '@models/interfaces';
 import { useGetCollectionItemsQuery } from '@services/collection-item';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -34,7 +35,7 @@ function ItemsTable({ customFields }: ItemsTableProps) {
     isError,
   } = useGetCollectionItemsQuery(
     {
-      collectionId: collectionId || '',
+      collectionId: Number(collectionId || 0),
       name: sortName,
     },
     {
@@ -103,7 +104,7 @@ function ItemsTable({ customFields }: ItemsTableProps) {
     return (
       <Alert status="info" justifyContent="center">
         <AddCollectionItem
-          collectionId={collectionId || ''}
+          collectionId={Number(collectionId || 0)}
           alert={
             <>
               <AlertIcon />
@@ -153,7 +154,7 @@ function ItemsTable({ customFields }: ItemsTableProps) {
             </Tr>
           </Thead>
           <Tbody pos="relative">
-            {items.map((item) => (
+            {items.map((item: CollectionItemWithCustomFields) => (
               <CollectionTableItem key={item.id} item={item} />
             ))}
           </Tbody>
@@ -161,7 +162,7 @@ function ItemsTable({ customFields }: ItemsTableProps) {
       </TableContainer>
       <Box>
         {items.length > 0 && (
-          <AddCollectionItem collectionId={collectionId || ''} />
+          <AddCollectionItem collectionId={Number(collectionId || 0)} />
         )}
       </Box>
     </>

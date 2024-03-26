@@ -33,7 +33,7 @@ function Item() {
     if (!user || !id) return;
 
     setLike({
-      itemId: id,
+      itemId: Number(id || 0),
       userId: user.id,
     });
   };
@@ -71,9 +71,12 @@ function Item() {
         </Flex>
       </Flex>
 
-      <CustomFields itemId={id || ''} customFields={item?.customFields || []} />
+      <CustomFields
+        itemId={Number(id || 0)}
+        customFields={item?.customFields || []}
+      />
 
-      <Comments itemId={id || ''} />
+      <Comments itemId={Number(id || 0)} />
     </Box>
   );
 }

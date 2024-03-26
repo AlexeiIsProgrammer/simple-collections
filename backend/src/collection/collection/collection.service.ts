@@ -13,14 +13,12 @@ import { CreateDto } from '../dto/create.dto/create.dto';
 import { UpdateDto } from '../dto/update.dto/update.dto';
 
 import { v2 as cloudinary } from 'cloudinary';
-import { ConfigService } from '@nestjs/config';
 import { CollectionItemEntity } from 'src/collection_item/entity/collection_item.entity/collection_item.entity';
 import { BiggestCollectionDto } from '../dto/biggest_collection.dto/biggest_collection.dto';
 
 @Injectable()
 export class CollectionService {
   constructor(
-    private readonly configService: ConfigService,
     @InjectRepository(CollectionEntity)
     private collectionRepository: Repository<CollectionEntity>,
     @InjectRepository(CustomFieldEntity)
@@ -28,9 +26,9 @@ export class CollectionService {
   ) {
     cloudinary.config({
       secure: true,
-      cloud_name: this.configService.get<string>('CLOUD_NAME'),
-      api_key: this.configService.get<string>('CLOUD_KEY'),
-      api_secret: this.configService.get<string>('CLOUD_SECRET'),
+      cloud_name: process.env.CLOUD_NAME,
+      api_key: process.env.CLOUD_KEY,
+      api_secret: process.env.CLOUD_SECRET,
     });
   }
 

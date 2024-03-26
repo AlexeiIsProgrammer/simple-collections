@@ -2,7 +2,7 @@ import { Collection, CollectionWithoutId } from '@models/interfaces';
 import api from '@redux/api';
 
 type ChangeCollectionField = {
-  id: string;
+  id: number;
   body: {
     field: string;
     value: string;
@@ -10,10 +10,10 @@ type ChangeCollectionField = {
 };
 
 export type BiggestCollection = {
-  id: string;
+  id: number;
   name: string;
   image_url: string;
-  user_id: string;
+  user_id: number;
   items_count: number;
 };
 
@@ -35,7 +35,7 @@ const collectionApi = api.injectEndpoints({
       }),
       invalidatesTags: ['Collections'],
     }),
-    deleteCollection: build.mutation<void, string>({
+    deleteCollection: build.mutation<void, number>({
       query: (id) => ({
         url: `collection/${id}`,
         method: 'DELETE',
@@ -55,7 +55,7 @@ const collectionApi = api.injectEndpoints({
     }),
     getCollection: build.query<
       Collection,
-      { userId: string; collectionId: string }
+      { userId: number; collectionId: number }
     >({
       query: ({ userId, collectionId }) => ({
         url: `collection/${userId}/${collectionId}`,
@@ -63,7 +63,7 @@ const collectionApi = api.injectEndpoints({
     }),
     getUserCollections: build.query<
       Collection[],
-      { userId: string; category: string }
+      { userId: number; category: string }
     >({
       query: ({ userId, category }) => ({
         url: `collection/user/${userId}?category=${category}`,

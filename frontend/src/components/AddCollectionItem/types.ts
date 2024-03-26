@@ -1,5 +1,5 @@
 type AddCollectionItemProps = {
-  collectionId: string;
+  collectionId: number;
   alert?: JSX.Element;
 };
 

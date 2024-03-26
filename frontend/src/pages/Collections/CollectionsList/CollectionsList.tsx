@@ -38,7 +38,7 @@ function CollectionsList({ userId }: CollectionListProps) {
   const [deleteCollection] = useDeleteCollectionMutation();
   const [updateCollection] = useUpdateCollectionMutation();
 
-  const deleteCollectionHandle = (id: string) => {
+  const deleteCollectionHandle = (id: number) => {
     deleteCollection(id)
       .unwrap()
       .then(() => {
@@ -57,7 +57,7 @@ function CollectionsList({ userId }: CollectionListProps) {
       });
   };
 
-  const updateCollectionHandle = (id: string, field: string, value: string) => {
+  const updateCollectionHandle = (id: number, field: string, value: string) => {
     updateCollection({ id, body: { field, value } })
       .unwrap()
       .then(() => {
