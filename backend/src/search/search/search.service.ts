@@ -32,69 +32,37 @@ export class SearchService {
       return { collections: [], items: [] };
     }
 
-    const collectionItems = await this.collectionItemRepository
-      .createQueryBuilder('ci')
-      .select([
-        'c.id AS collection_id',
-        'c.user_id AS user_id',
-        'ci.id AS id',
-        'ci.name AS name',
-        `json_agg(json_build_object('id', t.id, 'name', t.name)) AS tags`,
-        // `json_agg(json_build_object('id', c.id, 'text', c.text)) AS comments`,
-      ])
-      .leftJoin(CollectionEntity, 'c', 'c.id = ci.collection_id')
-      .leftJoin(
-        CollectionItemTagEntity,
-        'cit',
-        'cit.collection_item_id = ci.id',
-      )
-      .leftJoin(TagEntity, 't', 't.id = cit.tag_id')
-      //   .innerJoin(CommentEntity, 'c', 'ci.id = c.item_id')
-      .where(
-        `to_tsvector('simple', ci.name || ' ' || t.name ) @@ to_tsquery('simple', :q)`,
-        {
-          q: `'${q}':*`,
-        },
-      )
-      .groupBy('ci.id, c.id')
-      .getRawMany();
+    const collectionItems = await this.collectionItemRepository.query(
+      `
+    SELECT c.user_id AS user_id, ci.name AS name, ci.id AS id,
+          ci.collection_id AS collection_id,
+          array_agg(DISTINCT jsonb_build_object('name', t.name, 'id', t.id)) AS tags,
+          array_agg(DISTINCT jsonb_build_object('name', com.name, 'text', com.text, 'id', com.id)) AS comments
+    FROM collection_items ci
+    LEFT JOIN collections c ON ci.collection_id = c.id
+    LEFT JOIN collection_item_custom_fields cif ON ci.id = cif.collection_item_id
+    LEFT JOIN collection_item_tags ct ON ci.id = ct.collection_item_id
+    LEFT JOIN tags t ON t.id = ct.tag_id
+    LEFT JOIN comments com ON ci.id = com.item_id
+    WHERE to_tsvector('english', ci.name) @@ plainto_tsquery('english', $1)
+    OR to_tsvector('english', t.name) @@ plainto_tsquery('english', $1)
+    OR to_tsvector('english', com.text) @@ plainto_tsquery('english', $1)
+    GROUP BY ci.id, c.user_id
+  `,
+      [`${q}:*`],
+    );
 
-    // const tags = await this.tagRepository
-    //   .createQueryBuilder('t')
-    //   .select(
-    //     't.*, cit.collection_item_id AS collection_item_id, ci.name as collection_item_name',
-    //   )
-    //   .innerJoin(CollectionItemTagEntity, 'cit', 't.id = cit.tag_id')
-    //   .innerJoin(CollectionItemEntity, 'ci', 'ci.id = cit.collection_item_id')
-    //   .where(`to_tsvector('simple', t.name ) @@ to_tsquery('simple', :q)`, {
-    //     q: `${q}:*`,
-    //   })
-    //   .getRawMany();
-
-    // const comments = await this.commentRepository
-    //   .createQueryBuilder('c')
-    //   .select(
-    //     'c.*, ci.name AS collection_item_name, ci.id AS collection_item_id',
-    //   )
-    //   .innerJoin(CollectionItemEntity, 'ci', 'c.item_id = ci.id')
-    //   .where(
-    //     `to_tsvector('simple', c.name || ' ' || c.text ) @@ to_tsquery('simple', :q)`,
-    //     {
-    //       q: `${q}:*`,
-    //     },
-    //   )
-    //   .getRawMany();
-
-    const collections = await this.collectionRepository
-      .createQueryBuilder('c')
-      .select('c.*')
-      .where(
-        `to_tsvector('simple', c.name || ' ' || c.description || ' ' || c.category) @@ to_tsquery('simple', :q)`,
-        {
-          q: `'${q}':*`,
-        },
-      )
-      .getRawMany();
+    const collections = await this.collectionRepository.query(
+      `
+    SELECT c.*,
+           array_agg(DISTINCT jsonb_build_object('id', cf.id, 'name', cf.name, 'type', cf.type, 'state', cf.state)) AS customFields
+    FROM collections c
+    LEFT JOIN custom_fields cf ON c.id = cf.collection_id
+    WHERE to_tsvector('english', c.name || ' ' || c.description || ' ' || c.category || ' ' || cf.name) @@ plainto_tsquery('english', $1)
+    GROUP BY c.id, c.name, c.description, c.category
+  `,
+      [`${q}:*`],
+    );
 
     return {
       collections: collections,

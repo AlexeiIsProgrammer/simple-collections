@@ -17,7 +17,10 @@ export class CollectionItemEntity {
   @Column()
   name: string;
 
-  @ManyToOne(() => CollectionEntity, (collection) => collection.id)
+  @ManyToOne(() => CollectionEntity, (collection) => collection.id, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   @Column()
   collection_id: number;
 

@@ -19,7 +19,14 @@ export class CommentEntity {
   @Column()
   text: string;
 
-  @ManyToOne(() => CollectionItemEntity, (collectionItem) => collectionItem.id)
+  @ManyToOne(
+    () => CollectionItemEntity,
+    (collectionItem) => collectionItem.id,
+    {
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE',
+    },
+  )
   @Column()
   item_id: number;
 

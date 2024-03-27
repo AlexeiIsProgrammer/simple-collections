@@ -111,7 +111,7 @@ function CollectionItem() {
           saveHandler={(value) => updateCollectionHandle(value)}
         />
 
-        <ItemsTable customFields={collection.customFields} />
+        <ItemsTable canEdit={canEdit} customFields={collection.customFields} />
       </Stack>
     </Box>
   );

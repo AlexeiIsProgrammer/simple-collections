@@ -94,7 +94,7 @@ function ItemsTable({ customFields, canEdit }: ItemsTableProps) {
     );
   }
 
-  if (items.length === 0) {
+  if (items.length === 0 && canEdit) {
     return (
       <Alert status="info" justifyContent="center">
         <AddCollectionItem

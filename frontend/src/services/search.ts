@@ -1,4 +1,4 @@
-import { Tag } from '@models/interfaces';
+import { Comment, CustomField, Tag } from '@models/interfaces';
 import api from '@redux/api';
 
 export type SearchCollectionType = {
@@ -8,6 +8,7 @@ export type SearchCollectionType = {
   category: string;
   image_url: string;
   user_id: number;
+  customFields: Omit<CustomField, 'collection_id'>[];
 };
 
 export type SearchItemType = {
@@ -16,6 +17,7 @@ export type SearchItemType = {
   collection_id: string;
   user_id: number;
   tags: Tag[];
+  comments: Comment[];
 };
 
 export interface SearchResults {

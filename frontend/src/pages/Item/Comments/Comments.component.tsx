@@ -15,7 +15,7 @@ import { POOLING_INTERVAL } from '@constants/index';
 import { Comment } from '@models/interfaces';
 import { useGetCommentsQuery } from '@services/collection-item';
 import { useTranslation } from 'react-i18next';
-import CommentItem from './CommentItem/CommentItem.component';
+import CommentItem from './CommentItem';
 import Editor from './Editor';
 import CommentsProps from './types';
 

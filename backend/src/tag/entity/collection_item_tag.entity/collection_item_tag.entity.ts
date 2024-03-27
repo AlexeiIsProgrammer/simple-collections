@@ -11,7 +11,10 @@ export class CollectionItemTagEntity {
   @PrimaryColumn()
   collection_item_id: number;
 
-  @ManyToOne(() => TagEntity, (tagEntity) => tagEntity.id)
+  @ManyToOne(() => TagEntity, (tagEntity) => tagEntity.id, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   @PrimaryColumn()
   tag_id: number;
 }

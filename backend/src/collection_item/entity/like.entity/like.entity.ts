@@ -13,11 +13,21 @@ export class LikeEntity {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @ManyToOne(() => CollectionItemEntity, (collectionItem) => collectionItem.id)
+  @ManyToOne(
+    () => CollectionItemEntity,
+    (collectionItem) => collectionItem.id,
+    {
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE',
+    },
+  )
   @Column()
   item_id: number;
 
-  @ManyToMany(() => UserEntity, (user) => user.id)
+  @ManyToMany(() => UserEntity, (user) => user.id, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   @Column()
   user_id: number;
 }

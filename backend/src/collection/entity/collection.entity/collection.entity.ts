@@ -23,7 +23,10 @@ export class CollectionEntity {
   @Column()
   image_url: string;
 
-  @ManyToOne(() => UserEntity, (user) => user.id)
+  @ManyToOne(() => UserEntity, (user) => user.id, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   @Column()
   user_id: number;
 

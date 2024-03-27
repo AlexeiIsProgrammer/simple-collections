@@ -10,6 +10,10 @@ export class CollectionItemCustomFieldEntity {
   @ManyToOne(
     () => CollectionItemEntity,
     (collectionItemEntity) => collectionItemEntity.id,
+    {
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE',
+    },
   )
   @PrimaryColumn()
   collection_item_id: number;
@@ -17,6 +21,10 @@ export class CollectionItemCustomFieldEntity {
   @ManyToOne(
     () => CustomFieldEntity,
     (customFieldEntity) => customFieldEntity.id,
+    {
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE',
+    },
   )
   @PrimaryColumn()
   custom_field_id: number;

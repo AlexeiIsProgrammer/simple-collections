@@ -1,3 +1,3 @@
-import Comment from './CommentItem.component';
+import CommentItem from './CommentItem.component';
 
-export default Comment;
+export default CommentItem;

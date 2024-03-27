@@ -18,7 +18,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import remarkGfm from 'remark-gfm';
 import styles from './CollectionListItem.module.scss';
 import CollectionItemProps from './types';
-import { useEffect, useState } from 'react';
 
 function CollectionListItem({
   item,
