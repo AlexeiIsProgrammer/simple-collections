@@ -56,7 +56,7 @@ function Results() {
           {t('results.results')}
         </Text>
         <Tag size="lg" colorScheme="green">
-          {tag?.name}
+          #{tag?.name}
         </Tag>
       </Flex>
       <HStack mt={10} flexWrap="wrap">

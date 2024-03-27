@@ -16,6 +16,7 @@ import { v2 as cloudinary } from 'cloudinary';
 import { CollectionItemEntity } from 'src/collection_item/entity/collection_item.entity/collection_item.entity';
 import { BiggestCollectionDto } from '../dto/biggest_collection.dto/biggest_collection.dto';
 import { UserEntity } from 'src/user/entity/user.entity/user.entity';
+import { ExportCollection } from '../dto/export.dto/export.dto';
 
 @Injectable()
 export class CollectionService {
@@ -165,6 +166,44 @@ export class CollectionService {
         await this.collectionRepository.find({
           where: { user_id: id, category: category || undefined },
         });
+
+      return collections;
+    } catch (err) {
+      if (err instanceof Error) {
+        throw new HttpException(err.message, HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+    }
+  }
+
+  async findCollectionsToExport(id: number): Promise<ExportCollection[]> {
+    try {
+      const collections = await this.collectionRepository.query(
+        `
+      SELECT c.*,
+             jsonb_agg(jsonb_build_object(
+               'id', ci.id,
+               'name', ci.name,
+               'created_at', ci.created_at,
+               'custom_fields', (
+                 SELECT jsonb_agg(jsonb_build_object(
+                   'id', cf.id,
+                   'name', cf.name,
+                   'type', cf.type,
+                   'state', cf.state,
+                   'value', cif.value
+                 ))
+                 FROM custom_fields cf
+                 INNER JOIN collection_item_custom_fields cif ON cf.id = cif.custom_field_id
+                 WHERE cif.collection_item_id = ci.id
+               )
+             )) AS collection_items
+      FROM collections c
+      LEFT JOIN collection_items ci ON c.id = ci.collection_id
+      WHERE c.id = $1
+      GROUP BY c.id
+    `,
+        [id],
+      );
 
       return collections;
     } catch (err) {

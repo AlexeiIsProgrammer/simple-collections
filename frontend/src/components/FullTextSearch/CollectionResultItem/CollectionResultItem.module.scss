@@ -85,3 +85,14 @@ $color-off-white: #34495e;
   opacity: 0.48;
   transition: background-size 0.2s $ease-in-out-quad;
 }
+
+.comments-scroll {
+  &::-webkit-scrollbar {
+    width: 0.2em;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: darkgrey;
+    outline: 1px solid slategrey;
+  }
+}

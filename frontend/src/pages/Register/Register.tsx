@@ -131,7 +131,7 @@ function Register() {
               <Input
                 type={showPassword ? 'text' : 'password'}
                 placeholder="DemiMur12345"
-                {...register('password', { required: true })}
+                {...register('password', { required: true, minLength: 5 })}
               />
               <InputRightElement width="4.5rem">
                 {showPassword ? (
@@ -162,6 +162,7 @@ function Register() {
                 placeholder="DemiMur12345"
                 {...register('repeatPassword', {
                   required: true,
+                  minLength: 5,
                   validate: (value) =>
                     value === watch('password') ||
                     t('register.Passwords do not match'),

@@ -16,14 +16,13 @@ import styles from './CollectionResult.module.scss';
 import CollectionResultProps from './types';
 
 function CollectionResult({ collection, onClose }: CollectionResultProps) {
-  const { id, name, category, description, image_url, user_id, customFields } =
+  const { id, name, category, description, image_url, user_id, custom_fields } =
     collection;
   const { t } = useTranslation();
   const { colorMode } = useColorMode();
 
   return (
     <LinkBox
-      maxH="200px"
       overflow="hidden"
       as={Link}
       onClick={() => onClose()}
@@ -53,9 +52,9 @@ function CollectionResult({ collection, onClose }: CollectionResultProps) {
           <Markdown className={styles.description}>{description}</Markdown>
         </CardBody>
 
-        {customFields?.length > 0 && customFields[0].id && (
-          <CardFooter>
-            {customFields.map((customField) => (
+        {custom_fields?.length > 0 && custom_fields[0].id && (
+          <CardFooter gap={1} flexWrap="wrap">
+            {custom_fields.map((customField) => (
               <Badge
                 key={customField.id}
                 colorScheme={

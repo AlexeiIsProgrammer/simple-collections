@@ -61,7 +61,7 @@ function Item() {
 
   return (
     <Box>
-      <Tags />
+      <Tags canEdit={canEdit} />
       <Flex alignItems="center" justifyContent="center" gap={5}>
         <Text my={10} textAlign="center" as="h1" fontSize={50}>
           {isLoading || !item ? t('item.nameLoading') : item.name}

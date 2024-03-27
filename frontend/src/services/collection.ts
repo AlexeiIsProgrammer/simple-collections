@@ -1,4 +1,8 @@
-import { Collection, CollectionWithoutId } from '@models/interfaces';
+import {
+  Collection,
+  CollectionItem,
+  CollectionWithoutId,
+} from '@models/interfaces';
 import api from '@redux/api';
 
 type ChangeCollectionField = {
@@ -17,6 +21,10 @@ export type BiggestCollection = {
   user_id: number;
   items_count: number;
 };
+
+export interface ExportCollection extends Collection {
+  collectionItems: CollectionItem[];
+}
 
 const collectionApi = api.injectEndpoints({
   endpoints: (build) => ({
@@ -62,6 +70,11 @@ const collectionApi = api.injectEndpoints({
         url: `collection/${userId}/${collectionId}`,
       }),
     }),
+    getExportCollections: build.query<ExportCollection[], number>({
+      query: (userId: number) => ({
+        url: `collection/${userId}/export`,
+      }),
+    }),
     getUserCollections: build.query<
       Collection[],
       { userId: number; category: string }
@@ -81,6 +94,7 @@ export const {
   useDeleteCollectionMutation,
   useGetCollectionQuery,
   useGetUserCollectionsQuery,
+  useLazyGetExportCollectionsQuery,
   useGetCollectionsQuery,
   useGetBiggestCollectionsQuery,
 } = collectionApi;

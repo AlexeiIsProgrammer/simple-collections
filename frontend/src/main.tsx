@@ -10,6 +10,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import './main.css';
 import { ROLE } from './models/enums';
 import Admin from './pages/Admin';
 import Collections from './pages/Collections';
@@ -17,7 +18,6 @@ import Item from './pages/Item';
 import Results from './pages/Results';
 import PrivateRoute from './routes/PrivateRoute';
 import theme from './theme';
-import './main.css';
 
 import './i18n';
 

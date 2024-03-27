@@ -23,7 +23,6 @@ import { useTranslation } from 'react-i18next';
 import { LoginFormData } from './types';
 
 import styles from './Login.module.scss';
-import { STATUS } from '@models/enums';
 
 function Login() {
   const { t } = useTranslation();
@@ -108,7 +107,7 @@ function Login() {
               <Input
                 type={showPassword ? 'text' : 'password'}
                 placeholder="DemiMur12345"
-                {...register('password', { required: true })}
+                {...register('password', { required: true, minLength: 5 })}
               />
               <InputRightElement width="4.5rem">
                 {showPassword ? (

@@ -8,7 +8,7 @@ export type SearchCollectionType = {
   category: string;
   image_url: string;
   user_id: number;
-  customFields: Omit<CustomField, 'collection_id'>[];
+  custom_fields: Omit<CustomField, 'collection_id'>[];
 };
 
 export type SearchItemType = {

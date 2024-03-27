@@ -16,10 +16,19 @@ import { CollectionDto } from '../dto/collection.dto/collection.dto';
 import { UpdateDto } from '../dto/update.dto/update.dto';
 import { CreateDto } from '../dto/create.dto/create.dto';
 import { BiggestCollectionDto } from '../dto/biggest_collection.dto/biggest_collection.dto';
+import { ExportCollection } from '../dto/export.dto/export.dto';
 
 @Controller('collection')
 export class CollectionController {
   constructor(private collectionService: CollectionService) {}
+
+  @Get(':userId/export')
+  @HttpCode(StatusCodes.OK)
+  findCollectionsToExport(
+    @Param('userId') userId: number,
+  ): Promise<ExportCollection[]> {
+    return this.collectionService.findCollectionsToExport(userId);
+  }
 
   @Post()
   @HttpCode(StatusCodes.NO_CONTENT)

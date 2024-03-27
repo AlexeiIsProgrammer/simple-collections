@@ -22,10 +22,11 @@ import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import styles from './Tags.module.scss';
 import LocalTag from './LocalTag';
+import TagsProps from './types';
 
 export type ActionTypeWithPrev = ActionType & { prevType?: TagActionType };
 
-function Tags() {
+function Tags({ canEdit }: TagsProps) {
   const { t } = useTranslation();
   const [tagNewValue, setTagNewValue] = useState('');
   const [isEditTags, setIsEditTags] = useState<boolean>(false);
@@ -175,62 +176,65 @@ function Tags() {
           />
         ))
       )}
-      {isEditTags ? (
-        <InputGroup w={200} size="md">
-          <Input
-            isInvalid={isValueExists}
-            className={styles.input}
-            value={tagNewValue}
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setTagNewValue(e.target.value)
-            }
-            pr={tagNewValue.length > 0 ? '6rem' : '3rem'}
-            list="tags"
-            placeholder={t('tag.add')}
-          />
+      {canEdit &&
+        (isEditTags ? (
+          <InputGroup w={200} size="md">
+            <Input
+              isInvalid={isValueExists}
+              className={styles.input}
+              value={tagNewValue}
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                setTagNewValue(e.target.value)
+              }
+              pr={tagNewValue.length > 0 ? '6rem' : '3rem'}
+              list="tags"
+              placeholder={t('tag.add')}
+            />
 
-          <datalist id="tags">
-            {allTags
-              ?.filter(
-                (allTag) =>
-                  !localTags.some((localTag) => localTag.id === allTag.id)
-              )
-              .map((allTag) => <option key={allTag.id} value={allTag.name} />)}
-          </datalist>
-          <InputRightElement w="auto">
-            <HStack>
-              {tagNewValue.length > 0 && (
+            <datalist id="tags">
+              {allTags
+                ?.filter(
+                  (allTag) =>
+                    !localTags.some((localTag) => localTag.id === allTag.id)
+                )
+                .map((allTag) => (
+                  <option key={allTag.id} value={allTag.name} />
+                ))}
+            </datalist>
+            <InputRightElement w="auto">
+              <HStack>
+                {tagNewValue.length > 0 && (
+                  <IconButton
+                    isDisabled={isValueExists}
+                    onClick={addTagHandler}
+                    title={t('tag.addTag')}
+                    variant="outline"
+                    colorScheme="green"
+                    aria-label={t('tag.addTag')}
+                    icon={<AddIcon />}
+                  />
+                )}
                 <IconButton
-                  isDisabled={isValueExists}
-                  onClick={addTagHandler}
-                  title={t('tag.addTag')}
+                  title={t('tag.save')}
+                  onClick={saveChangesHandler}
                   variant="outline"
-                  colorScheme="green"
-                  aria-label={t('tag.addTag')}
-                  icon={<AddIcon />}
+                  colorScheme="teal"
+                  aria-label={t('tag.save')}
+                  icon={<CheckIcon />}
                 />
-              )}
-              <IconButton
-                title={t('tag.save')}
-                onClick={saveChangesHandler}
-                variant="outline"
-                colorScheme="teal"
-                aria-label={t('tag.save')}
-                icon={<CheckIcon />}
-              />
-            </HStack>
-          </InputRightElement>
-        </InputGroup>
-      ) : (
-        <IconButton
-          title={t('tag.edit')}
-          onClick={() => setIsEditTags(true)}
-          variant="outline"
-          colorScheme="teal"
-          aria-label={t('tag.edit')}
-          icon={<EditIcon />}
-        />
-      )}
+              </HStack>
+            </InputRightElement>
+          </InputGroup>
+        ) : (
+          <IconButton
+            title={t('tag.edit')}
+            onClick={() => setIsEditTags(true)}
+            variant="outline"
+            colorScheme="teal"
+            aria-label={t('tag.edit')}
+            icon={<EditIcon />}
+          />
+        ))}
     </HStack>
   );
 }

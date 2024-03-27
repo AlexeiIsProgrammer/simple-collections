@@ -43,16 +43,20 @@ function CollectionResultItem({ item, onClose }: CollectionResultItemProps) {
               </CardBody>
             )}
           </GridItem>
-          <GridItem maxHeight={200} overflow="auto">
+          <GridItem
+            className={styles['comments-scroll']}
+            maxHeight={200}
+            overflow="auto"
+          >
             {comments?.length > 0 && comments[0].id && (
-              <VStack>
+              <VStack gap={0}>
                 {comments.map((comment) => (
                   <Flex
                     key={comment.id}
                     p={2}
                     background="gray.500"
                     borderRadius={10}
-                    m={2}
+                    my={2}
                   >
                     <Avatar
                       mr={2}

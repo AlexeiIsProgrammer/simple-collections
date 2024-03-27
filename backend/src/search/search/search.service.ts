@@ -6,20 +6,13 @@ import {
 import { CollectionEntity } from 'src/collection/entity/collection.entity/collection.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { TagEntity } from 'src/tag/entity/tag.entity/tag.entity';
 import { CollectionItemEntity } from 'src/collection_item/entity/collection_item.entity/collection_item.entity';
-import { CommentEntity } from 'src/comment/entity/comment.entity/comment.entity';
-import { CollectionItemTagEntity } from 'src/tag/entity/collection_item_tag.entity/collection_item_tag.entity';
 
 @Injectable()
 export class SearchService {
   constructor(
     @InjectRepository(CollectionEntity)
     private readonly collectionRepository: Repository<CollectionEntity>,
-    @InjectRepository(TagEntity)
-    private readonly tagRepository: Repository<TagEntity>,
-    @InjectRepository(CommentEntity)
-    private readonly commentRepository: Repository<CommentEntity>,
     @InjectRepository(CollectionItemEntity)
     private readonly collectionItemRepository: Repository<CollectionItemEntity>,
   ) {}
@@ -55,7 +48,7 @@ export class SearchService {
     const collections = await this.collectionRepository.query(
       `
     SELECT c.*,
-           array_agg(DISTINCT jsonb_build_object('id', cf.id, 'name', cf.name, 'type', cf.type, 'state', cf.state)) AS customFields
+           array_agg(DISTINCT jsonb_build_object('id', cf.id, 'name', cf.name, 'type', cf.type, 'state', cf.state)) AS custom_fields
     FROM collections c
     LEFT JOIN custom_fields cf ON c.id = cf.collection_id
     WHERE to_tsvector('english', c.name || ' ' || c.description || ' ' || c.category || ' ' || cf.name) @@ plainto_tsquery('english', $1)

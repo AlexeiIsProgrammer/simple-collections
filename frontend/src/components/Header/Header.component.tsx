@@ -8,6 +8,7 @@ import {
   Text,
   useColorModeValue,
   useDisclosure,
+  useMediaQuery,
 } from '@chakra-ui/react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import SearchInput from '@components/SearchInput';
@@ -30,6 +31,8 @@ function Header() {
   const location = useLocation();
   const dispatch = useAppDispatch();
 
+  const [isLessThan768] = useMediaQuery('(max-width: 768px)');
+
   const disclosure = useDisclosure();
   const searchRef = useRef<HTMLInputElement>(null);
 
@@ -40,7 +43,13 @@ function Header() {
 
   return (
     <Box p={5} boxShadow={`0px 1px 1px ${shadowColor}`}>
-      <Flex gap={5} alignItems="center" direction="row">
+      <Flex
+        wrap={isLessThan768 ? 'wrap' : 'nowrap'}
+        gap={5}
+        alignItems="center"
+        justifyContent={isLessThan768 ? 'center' : 'normal'}
+        direction="row"
+      >
         <Image
           title={t('header.To the main')}
           onClick={() => navigate('/')}
@@ -51,6 +60,7 @@ function Header() {
           alt="Logo"
         />
         <SearchInput
+          flex={isLessThan768 ? '1 1 auto' : 'none'}
           ref={searchRef}
           onFocus={() => {
             disclosure.onOpen();

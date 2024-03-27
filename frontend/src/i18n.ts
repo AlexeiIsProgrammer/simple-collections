@@ -197,6 +197,7 @@ i18n.use(initReactI18next).init({
         collections: {
           collections: 'collections',
           create: 'Create a new one?',
+          export: 'Export to .csv',
         },
         create: {
           created: 'Successfully created!',
@@ -428,6 +429,7 @@ i18n.use(initReactI18next).init({
         collections: {
           collections: 'Калекцыі',
           create: 'Стварыць новую?',
+          export: 'Экспарт у .csv',
         },
         create: {
           created: 'Паспяхова створана!',
