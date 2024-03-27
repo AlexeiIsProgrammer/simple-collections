@@ -1,23 +1,15 @@
-import { AddIcon, CheckIcon, EditIcon, RepeatIcon } from '@chakra-ui/icons';
+import { AddIcon, CheckIcon, EditIcon } from '@chakra-ui/icons';
 import {
   Alert,
   AlertIcon,
-  Editable,
-  EditableInput,
-  EditablePreview,
   HStack,
   IconButton,
   Input,
   InputGroup,
   InputRightElement,
-  Tag,
-  TagCloseButton,
-  TagLabel,
-  TagLeftIcon,
   Text,
 } from '@chakra-ui/react';
 import CustomSpinner from '@components/CustomSpinner';
-import HashIcon from '@icons/HashIcon';
 import {
   ActionType,
   TagActionType,
@@ -25,12 +17,13 @@ import {
   useGetTagsQuery,
   useUpdateTagsMutation,
 } from '@services/tag';
-import { ChangeEvent, useEffect, useMemo, useState } from 'react';
+import { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import styles from './Tags.module.scss';
+import LocalTag from './LocalTag';
 
-type ActionTypeWithPrev = ActionType & { prevType?: TagActionType };
+export type ActionTypeWithPrev = ActionType & { prevType?: TagActionType };
 
 function Tags() {
   const { t } = useTranslation();
@@ -45,38 +38,40 @@ function Tags() {
     data: tags,
     isFetching,
     isError,
-  } = useGetTagsByCollectionItemQuery(id || '', { skip: !id });
+  } = useGetTagsByCollectionItemQuery(Number(id || 0), { skip: !id });
 
   const { data: allTags } = useGetTagsQuery();
-  console.log(allTags);
 
   const [localTags, setLocalTags] = useState<ActionTypeWithPrev[]>([]);
 
-  const closeTagHandler = (tag: ActionTypeWithPrev) => {
-    switch (tag.type) {
-      case 'delete':
-        setLocalTags(
-          localTags.map((localTag) =>
-            localTag.id === tag.id
-              ? { ...localTag, type: localTag.prevType }
-              : localTag
-          )
-        );
-        break;
+  const closeTagHandler = useCallback(
+    (tag: ActionTypeWithPrev) => {
+      switch (tag.type) {
+        case 'delete':
+          setLocalTags(
+            localTags.map((localTag) =>
+              localTag.id === tag.id
+                ? { ...localTag, type: localTag.prevType }
+                : localTag
+            )
+          );
+          break;
 
-      case 'update':
-      case 'create':
-      default:
-        setLocalTags(
-          localTags.map((localTag) =>
-            localTag.id === tag.id
-              ? { ...localTag, type: 'delete', prevType: tag.type }
-              : localTag
-          )
-        );
-        break;
-    }
-  };
+        case 'update':
+        case 'create':
+        default:
+          setLocalTags(
+            localTags.map((localTag) =>
+              localTag.id === tag.id
+                ? { ...localTag, type: 'delete', prevType: tag.type }
+                : localTag
+            )
+          );
+          break;
+      }
+    },
+    [localTags]
+  );
 
   const saveChangesHandler = () => {
     if (!id) return;
@@ -94,34 +89,54 @@ function Tags() {
     setIsEditTags(false);
   };
 
-  const updateTagHandler = (
-    e: ChangeEvent<HTMLInputElement>,
-    tag: ActionTypeWithPrev
-  ) =>
-    setLocalTags(
-      localTags.map((localTag) =>
-        localTag.id === tag.id
-          ? {
-              ...localTag,
-              name: e.target.value,
-              type: localTag.type === 'create' ? 'create' : 'update',
-            }
-          : localTag
-      )
-    );
+  const updateTagHandler = useCallback(
+    (e: ChangeEvent<HTMLInputElement>, tag: ActionTypeWithPrev) =>
+      setLocalTags(
+        localTags.map((localTag) =>
+          localTag.id === tag.id
+            ? {
+                ...localTag,
+                name: e.target.value,
+                type: localTag.type === 'create' ? 'create' : 'update',
+              }
+            : localTag
+        )
+      ),
+    [localTags]
+  );
 
-  const addTagHandler = () => {
+  const addTagHandler = useCallback(() => {
     setLocalTags([
       ...localTags,
       {
         type: 'create',
         name: tagNewValue,
-        id: Date.now().toString(), // Good client id generation kostyl :D
+        id: Date.now(), // Good client id generation kostyl :D
       },
     ]);
 
     setTagNewValue('');
-  };
+  }, [localTags, tagNewValue]);
+
+  const onBlur = useCallback(
+    (e: ChangeEvent<HTMLInputElement>, tag: ActionTypeWithPrev) => {
+      if (!localTags.some((localTag) => localTag.name === e.target.value)) {
+        updateTagHandler(e, tag);
+      } else {
+        setLocalTags(
+          localTags.map((localTag) =>
+            tag.id === localTag.id
+              ? {
+                  ...localTag,
+                  name: localTag.name,
+                }
+              : localTag
+          )
+        );
+      }
+    },
+    [localTags, updateTagHandler]
+  );
 
   const isValueExists = useMemo(
     () => localTags.some((localTag) => localTag.name === tagNewValue),
@@ -140,11 +155,6 @@ function Tags() {
       </Alert>
     );
   }
-  console.log(
-    allTags?.filter(
-      (allTag) => !localTags.some((localTag) => localTag.id === allTag.id)
-    )
-  );
 
   return (
     <HStack flexWrap="wrap" mt={2} spacing={4} alignItems="center">
@@ -156,62 +166,13 @@ function Tags() {
         <CustomSpinner />
       ) : (
         localTags.map((tag) => (
-          <Tag
-            size="lg"
+          <LocalTag
             key={tag.id}
-            variant="subtle"
-            colorScheme={
-              tag.type === 'delete'
-                ? 'red'
-                : tag.type === 'create'
-                  ? 'green'
-                  : tag.type === 'update'
-                    ? 'blue'
-                    : 'cyan'
-            }
-          >
-            <TagLeftIcon boxSize="12px" as={HashIcon} />
-            <TagLabel lineHeight={1.5}>
-              {isEditTags && tag.type !== 'delete' ? (
-                <Editable defaultValue={tag.name}>
-                  <EditablePreview />
-                  <EditableInput
-                    w={`${tag.name?.length || 1}ch`}
-                    onBlur={(e: ChangeEvent<HTMLInputElement>) => {
-                      if (
-                        !localTags.some(
-                          (localTag) => localTag.name === e.target.value
-                        )
-                      ) {
-                        updateTagHandler(e, tag);
-                      } else {
-                        setLocalTags(
-                          localTags.map((localTag) =>
-                            localTag.id === tag.id
-                              ? {
-                                  ...localTag,
-                                  name: tag.name,
-                                }
-                              : localTag
-                          )
-                        );
-                      }
-                    }}
-                  />
-                </Editable>
-              ) : (
-                tag.name
-              )}
-            </TagLabel>
-            {isEditTags && (
-              <TagCloseButton
-                cursor="pointer"
-                title={`${tag.type === 'delete' ? t('tag.return') : t('item.delete')} ${tag.name} tag`}
-                as={tag.type === 'delete' ? RepeatIcon : undefined}
-                onClick={() => closeTagHandler(tag)}
-              />
-            )}
-          </Tag>
+            localTag={tag}
+            closeTagHandler={closeTagHandler}
+            isEditTags={isEditTags}
+            onBlur={onBlur}
+          />
         ))
       )}
       {isEditTags ? (

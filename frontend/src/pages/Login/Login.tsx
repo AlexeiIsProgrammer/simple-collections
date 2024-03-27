@@ -23,6 +23,7 @@ import { useTranslation } from 'react-i18next';
 import { LoginFormData } from './types';
 
 import styles from './Login.module.scss';
+import { STATUS } from '@models/enums';
 
 function Login() {
   const { t } = useTranslation();
@@ -55,6 +56,7 @@ function Login() {
         email,
         password,
       }).unwrap();
+
       dispatch(setUser(user));
 
       toast({

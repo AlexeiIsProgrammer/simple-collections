@@ -1,4 +1,8 @@
-import { ChevronDownIcon, ChevronUpIcon } from '@chakra-ui/icons';
+import {
+  ArrowUpDownIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
+} from '@chakra-ui/icons';
 import {
   Alert,
   AlertIcon,
@@ -17,13 +21,13 @@ import CustomSpinner from '@components/CustomSpinner';
 import { COLLECTION_TYPE, SORT_ENUM } from '@models/enums';
 import { CollectionItemWithCustomFields } from '@models/interfaces';
 import { useGetCollectionItemsQuery } from '@services/collection-item';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import CollectionTableItem from './CollectionTableItem';
 import ItemsTableProps from './types';
 
-function ItemsTable({ customFields }: ItemsTableProps) {
+function ItemsTable({ customFields, canEdit }: ItemsTableProps) {
   const { t } = useTranslation();
   const { collectionId } = useParams();
 
@@ -41,16 +45,6 @@ function ItemsTable({ customFields }: ItemsTableProps) {
     {
       skip: !collectionId,
     }
-  );
-
-  const dateItem = useMemo(
-    () => customFields.find((field) => field.type === COLLECTION_TYPE.DATE),
-    [customFields]
-  );
-
-  const stringItem = useMemo(
-    () => customFields.find((field) => field.type === COLLECTION_TYPE.STRING),
-    [customFields]
   );
 
   const setSortHandle = (
@@ -80,7 +74,7 @@ function ItemsTable({ customFields }: ItemsTableProps) {
       case SORT_ENUM.desc:
         return <ChevronDownIcon />;
       case SORT_ENUM.default:
-        return null;
+        return <ArrowUpDownIcon boxSize="2" />;
 
       default:
         return null;
@@ -131,40 +125,50 @@ function ItemsTable({ customFields }: ItemsTableProps) {
                 {t('itemsTable.name')}
                 {getCurrentShevron(sortName)}
               </Th>
-              {dateItem && (
-                <Th textAlign="center">
-                  <Center gap={2}>
-                    {dateItem.name}
-                    <Badge colorScheme="purple">{dateItem.type}</Badge>
-                  </Center>
-                </Th>
-              )}
-              {stringItem && (
-                <Th textAlign="center">
-                  <Center gap={2}>
-                    {stringItem.name}
-                    <Badge colorScheme="purple">{stringItem.type}</Badge>
-                  </Center>
-                </Th>
-              )}
+              {customFields.length > 0 &&
+                customFields
+                  .filter(
+                    (customField) =>
+                      customField.type === COLLECTION_TYPE.DATE ||
+                      customField.type === COLLECTION_TYPE.STRING
+                  )
+                  .map(({ name, type, id }) => (
+                    <Th key={id} textAlign="center">
+                      <Center gap={2}>
+                        {name}
+                        <Badge colorScheme="purple">{type}</Badge>
+                      </Center>
+                    </Th>
+                  ))}
+
               <Th textAlign="center">{t('itemsTable.Likes')}</Th>
               <Th textAlign="center">{t('itemsTable.See')}</Th>
-              <Th textAlign="center">{t('itemsTable.Edit')}</Th>
-              <Th textAlign="center">{t('itemsTable.Delete')}</Th>
+              {canEdit && (
+                <>
+                  <Th textAlign="center">{t('itemsTable.Edit')}</Th>
+                  <Th textAlign="center">{t('itemsTable.Delete')}</Th>
+                </>
+              )}
             </Tr>
           </Thead>
           <Tbody pos="relative">
             {items.map((item: CollectionItemWithCustomFields) => (
-              <CollectionTableItem key={item.id} item={item} />
+              <CollectionTableItem
+                key={item.id}
+                canEdit={canEdit}
+                item={item}
+              />
             ))}
           </Tbody>
         </Table>
       </TableContainer>
-      <Box>
-        {items.length > 0 && (
-          <AddCollectionItem collectionId={Number(collectionId || 0)} />
-        )}
-      </Box>
+      {canEdit && (
+        <Box>
+          {items.length > 0 && (
+            <AddCollectionItem collectionId={Number(collectionId || 0)} />
+          )}
+        </Box>
+      )}
     </>
   );
 }

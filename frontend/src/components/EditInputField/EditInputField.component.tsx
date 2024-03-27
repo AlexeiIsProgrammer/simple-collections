@@ -16,6 +16,7 @@ import styles from './EditInputField.module.scss';
 import EditInputFieldProps from './types';
 
 function EditInputField({
+  readonly,
   saveHandler,
   type,
   initialValue,
@@ -30,9 +31,9 @@ function EditInputField({
       if (value !== savedValue.current) saveHandler(value);
       setViewMode('read');
     } else {
-      savedValue.current = value;
       setViewMode('edit');
     }
+    savedValue.current = value;
   };
 
   const onChangeValue = (
@@ -57,16 +58,12 @@ function EditInputField({
       className={clsx(styles.box, {
         [styles.read]: viewMode === 'read',
         [styles.input]: type !== 'textarea',
+        [styles.readonly]: readonly,
       })}
     >
-      {viewMode === 'edit' ? (
+      {viewMode === 'edit' && !readonly ? (
         type === 'textarea' ? (
-          <MarkdownTextarea
-            isEdit
-            defaultValue={savedValue.current}
-            onChange={onChangeValue}
-            value={value}
-          />
+          <MarkdownTextarea isEdit onChange={onChangeValue} value={value} />
         ) : (
           <InputGroup size="md">
             <Input
@@ -86,7 +83,7 @@ function EditInputField({
           )}
         </Box>
       )}
-      {viewMode === 'edit' && type !== 'input' && (
+      {viewMode === 'edit' && !readonly && type !== 'input' && (
         <Button
           colorScheme="white"
           variant="outline"

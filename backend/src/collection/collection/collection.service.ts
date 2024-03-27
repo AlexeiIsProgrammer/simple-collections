@@ -15,6 +15,7 @@ import { UpdateDto } from '../dto/update.dto/update.dto';
 import { v2 as cloudinary } from 'cloudinary';
 import { CollectionItemEntity } from 'src/collection_item/entity/collection_item.entity/collection_item.entity';
 import { BiggestCollectionDto } from '../dto/biggest_collection.dto/biggest_collection.dto';
+import { UserEntity } from 'src/user/entity/user.entity/user.entity';
 
 @Injectable()
 export class CollectionService {
@@ -133,13 +134,16 @@ export class CollectionService {
         .select([
           'c.id AS id',
           'c.name AS name',
+          'u.name AS username',
           'c.user_id AS user_id',
           'c.image_url AS image_url',
           'COUNT(ci.id) as items_count',
         ])
         .innerJoin(CollectionItemEntity, 'ci', 'c.id = ci.collection_id')
+        .innerJoin(UserEntity, 'u', 'c.user_id = u.id')
         .groupBy('c.id')
         .addGroupBy('c.name')
+        .addGroupBy('u.name')
         .orderBy({ items_count: 'DESC' })
         .limit(5)
         .getRawMany();

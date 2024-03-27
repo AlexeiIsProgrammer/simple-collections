@@ -13,6 +13,7 @@ export type BiggestCollection = {
   id: number;
   name: string;
   image_url: string;
+  username: string;
   user_id: number;
   items_count: number;
 };

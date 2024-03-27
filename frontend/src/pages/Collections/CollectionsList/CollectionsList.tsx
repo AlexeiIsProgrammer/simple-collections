@@ -102,7 +102,7 @@ function CollectionsList({ userId }: CollectionListProps) {
         <option value="">{t('collection.choose')}</option>
         {CATEGORIES.map((category) => (
           <option value={category} key={category}>
-            {category}
+            {t(`category.${category}`)}
           </option>
         ))}
       </Select>

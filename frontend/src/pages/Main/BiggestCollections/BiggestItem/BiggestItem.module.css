@@ -70,11 +70,11 @@
 }
 
 .title {
-  font-size: 62px;
+  font-size: 35px;
   display: block;
   transform: translateX(-80px);
   transition: all 0.75s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0s;
-  color: black;
+  text-shadow: 0px 0px 5px pink;
 }
 .title:nth-child(1) {
   transition-delay: 0.1s;

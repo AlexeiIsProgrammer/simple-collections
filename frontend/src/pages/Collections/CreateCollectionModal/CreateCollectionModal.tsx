@@ -36,7 +36,7 @@ function CreateCollectionModal({
   const [customFields, setCustomFields] = useState<CustomFieldModal[]>([]);
   const toast = useToast();
 
-  const [createCollection] = useCreateCollectionMutation();
+  const [createCollection, { isLoading }] = useCreateCollectionMutation();
   const { userId } = useParams();
   const {
     register,
@@ -171,7 +171,12 @@ function CreateCollectionModal({
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="blue" type="submit" mr={3}>
+            <Button
+              isLoading={isLoading}
+              colorScheme="blue"
+              type="submit"
+              mr={3}
+            >
               {t('create.Save')}
             </Button>
             <Button onClick={onClose}>{t('create.Cancel')}</Button>

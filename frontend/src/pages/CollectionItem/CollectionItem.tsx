@@ -11,10 +11,14 @@ import {
 } from '@chakra-ui/react';
 import CustomSpinner from '@components/CustomSpinner';
 import EditInputField from '@components/EditInputField';
+import { ROLE } from '@models/enums';
+import { useAppSelector } from '@redux/index';
+import { authSelector } from '@redux/slices/userSlice';
 import {
   useGetCollectionQuery,
   useUpdateCollectionMutation,
 } from '@services/collection';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import styles from './CollectionItem.module.scss';
@@ -23,6 +27,7 @@ import ItemsTable from './ItemsTable';
 function CollectionItem() {
   const { t } = useTranslation();
   const { userId, collectionId } = useParams();
+  const { user, isAuth } = useAppSelector(authSelector);
 
   const [updateCollection] = useUpdateCollectionMutation();
 
@@ -46,6 +51,11 @@ function CollectionItem() {
       },
     });
   };
+
+  const canEdit = useMemo(
+    () => isAuth && (user?.id === +(userId || 1) || user?.role === ROLE.ADMIN),
+    [userId, user?.id, user?.role, isAuth]
+  );
 
   if (isFetching) {
     return <CustomSpinner />;
@@ -95,6 +105,7 @@ function CollectionItem() {
         )}
 
         <EditInputField
+          readonly={!canEdit}
           initialValue={collection.description}
           type="textarea"
           saveHandler={(value) => updateCollectionHandle(value)}

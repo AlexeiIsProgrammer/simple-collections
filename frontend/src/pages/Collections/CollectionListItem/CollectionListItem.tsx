@@ -9,6 +9,7 @@ import {
   IconButton,
   Image,
   Stack,
+  useBoolean,
 } from '@chakra-ui/react';
 import EditInputField from '@components/EditInputField';
 import { useTranslation } from 'react-i18next';
@@ -17,6 +18,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import remarkGfm from 'remark-gfm';
 import styles from './CollectionListItem.module.scss';
 import CollectionItemProps from './types';
+import { useEffect, useState } from 'react';
 
 function CollectionListItem({
   item,
@@ -28,6 +30,8 @@ function CollectionListItem({
   const { userId } = useParams();
   const navigate = useNavigate();
 
+  const [hasImageLoaded, { on }] = useBoolean(false);
+
   return (
     <Card
       onClick={() => navigate(`/collections/${userId}/${id}`)}
@@ -38,9 +42,10 @@ function CollectionListItem({
     >
       <Box overflow="hidden" maxW={{ base: '100%', sm: '200px' }}>
         <Image
+          onLoad={() => on()}
           className={styles.image}
           objectFit="cover"
-          src={image_url}
+          src={hasImageLoaded ? image_url : 'https://i.gifer.com/GzgM.gif'}
           alt="Collection Item"
         />
       </Box>

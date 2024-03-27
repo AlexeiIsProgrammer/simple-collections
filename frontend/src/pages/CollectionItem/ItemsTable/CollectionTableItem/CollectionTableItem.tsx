@@ -14,33 +14,22 @@ import {
   useUpdateCollectionItemCustomFieldMutation,
   useUpdateCollectionItemMutation,
 } from '@services/collection-item';
-import { useMemo, useRef } from 'react';
+import { ChangeEvent, useCallback, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import CollectionTableItemProps from './types';
 
-function CollectionTableItem({ item }: CollectionTableItemProps) {
+function CollectionTableItem({ item, canEdit }: CollectionTableItemProps) {
   const { t } = useTranslation();
   const toast = useToast();
   const { userId } = useParams();
   const { id, name, collection_id, customFields } = item;
-
   const navigate = useNavigate();
+
+  const [localCustomFields, setLocalCustomFields] = useState(customFields);
 
   const { isOpen, onToggle } = useDisclosure();
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const dateRef = useRef<HTMLInputElement | null>(null);
-  const stringRef = useRef<HTMLInputElement | null>(null);
-
-  const dateField = useMemo(
-    () => customFields.find((field) => field.type === COLLECTION_TYPE.DATE),
-    [customFields]
-  );
-
-  const stringField = useMemo(
-    () => customFields.find((field) => field.type === COLLECTION_TYPE.STRING),
-    [customFields]
-  );
 
   const [updateCollectionItem] = useUpdateCollectionItemMutation();
   const [updateCustomField] = useUpdateCollectionItemCustomFieldMutation();
@@ -79,42 +68,34 @@ function CollectionTableItem({ item }: CollectionTableItemProps) {
           id,
           body: { name: inputRef.current.value },
         }).unwrap();
-
-        toast({
-          title: t('collectionTableItem.change', { name }),
-          status: 'success',
-          position: 'top',
-        });
       }
 
-      const actions = [];
+      const actions = localCustomFields
+        .filter(
+          (setLocalCustomField, ind) =>
+            setLocalCustomField.value !== '' &&
+            setLocalCustomField.value !== customFields[ind].value
+        )
+        .map((customField) => ({
+          value: customField.value,
+          fieldId: customField.id,
+        }));
 
-      if (
-        dateRef.current &&
-        dateField &&
-        dateRef.current.value !== '' &&
-        dateField.value !== dateRef.current.value
-      ) {
-        actions.push({ value: dateRef.current.value, fieldId: dateField.id });
+      if (actions.length === 0) {
+        onToggle();
+        return;
       }
 
-      if (
-        stringRef.current &&
-        stringField &&
-        stringRef.current.value !== '' &&
-        stringField.value !== stringRef.current.value
-      ) {
-        actions.push({
-          value: stringRef.current.value,
-          fieldId: stringField.id,
-        });
-      }
+      await updateCustomField({
+        id,
+        body: actions,
+      }).unwrap();
 
-      if (actions.length > 0)
-        await updateCustomField({
-          id,
-          body: actions,
-        }).unwrap();
+      toast({
+        title: t('collectionTableItem.change', { name }),
+        status: 'success',
+        position: 'top',
+      });
 
       onToggle();
     } catch {
@@ -126,34 +107,47 @@ function CollectionTableItem({ item }: CollectionTableItemProps) {
     }
   };
 
+  const onChangeCustomField = useCallback(
+    (e: ChangeEvent<HTMLInputElement>, localCustomFieldId: number) => {
+      setLocalCustomFields(
+        localCustomFields.map((localCustomField) =>
+          localCustomField.id === localCustomFieldId
+            ? { ...localCustomField, value: e.target.value }
+            : localCustomField
+        )
+      );
+    },
+    [localCustomFields]
+  );
+
   return (
     <Tr pos="relative">
       <Td textAlign="center">{id}</Td>
       <Td w={300} textAlign="center">
         {isOpen ? <Input defaultValue={name} ref={inputRef} /> : name}
       </Td>
-      {dateField && (
-        <Td w={300} textAlign="center">
-          {isOpen ? (
-            <Input type="date" defaultValue={dateField.value} ref={dateRef} />
-          ) : (
-            dateField.value
-          )}
-        </Td>
-      )}
-      {stringField && (
-        <Td w={300} textAlign="center">
-          {isOpen ? (
-            <Input
-              type="text"
-              defaultValue={stringField.value}
-              ref={stringRef}
-            />
-          ) : (
-            stringField.value
-          )}
-        </Td>
-      )}
+      {localCustomFields.length > 0 &&
+        localCustomFields.map(({ id: localCustomFieldId, type, value }) => (
+          <Td key={localCustomFieldId} w={300} textAlign="center">
+            {isOpen ? (
+              type === COLLECTION_TYPE.DATE ? (
+                <Input
+                  type="date"
+                  onChange={(e) => onChangeCustomField(e, localCustomFieldId)}
+                  defaultValue={value}
+                />
+              ) : (
+                <Input
+                  type="text"
+                  onChange={(e) => onChangeCustomField(e, localCustomFieldId)}
+                  defaultValue={value}
+                />
+              )
+            ) : (
+              value
+            )}
+          </Td>
+        ))}
       <Td textAlign="center">
         <LikeHeart likesCount={item.likes.length} />
       </Td>
@@ -168,24 +162,28 @@ function CollectionTableItem({ item }: CollectionTableItemProps) {
           colorScheme="green"
         />
       </Td>
-      <Td textAlign="center">
-        <IconButton
-          onClick={updateItemHandle}
-          aria-label="Edit item"
-          icon={isOpen ? <CheckIcon /> : <EditIcon />}
-          title={t('collectionTableItem.edit', { name })}
-          colorScheme={isOpen ? 'green' : 'blue'}
-        />
-      </Td>
-      <Td textAlign="center">
-        <IconButton
-          onClick={deleteCollectionItemHandle}
-          aria-label="Delete item"
-          icon={<DeleteIcon />}
-          title={t('collectionTableItem.remove', { name })}
-          colorScheme="red"
-        />
-      </Td>
+      {canEdit && (
+        <>
+          <Td textAlign="center">
+            <IconButton
+              onClick={updateItemHandle}
+              aria-label="Edit item"
+              icon={isOpen ? <CheckIcon /> : <EditIcon />}
+              title={t('collectionTableItem.edit', { name })}
+              colorScheme={isOpen ? 'green' : 'blue'}
+            />
+          </Td>
+          <Td textAlign="center">
+            <IconButton
+              onClick={deleteCollectionItemHandle}
+              aria-label="Delete item"
+              icon={<DeleteIcon />}
+              title={t('collectionTableItem.remove', { name })}
+              colorScheme="red"
+            />
+          </Td>
+        </>
+      )}
     </Tr>
   );
 }

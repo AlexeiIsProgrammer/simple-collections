@@ -62,7 +62,7 @@ function BiggestItem({ item, ind }: BiggestItemProps) {
         </svg>
       </div>
       <div className={styles['canvas_img-wrapper']}>
-        <img className={styles.image} src={item.image_url} alt="" />
+        <img className={styles.image} src={item.image_url} alt={item.name} />
       </div>
       <div
         className={clsx(styles.copy, styles['copy--left'], {
@@ -71,8 +71,9 @@ function BiggestItem({ item, ind }: BiggestItemProps) {
           [styles.third]: ind === 2,
         })}
       >
+        <span className={styles.title}>{item.name}</span>
+        <span className={styles.details}>{item.username}</span>
         <span className={styles.subtitle}>{item.items_count}</span>
-        <span className={styles.details}>{item.name}</span>
       </div>
     </Link>
   );

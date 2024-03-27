@@ -73,11 +73,12 @@ $animation-offset: 80px;
   }
 }
 .title {
-  font-size: 62px;
+  font-size: 35px;
   display: block;
   transform: translateX(-#{$animation-offset});
   transition: $transition-cubic-bezier 0s;
-  color: black;
+
+  text-shadow: 0px 0px 5px pink;
 
   &:nth-child(1) {
     transition-delay: 0.1s;

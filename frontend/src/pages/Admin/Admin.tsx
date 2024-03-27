@@ -66,6 +66,13 @@ function Admin() {
         if (currentUser && actions.includes(currentUser.id)) {
           dispatch(logout());
           navigate('/logout');
+          toast({
+            title: `${t('admin.deleteHimself')}`,
+            status: 'error',
+            position: 'top',
+          });
+
+          return;
         }
 
         toast({
@@ -89,6 +96,27 @@ function Admin() {
       setCheckedUsers([]);
       try {
         await changeUser(actions).unwrap();
+
+        if (
+          currentUser &&
+          actions.some(
+            (action) =>
+              action.id === currentUser.id &&
+              action.field === 'status' &&
+              action.value === STATUS.BLOCKED
+          )
+        ) {
+          dispatch(logout());
+          navigate('/logout');
+          toast({
+            title: `${t('admin.blockHimself')}...`,
+            status: 'error',
+            position: 'top',
+          });
+
+          return;
+        }
+
         toast({
           title: `${t('admin.Successfully changing')}!`,
           status: 'success',
@@ -102,7 +130,7 @@ function Admin() {
         });
       }
     },
-    [changeUser, toast, t]
+    [changeUser, toast, t, currentUser, dispatch, navigate]
   );
 
   const checkCheckbox = useCallback(

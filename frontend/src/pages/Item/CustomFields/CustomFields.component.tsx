@@ -4,7 +4,7 @@ import { useUpdateCollectionItemCustomFieldMutation } from '@services/collection
 import CustomFieldItem from './CustomFieldItem';
 import CustomFieldsProps from './types';
 
-function CustomFields({ customFields, itemId }: CustomFieldsProps) {
+function CustomFields({ customFields, itemId, canEdit }: CustomFieldsProps) {
   const [updateCustomField] = useUpdateCollectionItemCustomFieldMutation();
 
   const [isLessThan768] = useMediaQuery('(max-width: 768px)');
@@ -30,6 +30,7 @@ function CustomFields({ customFields, itemId }: CustomFieldsProps) {
             updateCustomFieldHandle={(fieldId, value) =>
               updateCustomFieldHandle(fieldId, value)
             }
+            readonly={!canEdit}
           />
         ))}
       </Grid>

@@ -20,7 +20,7 @@ const authSlice = createSlice({
       state.isAuth = initialState.isAuth;
       state.user = initialState.user;
 
-      localStorage.removeItem('user');
+      localStorage.removeItem('userId');
     },
     setUser: (state, { payload }: PayloadAction<User>) => {
       state.isAuth = true;

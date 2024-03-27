@@ -22,11 +22,6 @@
     transparent
   );
 
-  background:
-    var(--main-bg) padding-box,
-    var(--gradient-border) border-box,
-    var(--main-bg) border-box;
-
   background-position: center center;
 
   animation: bg-spin 0.3s linear infinite;
@@ -36,8 +31,13 @@
     }
   }
 
+  background: var(--main-bg);
   animation-play-state: paused;
   &:hover {
+    background:
+      var(--main-bg) padding-box,
+      var(--gradient-border) border-box,
+      var(--main-bg) border-box;
     animation-play-state: running;
   }
 }

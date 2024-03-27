@@ -21,6 +21,7 @@ import CustomFieldItemProps from './types';
 const CustomFieldItem = React.memo(function CustomFieldItem({
   item,
   updateCustomFieldHandle,
+  readonly,
 }: CustomFieldItemProps) {
   const { t } = useTranslation();
   const [fieldValue, setFieldValue] = useState<string>(item.value);
@@ -79,7 +80,7 @@ const CustomFieldItem = React.memo(function CustomFieldItem({
     <Card
       className={clsx(styles.card, {
         [styles.blocked]: item.state === COLLECTION_STATE.BLOCKED,
-        [styles.hidden]: item.state === COLLECTION_STATE.HIDDEN,
+        [styles.hidden]: item.state === COLLECTION_STATE.HIDDEN || readonly,
       })}
     >
       <CardHeader>

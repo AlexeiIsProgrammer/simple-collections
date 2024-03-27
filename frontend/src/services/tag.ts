@@ -5,7 +5,7 @@ export type TagActionType = 'create' | 'update' | 'delete';
 
 export type ActionType = {
   type?: TagActionType;
-  id?: string;
+  id?: number;
   name?: string;
 };
 
@@ -35,7 +35,7 @@ const tagApi = api.injectEndpoints({
         url: `tag/${id}/info`,
       }),
     }),
-    getTagsByCollectionItem: build.query<Tag[], string>({
+    getTagsByCollectionItem: build.query<Tag[], number>({
       query: (id) => ({
         url: `tag/${id}`,
       }),

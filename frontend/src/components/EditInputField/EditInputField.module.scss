@@ -1,12 +1,20 @@
+@mixin readonly {
+  text-align: center;
+  margin: 0 10px 0 10px;
+  padding: 10px;
+  border: 1px solid transparent;
+}
+
 .box {
   position: relative;
   border-radius: 10px;
 
   &.read {
-    text-align: center;
-    margin: 0 10px 0 10px;
-    padding: 10px;
-    border: 1px solid transparent;
+    @include readonly;
+  }
+  &.readonly {
+    @include readonly;
+    border: none;
   }
   &.input {
     text-align: center;

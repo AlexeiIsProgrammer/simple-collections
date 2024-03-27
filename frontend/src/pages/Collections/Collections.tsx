@@ -38,7 +38,7 @@ function Collections() {
           {t('collections.create')}
         </Button>
       </Heading>
-      <CollectionsList userId={Number(user?.id || 0)} />
+      <CollectionsList userId={Number(userId || 0)} />
     </Box>
   );
 }

@@ -63,6 +63,8 @@ i18n.use(initReactI18next).init({
           'Successfully deleting': 'Successfully deleting',
           'Deleting went wrong': 'Deleting went wrong',
           'Changing went wrong': 'Changing went wrong',
+          deleteHimself: "You've deleted yourself!",
+          blockHimself: "You've blocked yourself!",
           'Successfully changing': 'Successfully changing',
           'There was an error processing your request':
             'There was an error processing your request',
@@ -290,6 +292,8 @@ i18n.use(initReactI18next).init({
         admin: {
           'Successfully deleting': 'Паспяхова выдалена',
           'Deleting went wrong': 'Выдаленне адбылося няправільна',
+          deleteHimself: 'Вы удаліліся',
+          blockHimself: 'Вы заблакаваліся',
           'Changing went wrong': 'Змена адбылася няправільна',
           'Successfully changing': 'Паспяхова зменена',
           'There was an error processing your request':

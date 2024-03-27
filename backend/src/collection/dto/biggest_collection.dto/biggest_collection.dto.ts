@@ -10,6 +10,9 @@ export class BiggestCollectionDto {
   @IsString()
   image_url: string;
 
+  @IsString()
+  username: string;
+
   @IsNumber()
   user_id: number;
 

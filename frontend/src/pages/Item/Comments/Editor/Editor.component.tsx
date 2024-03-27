@@ -1,4 +1,4 @@
-import { Button, Flex, useToast } from '@chakra-ui/react';
+import { Button, Flex, useColorMode, useToast } from '@chakra-ui/react';
 import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import { useAppSelector } from '@redux/index';
@@ -15,6 +15,8 @@ function Editor({ itemId, onToggle }: EditorProps) {
   const [editorValue, setEditorValue] = useState(
     `<p>${t('editor.default')}</p>`
   );
+
+  const { colorMode } = useColorMode();
 
   const { user } = useAppSelector(authSelector);
   const [saveComment, { isLoading }] = useAddCommentMutation();
@@ -47,7 +49,11 @@ function Editor({ itemId, onToggle }: EditorProps) {
   };
 
   return (
-    <Flex background="white" direction="column" gap={4}>
+    <Flex
+      background={colorMode === 'dark' ? 'ThreeDDarkShadow' : 'white'}
+      direction="column"
+      gap={4}
+    >
       <CKEditor
         editor={ClassicEditor}
         data={editorValue}

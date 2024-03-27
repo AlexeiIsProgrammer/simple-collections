@@ -53,7 +53,7 @@ export class SearchService {
       .where(
         `to_tsvector('simple', ci.name || ' ' || t.name ) @@ to_tsquery('simple', :q)`,
         {
-          q: `${q}:*`,
+          q: `'${q}':*`,
         },
       )
       .groupBy('ci.id, c.id')
@@ -91,7 +91,7 @@ export class SearchService {
       .where(
         `to_tsvector('simple', c.name || ' ' || c.description || ' ' || c.category) @@ to_tsquery('simple', :q)`,
         {
-          q: `${q}:*`,
+          q: `'${q}':*`,
         },
       )
       .getRawMany();

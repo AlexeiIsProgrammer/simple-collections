@@ -91,6 +91,10 @@ export class UserService {
         throw new HttpException("User doesn't exists", HttpStatus.NOT_FOUND);
       }
 
+      if (user.status === 'blocked') {
+        throw new HttpException("You've been blocked", HttpStatus.FORBIDDEN);
+      }
+
       return user;
     } catch (err) {
       if (err instanceof Error) {
@@ -109,6 +113,10 @@ export class UserService {
           'Email or password wrong',
           HttpStatus.NOT_FOUND,
         );
+      }
+
+      if (user.status === 'blocked') {
+        throw new HttpException("You've been blocked", HttpStatus.FORBIDDEN);
       }
 
       const formattedUser = {

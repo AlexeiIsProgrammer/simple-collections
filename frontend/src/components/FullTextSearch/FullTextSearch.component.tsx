@@ -130,7 +130,7 @@ function FullTextSearch({ disclosure }: FullTextSearchProps) {
               typeSomething ||
               emptyAlert || (
                 <>
-                  <Grid templateColumns="1fr 1fr" gap={4}>
+                  <Grid w="100%" templateColumns="1fr 1fr" gap={4}>
                     {results?.collections.map((collection) => (
                       <CollectionResult
                         key={collection.id}

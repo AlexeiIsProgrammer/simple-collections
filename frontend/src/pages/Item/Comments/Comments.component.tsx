@@ -19,9 +19,10 @@ import CommentItem from './CommentItem/CommentItem.component';
 import Editor from './Editor';
 import CommentsProps from './types';
 
-function Comments({ itemId: id }: CommentsProps) {
+function Comments({ itemId: id, canInteract }: CommentsProps) {
   const { t } = useTranslation();
   const { onToggle, isOpen } = useDisclosure();
+
   const {
     data: comments,
     isError,
@@ -44,12 +45,14 @@ function Comments({ itemId: id }: CommentsProps) {
     <Flex mt={5} direction="column" gap={5}>
       <Heading textAlign="center" as="h2" fontSize={30}>
         {t('comments.comments')}
-        <Button ml={2} onClick={onToggle}>
-          {isOpen ? t('comments.close') : t('comments.addNew')}
-        </Button>
+        {canInteract && (
+          <Button ml={2} onClick={onToggle}>
+            {isOpen ? t('comments.close') : t('comments.addNew')}
+          </Button>
+        )}
       </Heading>
 
-      {isOpen && (
+      {isOpen && canInteract && (
         <Box position="sticky" top={0} zIndex={1}>
           <Editor itemId={id} onToggle={onToggle} />
         </Box>

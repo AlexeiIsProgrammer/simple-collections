@@ -1,13 +1,15 @@
 import { useEffect } from 'react';
-import { Outlet } from 'react-router-dom';
-import { Container } from '@chakra-ui/react';
-import { setUser } from '@redux/slices/userSlice';
+import { Outlet, useNavigate } from 'react-router-dom';
+import { Container, useToast } from '@chakra-ui/react';
+import { logout, setUser } from '@redux/slices/userSlice';
 import { useAppDispatch } from '@redux/index';
 import Header from '@components/Header';
 import Footer from '@components/Footer';
 import { useLazyGetUserQuery } from '@services/user';
 
 function App() {
+  const toast = useToast();
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
   const [getUser] = useLazyGetUserQuery();
@@ -18,9 +20,19 @@ function App() {
     if (storageUserId) {
       getUser(storageUserId)
         .unwrap()
-        .then((userResponse) => dispatch(setUser(userResponse)));
+        .then((userResponse) => dispatch(setUser(userResponse)))
+        .catch((err) => {
+          toast({
+            title: err.data.message,
+            status: 'error',
+            position: 'top',
+          });
+
+          dispatch(logout());
+          navigate('/login');
+        });
     }
-  }, [getUser, dispatch]);
+  }, [getUser, dispatch, navigate, toast]);
 
   return (
     <>
