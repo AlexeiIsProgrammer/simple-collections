@@ -98,11 +98,11 @@ function Header() {
             </ButtonGroup>
           </>
         ) : location.pathname.includes('login') ? (
-          <Button onClick={() => navigate('/register')}>
+          <Button minW="auto" onClick={() => navigate('/register')}>
             {t('header.Sign up')}
           </Button>
         ) : (
-          <Button onClick={() => navigate('/login')}>
+          <Button minW="auto" onClick={() => navigate('/login')}>
             {t('header.Sign in')}
           </Button>
         )}

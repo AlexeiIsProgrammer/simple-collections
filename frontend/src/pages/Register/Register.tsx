@@ -110,7 +110,7 @@ function Register() {
               {...register('name', { required: true })}
             />
             <FormErrorMessage>
-              {errors.name?.message || 'Name is required'}
+              {errors.name?.message || t('register.Name is required')}
             </FormErrorMessage>
           </FormControl>
           <FormControl isInvalid={Boolean(errors.email)}>
@@ -131,7 +131,10 @@ function Register() {
               <Input
                 type={showPassword ? 'text' : 'password'}
                 placeholder="DemiMur12345"
-                {...register('password', { required: true, minLength: 5 })}
+                {...register('password', {
+                  required: true,
+                  minLength: { value: 5, message: t('login.passwordLength') },
+                })}
               />
               <InputRightElement width="4.5rem">
                 {showPassword ? (
@@ -150,7 +153,7 @@ function Register() {
               </InputRightElement>
             </InputGroup>
             <FormErrorMessage>
-              {errors.password?.message || 'Password is required'}
+              {errors.password?.message || t('register.Password is required')}
             </FormErrorMessage>
           </FormControl>
           <FormControl isInvalid={Boolean(errors.repeatPassword)}>
@@ -162,7 +165,7 @@ function Register() {
                 placeholder="DemiMur12345"
                 {...register('repeatPassword', {
                   required: true,
-                  minLength: 5,
+                  minLength: { value: 5, message: t('login.passwordLength') },
                   validate: (value) =>
                     value === watch('password') ||
                     t('register.Passwords do not match'),

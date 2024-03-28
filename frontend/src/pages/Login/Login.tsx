@@ -107,7 +107,10 @@ function Login() {
               <Input
                 type={showPassword ? 'text' : 'password'}
                 placeholder="DemiMur12345"
-                {...register('password', { required: true, minLength: 5 })}
+                {...register('password', {
+                  required: true,
+                  minLength: { value: 5, message: t('login.passwordLength') },
+                })}
               />
               <InputRightElement width="4.5rem">
                 {showPassword ? (
@@ -126,7 +129,8 @@ function Login() {
               </InputRightElement>
             </InputGroup>
             <FormErrorMessage>
-              {errors.password?.message || t('login.Password is required')}
+              {(errors.password && errors.password.message) ||
+                t('login.Password is required')}
             </FormErrorMessage>
           </FormControl>
           <Button isLoading={isLoading} type="submit">

@@ -124,6 +124,8 @@ i18n.use(initReactI18next).init({
           Name: 'Name',
           Email: 'Email',
           'Email is required': 'Email is required',
+          'Password is required': 'Password is required',
+          'Name is required': 'Name is required',
           Password: 'Password',
           'Repeat password': 'Repeat password',
           'Passwords do not match': 'Passwords do not match',
@@ -159,6 +161,7 @@ i18n.use(initReactI18next).init({
           'Password is required': 'Password is required',
           Login: 'Login',
           dontHave: "Don't have an account? Click here",
+          passwordLength: 'Write at least 5 symbols!',
         },
         item: {
           error: 'There was an error on getting item info',
@@ -355,6 +358,8 @@ i18n.use(initReactI18next).init({
           Email: 'Электронная пошта',
           'Email is required':
             'Поле Электронная пошта абавязкова для запаўнення',
+          'Password is required': 'Поле Пароль абавязкова для запаўнення',
+          'Name is required': 'Поле Імя абавязкова для запаўнення',
           Password: 'Пароль',
           'Repeat password': 'Паўтарыце пароль',
           'Passwords do not match': 'Паролі не супадаюць',
@@ -391,6 +396,7 @@ i18n.use(initReactI18next).init({
           'Password is required': 'Поле Пароль абавязкова для запаўнення',
           Login: 'Уваход',
           dontHave: 'Няма акаўнта? Націсніце тут',
+          passwordLength: 'Увядзіце хаця б 5 сімвалаў.',
         },
         item: {
           error: 'Адбылася памылка пры атрыманні інфармацыі аб рэчы',
@@ -467,7 +473,7 @@ i18n.use(initReactI18next).init({
       },
     },
   },
-  lng: 'en',
+  lng: localStorage.getItem('language') || 'en',
   fallbackLng: 'en',
 
   interpolation: {
