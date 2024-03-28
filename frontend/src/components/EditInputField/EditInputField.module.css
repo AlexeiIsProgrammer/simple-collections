@@ -1,0 +1,38 @@
+.box {
+  position: relative;
+  border-radius: 10px;
+}
+.box.read {
+  text-align: center;
+  margin: 0 10px 0 10px;
+  padding: 10px;
+  border: 1px solid transparent;
+}
+.box.readonly {
+  text-align: center;
+  margin: 0 10px 0 10px;
+  padding: 10px;
+  border: 1px solid transparent;
+  border: none;
+}
+.box.input {
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  border: 1px solid transparent;
+}
+.box:not(.read) .edit {
+  display: block !important;
+}
+.box:hover.read {
+  border-color: #000;
+}
+.box:hover .edit {
+  display: block !important;
+}
+
+.edit {
+  z-index: 1;
+  display: none !important;
+  margin-left: 15px;
+}/*# sourceMappingURL=EditInputField.module.css.map */

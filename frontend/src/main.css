@@ -1,0 +1,34 @@
+.ck.ck-editor__main > .ck-editor__editable {
+  background: transparent;
+}
+.ck.ck-editor__main > .ck-editor__editable h1 {
+  font-size: 32px;
+}
+.ck.ck-editor__main > .ck-editor__editable h2 {
+  font-size: 26px;
+}
+.ck.ck-editor__main > .ck-editor__editable h3 {
+  font-size: 20px;
+}
+
+.swiper {
+  padding: 0 20px;
+}
+@media (max-width: 576px) {
+  .swiper {
+    padding: 0;
+  }
+}
+
+.swiper-wrapper {
+  align-items: stretch;
+}
+
+.swiper-slide {
+  height: auto;
+}
+
+.swiper-button-prev.swiper-button-disabled,
+.swiper-button-next.swiper-button-disabled {
+  opacity: 0;
+}

@@ -1,0 +1,45 @@
+@mixin readonly {
+  text-align: center;
+  margin: 0 10px 0 10px;
+  padding: 10px;
+  border: 1px solid transparent;
+}
+
+.box {
+  position: relative;
+  border-radius: 10px;
+
+  &.read {
+    @include readonly;
+  }
+  &.readonly {
+    @include readonly;
+    border: none;
+  }
+  &.input {
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    border: 1px solid transparent;
+  }
+  &:not(.read) {
+    & .edit {
+      display: block !important;
+    }
+  }
+  &:hover {
+    &.read {
+      border-color: #000;
+    }
+
+    & .edit {
+      display: block !important;
+    }
+  }
+}
+
+.edit {
+  z-index: 1;
+  display: none !important;
+  margin-left: 15px;
+}

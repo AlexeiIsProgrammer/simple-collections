@@ -1,0 +1,14 @@
+.card {
+  &.hidden {
+    user-select: none;
+    pointer-events: none;
+    opacity: 0.5;
+    border: 1px solid gray;
+  }
+
+  &.blocked {
+    user-select: none;
+    pointer-events: none;
+    border: 1px solid red;
+  }
+}
