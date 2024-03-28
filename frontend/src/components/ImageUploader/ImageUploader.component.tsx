@@ -89,7 +89,7 @@ const ImageUploader = forwardRef<
         [styles['is-drop']]: drop,
       })}
     >
-      <Text>Drop image here</Text>
+      <Text>{t('imageUploader.uploadName')}</Text>
       <Box className={styles['upload-button']}>
         <input
           ref={ref}

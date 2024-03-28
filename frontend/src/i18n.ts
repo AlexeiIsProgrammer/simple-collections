@@ -234,6 +234,7 @@ i18n.use(initReactI18next).init({
         imageUploader: {
           error: 'Image uploading went wrong...',
           upload: 'Upload Here',
+          uploadName: 'Drop image here',
         },
       },
     },
@@ -469,6 +470,7 @@ i18n.use(initReactI18next).init({
         imageUploader: {
           error: 'Загрузка малюнка не ўдалася...',
           upload: 'Загрузіце тут',
+          uploadName: 'Перацягніце малюнак сюды',
         },
       },
     },
